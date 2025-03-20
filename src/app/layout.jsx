@@ -20,11 +20,11 @@ export const metadata = {
 
 export default function Layout({ children }) {
   return (
-      <html lang="sv">
-          <body>
-              <Navbar />
-              {children}
-          </body>
-      </html>
+    <html lang="sv">
+      <body>
+        <Navbar />
+        {children}
+      </body>
+    </html>
   );
 }

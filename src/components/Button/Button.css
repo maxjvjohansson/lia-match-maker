@@ -1,27 +1,27 @@
 .btn {
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 /* Primary Button */
 .primary {
-    background-color: var(--primary-red);
-    color: #FFFFFF;
-    border-radius: 1.5rem;
-    border: 1px solid #FAFAFA;
-    padding: 0.75rem 1.25rem;
-    font-weight: 500;
+  background-color: var(--primary-red);
+  color: #ffffff;
+  border-radius: 1.5rem;
+  border: 1px solid #fafafa;
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
 }
 
 /* Secondary Button */
 .secondary {
-    background-color: #FFFFFF;
-    color: var(--primary-red);
-    border-radius: 1.5rem;
-    border: 1px solid var(--primary-red);
-    padding: 0.75rem 1.25rem;
-    font-weight: 500;
+  background-color: #ffffff;
+  color: var(--primary-red);
+  border-radius: 1.5rem;
+  border: 1px solid var(--primary-red);
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
 }

@@ -1,59 +1,59 @@
 .hero {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    background-color: var(--primary-red);
-    color: #FFFFFF;
-    padding: 1.5rem 2rem;
-    position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: var(--primary-red);
+  color: #ffffff;
+  padding: 1.5rem 2rem;
+  position: relative;
 }
 
 .hero-heading {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .event-time {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    display: block;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
 }
 
 .hero-heading h1 {
-    font-size: 6rem;
-    font-weight: 800;
-    line-height: 6rem;
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 6rem;
 }
 
 .title-animation {
-    display: inline-block;
-    transition: all 0.2s ease-in-out;
-    font-variation-settings: "wght" 100;
+  display: inline-block;
+  transition: all 0.2s ease-in-out;
+  font-variation-settings: "wght" 100;
 }
 
 .title-animation:hover {
-    font-variation-settings: "wght" 800;
+  font-variation-settings: "wght" 800;
 }
 
 .hero p {
-    font-weight: 400;
-    font-size: 1.5rem;
+  font-weight: 400;
+  font-size: 1.5rem;
 }
 
 .hero-cta {
-    display: flex;
-    flex-direction: column;
-    margin-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  margin-top: 6rem;
 }
 
 .hero-cta p {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .btn-container {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
