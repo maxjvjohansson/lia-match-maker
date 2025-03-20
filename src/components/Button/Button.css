@@ -8,7 +8,7 @@
 
 /* Primary Button */
 .primary {
-    background-color: #E51236;
+    background-color: var(--primary-red);
     color: #FFFFFF;
     border-radius: 1.5rem;
     border: 1px solid #FAFAFA;
@@ -19,9 +19,9 @@
 /* Secondary Button */
 .secondary {
     background-color: #FFFFFF;
-    color: #E51236;
+    color: var(--primary-red);
     border-radius: 1.5rem;
-    border: 1px solid #E51236;
+    border: 1px solid var(--primary-red);
     padding: 0.75rem 1.25rem;
     font-weight: 500;
 }
