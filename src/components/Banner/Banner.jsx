@@ -31,7 +31,7 @@ export default function Banner() {
     function moveLogos() {
       if (track) {
         track.style.transform = `translateX(-${speed}px)`;
-        speed += 1;
+        speed += 0.3;
         if (Math.abs(speed) > track.scrollWidth / 2) {
           track.style.transform = "translateX(0)";
           speed = 1;
