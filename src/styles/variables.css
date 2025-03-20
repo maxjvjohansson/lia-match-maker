@@ -1,0 +1,17 @@
+/* COLOR VARIABLES */
+
+:root {
+    --primary-red: #E51236;
+    --primary-grey: #E4E9EB;
+    --primary-blue: #001A52;
+    --secondary-green-blue: #C5EBD8;
+    --secondary-yellow: #FCFA58;
+    --secondary-turquoise: #35D4D1;
+    --grey-10: #121212;
+    --grey-20: #4F4F4F;
+    --grey-30: #828282;
+    --grey-40: #BDBDBD;
+    --grey-50: #E0E0E0;
+    --grey-60: #F2F2F2;
+    --grey-70: #FAFAFA;
+}
