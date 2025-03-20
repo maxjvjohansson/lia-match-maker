@@ -1,0 +1,22 @@
+.logo-banner {
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  position: absolute;
+  bottom: 0;
+  white-space: nowrap;
+  padding: 1rem;
+}
+
+.logo-track {
+  display: flex;
+  height: 1.5rem;
+  gap: 1rem;
+  white-space: nowrap;
+  will-change: transform;
+  transition: transform 0.01s linear;
+}
+
+.logo {
+  object-fit: contain;
+}

@@ -1,5 +1,6 @@
 import "./Hero.css";
 import Button from "../Button/Button";
+import Banner from "../Banner/Banner";
 
 export default function Hero() {
   return (
@@ -17,6 +18,7 @@ export default function Hero() {
           <Button variant="secondary" text="Student" />
         </div>
       </div>
+      <Banner />
     </section>
   );
 }
