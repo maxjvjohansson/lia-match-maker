@@ -1,3 +1,5 @@
+import "./EventSchedule.css";
+
 export default function EventSchedule() {
   const schedule = [
     {
