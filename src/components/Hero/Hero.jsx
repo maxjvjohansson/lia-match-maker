@@ -1,7 +1,7 @@
 import "./Hero.css";
 import Button from "../Button/Button";
 import Banner from "../Banner/Banner";
-import HeroCircles from "../HeroCircles/HeroCircles";
+import HeroCircles from "./HeroCircles";
 
 export default function Hero() {
   return (
