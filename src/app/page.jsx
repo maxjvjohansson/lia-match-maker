@@ -2,6 +2,7 @@
 
 import EventSection from "@/components/EventSection/EventSection";
 import Hero from "@/components/Hero/Hero";
+import SignupSection from "@/components/Signup/SignupSection";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
     <main>
       <Hero />
       <EventSection />
+      <SignupSection />
     </main>
   );
 }

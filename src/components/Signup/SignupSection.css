@@ -1,0 +1,9 @@
+.signup-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-toggle {
+  display: flex;
+  justify-content: center;
+}
