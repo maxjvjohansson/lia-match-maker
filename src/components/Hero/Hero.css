@@ -4,6 +4,7 @@
   align-self: stretch;
   color: var(--white);
   background-color: var(--primary-red);
+  overflow: hidden;
 }
 
 .hero-content {

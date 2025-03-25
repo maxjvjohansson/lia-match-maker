@@ -1,15 +1,70 @@
 .circle-large {
-  display: flex;
+  position: relative;
+  top: -1.5rem;
+  right: -6rem;
   width: 21.9375rem;
   height: 21.9375rem;
   border-radius: 21.9375rem;
-  border: 2px solid #fff;
+  border: 1px solid var(--white);
+  animation: spin 60s linear infinite;
 }
 
 .circle-small {
-  display: flex;
+  position: absolute;
+  top: 5rem;
+  right: 4rem;
   width: 12.18356rem;
   height: 12.18356rem;
   border-radius: 12.18356rem;
-  border: 2px solid #fff;
+  border: 1px solid var(--white);
+}
+
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: rotate(var(--angle)) translateY(-1rem) translateX(-50%);
+}
+
+.orbit-1 {
+  transform: rotate(0deg) translateY(-11rem) translateX(-50%);
+}
+.orbit-2 {
+  transform: rotate(120deg) translateY(-11rem) translateX(-50%);
+}
+.orbit-3 {
+  transform: rotate(240deg) translateY(-11rem) translateX(-50%);
+}
+.orbit-center {
+  transform: translate(-50%, -50%);
+}
+
+.avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: rotate(calc(-1 * var(--angle)));
+}
+
+.avatar img {
+  width: 4rem;
+  height: auto;
+}
+
+figcaption {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  letter-spacing: 0.05rem;
+  color: var(--white);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
