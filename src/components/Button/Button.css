@@ -1,12 +1,27 @@
 .btn {
-    background-color: #6A6A6A;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 0.75rem;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
-.btn:hover {
-    background-color: gray;
+/* Primary Button */
+.primary {
+  background-color: var(--primary-red);
+  color: #ffffff;
+  border-radius: 1.5rem;
+  border: 1px solid #fafafa;
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
+}
+
+/* Secondary Button */
+.secondary {
+  background-color: #ffffff;
+  color: var(--primary-red);
+  border-radius: 1.5rem;
+  border: 1px solid var(--primary-red);
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
 }
