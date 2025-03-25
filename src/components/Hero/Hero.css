@@ -1,14 +1,37 @@
 .hero {
   width: 100%;
   height: calc(100vh - 3.6875rem);
+  align-self: stretch;
+  color: var(--white);
+  background-color: var(--primary-red);
+}
+
+.hero-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: flex-start;
-  background-color: var(--primary-red);
-  color: #ffffff;
-  position: relative;
-  overflow: hidden;
+  gap: var(--padding-xs, 0.5rem);
+  padding: var(--padding-xl, 3rem) var(--padding-m, 1rem);
+}
+
+.hero-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-xs, 0.25rem);
+}
+
+.event-time {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  letter-spacing: 0.05rem;
+}
+
+.hero-heading h1 {
+  font-size: 2.5rem;
+  line-height: 2.5rem;
 }
 
 .title-animation {
@@ -19,4 +42,25 @@
 
 .title-animation:hover {
   font-variation-settings: "wght" 800;
+}
+
+.event-info {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  letter-spacing: 0.05rem;
+  margin-bottom: var(--padding-xl);
+}
+
+.signup-text {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  letter-spacing: 0.05rem;
+  margin-bottom: var(--gap-s);
+}
+
+.btn-container {
+  display: flex;
+  gap: var(--padding-s);
 }

@@ -1,27 +1,48 @@
 .btn {
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  height: 2.875rem;
+  padding: var(--padding-xs, 0.5rem) var(--padding-l, 1.5rem);
+  justify-content: center;
+  align-items: center;
+  gap: var(--padding-xs, 0.5rem);
+  flex-shrink: 0;
+  border-radius: var(--border-radius-l, 1.5rem);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.05rem;
 }
 
-/* Primary Button */
+/* Arrow styling */
+.arrow {
+  width: 1rem;
+  height: auto;
+}
+
+/* === VARIANTS === */
+
 .primary {
   background-color: var(--primary-red);
-  color: #ffffff;
-  border-radius: 1.5rem;
-  border: 1px solid #fafafa;
-  padding: 0.75rem 1.25rem;
-  font-weight: 500;
+  color: var(--white);
+  border: 1px solid var(--white);
 }
 
-/* Secondary Button */
 .secondary {
-  background-color: #ffffff;
+  background-color: var(--white);
   color: var(--primary-red);
-  border-radius: 1.5rem;
   border: 1px solid var(--primary-red);
-  padding: 0.75rem 1.25rem;
-  font-weight: 500;
+}
+
+.dashed {
+  background-color: transparent;
+  color: var(--primary-red);
+  border: 2px dashed var(--primary-red);
+}
+
+.disabled {
+  background-color: var(--grey-40);
+  color: var(--white);
+  border: 1px solid var(--white);
+  cursor: not-allowed;
+  pointer-events: none;
 }

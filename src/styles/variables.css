@@ -31,8 +31,8 @@
   --padding-xl: 48px;
 
   /* BORDER-RADIUS VARIABLES */
-  --padding-xs: 4px;
-  --padding-s: 8px;
-  --padding-m: 12px;
-  --padding-l: 24px;
+  --border-radius-xs: 4px;
+  --border-radius-s: 8px;
+  --border-radius-m: 12px;
+  --border-radius-l: 24px;
 }
