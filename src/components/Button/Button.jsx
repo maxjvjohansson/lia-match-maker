@@ -6,6 +6,7 @@ export default function Button({
   text,
   variant = "primary",
   onClick,
+  type = "button",
   showArrow = false,
   iconDirection = "right",
   iconColor = "auto",
@@ -34,7 +35,7 @@ export default function Button({
   const buttonClassName = isBlockButton ? variant : `btn ${variant}`;
 
   return (
-    <button className={buttonClassName} onClick={onClick}>
+    <button className={buttonClassName} onClick={onClick} type={type}>
       {iconDirection === "left" && showArrow && iconSrc && (
         <img src={iconSrc} alt="" className="arrow left" />
       )}
