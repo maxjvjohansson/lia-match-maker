@@ -27,22 +27,64 @@
   border: 1px solid var(--white);
 }
 
+.primary:hover {
+  background-color: var(--white);
+  color: var(--primary-red);
+  border: 1px solid var(--primary-red);
+}
+
 .secondary {
   background-color: var(--white);
   color: var(--primary-red);
   border: 1px solid var(--primary-red);
 }
 
-.dashed {
-  background-color: transparent;
-  color: var(--primary-red);
-  border: 2px dashed var(--primary-red);
+.secondary:hover {
+  background-color: var(--primary-red);
+  color: var(--white);
+  border: 1px solid var(--white);
 }
 
 .disabled {
   background-color: var(--grey-40);
   color: var(--white);
   border: 1px solid var(--white);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* =============================
+   BLOCK (BLUE) STYLES
+============================= */
+
+.block-primary {
+  height: 2.875rem;
+  display: inline-flex;
+  padding: var(--padding-xs, 0.5rem) var(--padding-xl, 3rem);
+  justify-content: center;
+  align-items: center;
+  gap: var(--padding-xs, 0.5rem);
+  border-radius: 0.25rem 0.25rem;
+  border: 1px solid var(--primary-blue);
+  color: var(--primary-blue);
+  background: var(--white);
+}
+
+.block-primary:hover {
+  color: var(--white);
+  background: var(--primary-blue);
+}
+
+.block-disabled {
+  height: 2.875rem;
+  display: inline-flex;
+  padding: var(--padding-xs, 0.5rem) var(--padding-xl, 3rem);
+  justify-content: center;
+  align-items: center;
+  gap: var(--padding-xs, 0.5rem);
+  border-radius: 0.25rem 0.25rem;
+  color: var(--white);
+  background-color: var(--grey-40);
   cursor: not-allowed;
   pointer-events: none;
 }

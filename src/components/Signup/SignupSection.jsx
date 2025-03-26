@@ -5,8 +5,8 @@ export default function SignupSection() {
   return (
     <section className="signup-section">
       <div className="form-toggle">
-        <Button text="Företag" variant="primary" />
-        <Button text="Student" variant="secondary" />
+        <Button text="Företag" variant="block-primary" />
+        <Button text="Student" variant="block-primary" />
       </div>
       <SignupForm />
     </section>

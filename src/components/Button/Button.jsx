@@ -11,6 +11,8 @@ export default function Button({
   iconColor = "auto",
 }) {
   const isPrimary = variant === "primary";
+  const isBlockButton = variant.startsWith("block-");
+
   const resolvedColor =
     iconColor === "auto" ? (isPrimary ? "white" : "red") : iconColor;
 
@@ -29,9 +31,10 @@ export default function Button({
   };
 
   const iconSrc = getIconPath();
+  const buttonClassName = isBlockButton ? variant : `btn ${variant}`;
 
   return (
-    <button className={`btn ${variant}`} onClick={onClick}>
+    <button className={buttonClassName} onClick={onClick}>
       {iconDirection === "left" && showArrow && iconSrc && (
         <img src={iconSrc} alt="" className="arrow left" />
       )}
