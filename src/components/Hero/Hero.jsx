@@ -2,8 +2,10 @@ import "./Hero.css";
 import Button from "../Button/Button";
 import Banner from "../Banner/Banner";
 import HeroCircles from "./HeroCircles";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
   return (
     <section className="hero">
       <HeroCircles />
@@ -33,6 +35,7 @@ export default function Hero() {
               showArrow
               iconDirection="right"
               iconColor="auto"
+              onClick={() => router.push("/confirmation")}
             />
           </div>
         </div>
