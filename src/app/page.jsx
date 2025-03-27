@@ -17,7 +17,11 @@ export default function Home() {
           signupRef.current?.scrollIntoView({ behavior: "smooth" })
         }
       />
-      <EventSection />
+      <EventSection
+        scrollToSignup={() =>
+          signupRef.current?.scrollIntoView({ behavior: "smooth" })
+        }
+      />
       <SignupSection ref={signupRef} />
     </main>
   );

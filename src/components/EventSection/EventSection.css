@@ -1,9 +1,35 @@
 .event-section {
   display: flex;
-  height: 100vh;
-  padding: var(--Padding-L, 1.5rem) var(--Gap-M, 1rem);
+  padding: var(--padding-l, 1.5rem) var(--gap-m, 1rem);
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+  background-color: var(--grey-60);
+}
+
+.event-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-m, 1rem);
+}
+
+.title {
+  margin-top: var(--gap-m);
+  font-size: 1.875rem;
+  font-weight: 300;
+  line-height: 1.875rem;
+  letter-spacing: 0.025rem;
+}
+
+.event-description {
+  margin-bottom: var(--gap-m);
+}
+
+.event-description p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  margin-bottom: 1.5rem;
 }
