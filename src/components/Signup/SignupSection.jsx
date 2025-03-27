@@ -1,9 +1,10 @@
 import Button from "../Button/Button";
 import SignupForm from "./SignupForm";
+import { forwardRef } from "react";
 
-export default function SignupSection() {
+const SignupSection = forwardRef((props, ref) => {
   return (
-    <section className="signup-section">
+    <section className="signup-section" ref={ref}>
       <div className="form-toggle">
         <Button text="Företag" variant="block-primary" />
         <Button text="Student" variant="block-primary" />
@@ -11,4 +12,6 @@ export default function SignupSection() {
       <SignupForm />
     </section>
   );
-}
+});
+
+export default SignupSection;

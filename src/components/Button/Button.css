@@ -33,6 +33,7 @@
   background-color: var(--white);
   color: var(--primary-red);
   border: 1px solid var(--primary-red);
+  cursor: pointer;
 }
 
 .secondary {
@@ -45,6 +46,7 @@
   background-color: var(--primary-red);
   color: var(--white);
   border: 1px solid var(--white);
+  cursor: pointer;
 }
 
 .disabled {
@@ -75,6 +77,7 @@
 .block-primary:hover {
   color: var(--white);
   background: var(--primary-blue);
+  cursor: pointer;
 }
 
 .block-disabled {

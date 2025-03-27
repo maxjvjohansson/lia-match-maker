@@ -4,18 +4,21 @@ import Banner from "../Banner/Banner";
 import HeroCircles from "./HeroCircles";
 import { useRouter } from "next/navigation";
 
-export default function Hero() {
+export default function Hero({ scrollToSignup }) {
   const router = useRouter();
   return (
     <section className="hero">
       <HeroCircles />
       <div className="hero-content">
         <div className="hero-heading">
-          <p className="event-time">23 april 2025 · kl 13 · Lindholmen</p>
           <h1 className="title-animation">TRÄFFA DIN</h1>
           <h1>PERFECT MATCH</h1>
+          <p className="event-time">
+            23 april 2025 | kl 13-15 | Visual Arena Lindholmen
+          </p>
           <p className="event-info">
-            Ett event där du möter framtidens arbetsgivare/medarbetare.
+            Ett event där du bygger relationer med framtidens kollegor och
+            attraherar morgondagens talanger.
           </p>
         </div>
 
@@ -28,6 +31,7 @@ export default function Hero() {
               showArrow
               iconDirection="right"
               iconColor="auto"
+              onClick={scrollToSignup}
             />
             <Button
               variant="primary"
@@ -35,7 +39,7 @@ export default function Hero() {
               showArrow
               iconDirection="right"
               iconColor="auto"
-              onClick={() => router.push("/confirmation")}
+              onClick={scrollToSignup}
             />
           </div>
         </div>
