@@ -3,6 +3,7 @@
 import Hero from "@/components/Hero/Hero";
 import EventSection from "@/components/EventSection/EventSection";
 import SignupSection from "@/components/Signup/SignupSection";
+import Footer from "@/components/Footer/Footer";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
@@ -23,6 +24,7 @@ export default function Home() {
         }
       />
       <SignupSection ref={signupRef} />
+      <Footer />
     </main>
   );
 }

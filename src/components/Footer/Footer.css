@@ -1,0 +1,27 @@
+footer {
+  display: flex;
+  width: 20.25rem;
+  height: 10.875rem;
+  padding: 0rem var(--gap-m, 1rem);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-m, 1rem);
+  margin: var(--gap-l) 0;
+}
+
+.footer-logo {
+  display: flex;
+  width: 5.1875rem;
+  height: 1.25rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-terms a {
+  color: var(--black);
+}
+
+.gothenburg-logo {
+  width: 7.5rem;
+  height: 2.875rem;
+}
