@@ -17,6 +17,8 @@
 .arrow {
   width: 1rem;
   height: auto;
+  stroke: currentColor;
+  fill: currentColor;
 }
 
 /* === VARIANTS === */
