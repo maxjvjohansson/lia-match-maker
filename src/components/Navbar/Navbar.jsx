@@ -42,6 +42,7 @@ export default function Navbar() {
               src="/assets/images/yrgo.svg"
               alt="Yrgo logo"
               fill
+              priority
               style={{ objectFit: "contain" }}
             />
           </div>

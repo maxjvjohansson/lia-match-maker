@@ -38,7 +38,6 @@ export default function Login({ scrollToSignup }) {
                 src="/assets/images/yrgo.svg"
                 alt="Yrgo logo"
                 fill
-                priority
                 style={{ objectFit: "contain" }}
               />
             </div>

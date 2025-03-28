@@ -1,6 +1,6 @@
 import "./Button.css";
-import ArrowRight from "@/assets/icons/arrow_up_right.svg";
-import ArrowLeft from "@/assets/icons/arrow_up_right.svg";
+import ArrowRight from "@/assets/icons/arrow_up_right.svg?component";
+import ArrowLeft from "@/assets/icons/arrow_left.svg?component";
 
 export default function Button({
   text,
