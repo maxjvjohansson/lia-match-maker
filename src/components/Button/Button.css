@@ -11,6 +11,8 @@
   font-weight: 500;
   line-height: 1.25rem;
   letter-spacing: 0.05rem;
+  width: auto;
+  max-width: fit-content;
 }
 
 /* Arrow styling */
