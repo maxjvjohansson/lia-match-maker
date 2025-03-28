@@ -8,7 +8,7 @@ import ShowIcon from "@/assets/icons/show_password.svg";
 import HideIcon from "@/assets/icons/hide_password.svg";
 import "./Login.css";
 
-export default function Login() {
+export default function Login({ scrollToSignup }) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -38,6 +38,7 @@ export default function Login() {
                 src="/assets/images/yrgo.svg"
                 alt="Yrgo logo"
                 fill
+                priority
                 style={{ objectFit: "contain" }}
               />
             </div>
@@ -78,7 +79,10 @@ export default function Login() {
 
         <div className="login-links" id="login-description">
           <p>
-            Inget konto? Skapa genom att <Link href="/signup">anmäla dig </Link>
+            Inget konto? Skapa genom att{" "}
+            <Link href="/#signup" onClick={scrollToSignup}>
+              anmäla dig{" "}
+            </Link>
             till eventet.
           </p>
           <Link href="/reset" className="forgot-link">

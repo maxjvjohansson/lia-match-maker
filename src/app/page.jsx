@@ -23,7 +23,7 @@ export default function HomePage() {
           signupRef.current?.scrollIntoView({ behavior: "smooth" })
         }
       />
-      <SignupSection ref={signupRef} />
+      <SignupSection ref={signupRef} id="signup" />
       <Footer />
     </main>
   );
