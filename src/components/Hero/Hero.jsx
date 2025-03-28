@@ -3,6 +3,7 @@ import Button from "../Button/Button";
 import Banner from "../Banner/Banner";
 import HeroCircles from "./HeroCircles";
 import { useRouter } from "next/navigation";
+import EventTime from "../EventSection/EventTime";
 
 export default function Hero({ scrollToSignup }) {
   const router = useRouter();
@@ -13,9 +14,7 @@ export default function Hero({ scrollToSignup }) {
         <div className="hero-heading">
           <h1 className="title-animation">TRÄFFA DIN</h1>
           <h1>PERFECT MATCH</h1>
-          <p className="event-time">
-            23 april 2025 | kl 13-15 | Visual Arena Lindholmen
-          </p>
+          <EventTime />
           <p className="event-info">
             Ett event där du bygger relationer med framtidens kollegor och
             attraherar morgondagens talanger.

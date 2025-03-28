@@ -1,13 +1,14 @@
 import Button from "../Button/Button";
 import EventSchedule from "./EventSchedule";
 import "./EventSection.css";
+import EventTime from "./EventTime";
 
 export default function EventSection({ scrollToSignup }) {
   return (
     <section className="event-section">
       <article className="event-heading">
         <h2 className="title">Hur går det till?</h2>
-        <p>23 april 2025 | kl 13-15 | Visual Arena Lindholmen</p>
+        <EventTime />
       </article>
       <EventSchedule />
       <article className="event-description">

@@ -1,0 +1,10 @@
+.event-time {
+  display: flex;
+  padding: var(--gap-s, 0.5rem) var(--gap-xxs, 0rem);
+  align-items: center;
+  gap: var(--gap-s, 0.5rem);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  letter-spacing: 0.0125rem;
+}
