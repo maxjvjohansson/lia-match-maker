@@ -1,59 +1,78 @@
+import Image from "next/image";
 import "./HeroCircles.css";
 
 export default function HeroCircles() {
   return (
-    <div className="hero-circles">
-      <div className="circle-large">
+    <section className="hero-circles">
+      <div className="circle-large" role="list">
         <div className="rotating-track">
-          <div className="orbit orbit-1">
+          <article className="orbit orbit-1" role="listitem">
             <figure className="avatar">
-              <img
-                src="/assets/images/Amanda.svg"
+              <Image
+                src="/assets/avatars/amanda.png"
                 alt="Amanda – UI/UX Design"
+                width={60}
+                height={60}
+                className="avatar-img"
               />
               <figcaption>
                 <p>Amanda</p>
                 <p>UI/UX Design</p>
               </figcaption>
             </figure>
-          </div>
-          <div className="orbit orbit-2">
+          </article>
+
+          <article className="orbit orbit-2" role="listitem">
             <figure className="avatar">
-              <img src="/assets/images/Erik.png" alt="Erik – Web Development" />
+              <Image
+                src="/assets/avatars/erik.png"
+                alt="Erik – Web Development"
+                width={60}
+                height={60}
+                className="avatar-img"
+              />
               <figcaption>
                 <p>Erik</p>
                 <p>Web Development</p>
               </figcaption>
             </figure>
-          </div>
-          <div className="orbit orbit-3">
+          </article>
+
+          <article className="orbit orbit-3" role="listitem">
             <figure className="avatar">
-              <img src="/assets/images/Meja.svg" alt="Meja – Motion Design" />
+              <Image
+                src="/assets/avatars/meja.png"
+                alt="Meja – Motion Design"
+                width={60}
+                height={60}
+                className="avatar-img"
+              />
               <figcaption>
                 <p>Meja</p>
                 <p>Motion Design</p>
               </figcaption>
             </figure>
-          </div>
-        </div>
+          </article>
 
-        <div className="circle-small">
-          <div className="rotating-track">
-            <div className="orbit orbit-4">
+          <div className="circle-small" role="list">
+            <article className="orbit orbit-4" role="listitem">
               <figure className="avatar">
-                <img
-                  src="/assets/images/Linnea.png"
-                  alt="Linnea – Web Design"
+                <Image
+                  src="/assets/avatars/david.png"
+                  alt="David – Web Design"
+                  width={50}
+                  height={50}
+                  className="avatar-img"
                 />
                 <figcaption>
-                  <p>Linnea</p>
+                  <p>David</p>
                   <p>Web Design</p>
                 </figcaption>
               </figure>
-            </div>
+            </article>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

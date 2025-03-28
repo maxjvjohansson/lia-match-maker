@@ -16,7 +16,7 @@ export default function Footer() {
         Läs <a href="">användarvillkoren</a>
       </p>
       <img
-        src="assets/images/gbg_logo.png"
+        src="assets/images/gbg_logo.svg"
         alt="Gothenburg logo"
         className="gothenburg-logo"
       ></img>
