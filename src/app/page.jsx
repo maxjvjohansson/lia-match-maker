@@ -7,7 +7,7 @@ import Footer from "@/components/Footer/Footer";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
-export default function Home() {
+export default function HomePage() {
   const router = useRouter();
   const signupRef = useRef(null);
 

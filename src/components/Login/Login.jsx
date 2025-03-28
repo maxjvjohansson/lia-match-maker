@@ -2,6 +2,8 @@
 
 import Button from "../Button/Button";
 import "./Login.css";
+import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Login() {
@@ -12,8 +14,22 @@ export default function Login() {
       <form className="login-form">
         <h1 className="login-heading">Varmt välkomna till</h1>
         <div className="login-logos">
-          <img className="login-mingla" src="assets/images/logo.svg"></img>
-          <img className="login-yrgo" src="assets/images/yrgo.svg"></img>
+          <div className="login-mingla">
+            <Image
+              src="/assets/images/logo.svg"
+              alt="Mingla logo"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+          <div className="login-yrgo">
+            <Image
+              src="/assets/images/yrgo.svg"
+              alt="Yrgo logo"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
         </div>
 
         <label htmlFor="email">E-Postadress:</label>
@@ -39,9 +55,9 @@ export default function Login() {
           <p>
             Inget konto? Skapa genom att <a href="">anmäla</a> till eventet.
           </p>
-          <a href="/reset" className="forgot-link">
+          <Link href="/reset" className="forgot-link">
             Glömt lösenordet?
-          </a>
+          </Link>
         </div>
       </form>
     </section>

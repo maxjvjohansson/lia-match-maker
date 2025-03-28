@@ -26,9 +26,14 @@
   margin-bottom: var(--gap-l);
 }
 
+.login-mingla,
+.login-yrgo {
+  position: relative;
+}
+
 .login-mingla {
-  width: 5.49681rem;
-  height: 0.98475rem;
+  width: 5.5rem;
+  height: 1rem;
 }
 
 .login-yrgo {

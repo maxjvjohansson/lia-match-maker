@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import "./Navbar.css";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -25,16 +27,30 @@ export default function Navbar() {
 
   return (
     <nav className={`navbar ${isVisible ? "show" : "hide"}`}>
-      <div className="logo-container">
-        <a href="/" className="logo">
-          <img src="/assets/images/logo.svg"></img>
-          <img src="/assets/images/yrgo.svg"></img>
-        </a>
-      </div>
+      <Link href="/" className="logo">
+        <div className="logo-container">
+          <div className="logo-mingla">
+            <Image
+              src="/assets/images/logo.svg"
+              alt="Mingla logo"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+          <div className="logo-yrgo">
+            <Image
+              src="/assets/images/yrgo.svg"
+              alt="Yrgo logo"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+        </div>
+      </Link>
       <div className="nav-link">
-        <a href="/login" className="login-link">
+        <Link href={"/login"} className="login-link">
           Logga in
-        </a>
+        </Link>
       </div>
     </nav>
   );
