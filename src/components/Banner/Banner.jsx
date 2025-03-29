@@ -18,38 +18,19 @@ const logos = [
 ];
 
 export default function Banner() {
-  const trackRef = useRef(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-
-    if (!track) return;
-
-    let clone = track.innerHTML;
-    track.innerHTML += clone;
-    let speed = 1;
-
-    function moveLogos() {
-      if (track) {
-        track.style.transform = `translateX(-${speed}px)`;
-        speed += 0.6;
-        if (Math.abs(speed) > track.scrollWidth / 2) {
-          track.style.transform = "translateX(0)";
-          speed = 2;
-        }
-        requestAnimationFrame(moveLogos);
-      }
-    }
-
-    moveLogos();
-  }, []);
-
   return (
     <div className="logo-banner">
-      <div className="logo-track" ref={trackRef}>
-        {logos.map((logo, index) => (
-          <img key={index} src={logo} alt="Partner Logo" className="logo" />
-        ))}
+      <div className="logo-track">
+        {[...Array(4)].map((_, groupIndex) =>
+          logos.map((logo, index) => (
+            <img
+              key={`group-${groupIndex}-logo-${index}`}
+              src={logo}
+              alt="Partner Logo"
+              className="logo"
+            />
+          ))
+        )}
       </div>
     </div>
   );
