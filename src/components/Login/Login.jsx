@@ -27,7 +27,7 @@ export default function Login({ scrollToSignup }) {
           <div className="login-logos" role="img" aria-label="Mingla by Yrgo">
             <div className="login-mingla">
               <Image
-                src="/assets/images/logo.svg"
+                src="assets/images/logo.svg"
                 alt="Mingla logo"
                 fill
                 style={{ objectFit: "contain" }}
@@ -35,7 +35,7 @@ export default function Login({ scrollToSignup }) {
             </div>
             <div className="login-yrgo">
               <Image
-                src="/assets/images/yrgo.svg"
+                src="assets/images/yrgo.svg"
                 alt="Yrgo logo"
                 fill
                 style={{ objectFit: "contain" }}

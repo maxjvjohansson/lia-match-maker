@@ -4,16 +4,17 @@ import { useEffect, useRef } from "react";
 import "./Banner.css";
 
 const logos = [
-  "/assets/images/Forsman.png",
-  "/assets/images/Grebban.png",
-  "/assets/images/Habermax.png",
-  "/assets/images/Halmstad Uni.png",
-  "/assets/images/HiQ.png",
-  "/assets/images/MK.png",
-  "/assets/images/Polestar.png",
-  "/assets/images/Raket.png",
-  "/assets/images/Stendahls.png",
-  "/assets/images/variant.png",
+  "assets/images/company_logos/forsmanbodenfors.svg",
+  "assets/images/company_logos/grebban.svg",
+  "assets/images/company_logos/habermax.svg",
+  "assets/images/company_logos/halmstad.svg",
+  "assets/images/company_logos/hiq.svg",
+  "assets/images/company_logos/mkmedia.svg",
+  "assets/images/company_logos/polestar.svg",
+  "assets/images/company_logos/raket.svg",
+  "assets/images/company_logos/stendahls.svg",
+  "assets/images/company_logos/variant.svg",
+  "assets/images/company_logos/whereismypony.svg",
 ];
 
 export default function Banner() {
@@ -31,10 +32,10 @@ export default function Banner() {
     function moveLogos() {
       if (track) {
         track.style.transform = `translateX(-${speed}px)`;
-        speed += 0.3;
+        speed += 0.6;
         if (Math.abs(speed) > track.scrollWidth / 2) {
           track.style.transform = "translateX(0)";
-          speed = 1;
+          speed = 2;
         }
         requestAnimationFrame(moveLogos);
       }

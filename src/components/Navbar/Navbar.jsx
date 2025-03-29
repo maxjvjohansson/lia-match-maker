@@ -31,7 +31,7 @@ export default function Navbar() {
         <div className="logo-container">
           <div className="logo-mingla">
             <Image
-              src="/assets/images/logo.svg"
+              src="assets/images/logo.svg"
               alt="Mingla logo"
               fill
               style={{ objectFit: "contain" }}
@@ -39,7 +39,7 @@ export default function Navbar() {
           </div>
           <div className="logo-yrgo">
             <Image
-              src="/assets/images/yrgo.svg"
+              src="assets/images/yrgo.svg"
               alt="Yrgo logo"
               fill
               style={{ objectFit: "contain" }}
