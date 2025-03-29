@@ -31,3 +31,11 @@
   flex: 1;
   padding-left: 3rem;
 }
+
+@media (min-width: 768px) {
+  .schedule-list {
+    padding: 0.5rem 3rem;
+    border-radius: var(--gap-s, 0.5rem);
+    background: var(--primary-blue);
+  }
+}

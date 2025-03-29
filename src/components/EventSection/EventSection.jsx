@@ -10,7 +10,11 @@ export default function EventSection({ scrollToSignup }) {
         <h2 className="title">Hur går det till?</h2>
         <EventTime />
       </article>
-      <EventSchedule />
+
+      <div className="event-schedule">
+        <EventSchedule />
+      </div>
+
       <article className="event-description">
         <p>
           LIA Mingel – ett evenemang som ger FÖRETAG chansen att bygga
@@ -18,7 +22,6 @@ export default function EventSection({ scrollToSignup }) {
           och hjälper STUDENTER att hitta den perfekta praktikplatsen.
         </p>
         <p>Vi bjuder på gott kaffe!</p>
-
         <Button
           variant="primary"
           showArrow
