@@ -10,14 +10,18 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const handleScroll = () => {
-    if (window.scrollY > lastScrollY) {
-      setIsVisible(false);
+    // Hide navbar when user scrolls at least 50px
+    if (window.scrollY > 50) {
+      if (window.scrollY > lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
     } else {
       setIsVisible(true);
     }
     setLastScrollY(window.scrollY);
   };
-
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
