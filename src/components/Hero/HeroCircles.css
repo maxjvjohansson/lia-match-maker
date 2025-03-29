@@ -1,6 +1,5 @@
 .hero-circles {
   position: relative;
-  inset: 0;
   z-index: 10;
   pointer-events: none;
 }
@@ -11,7 +10,7 @@
   right: -6rem;
   width: 21.9375rem;
   height: 21.9375rem;
-  border-radius: 21.9375rem;
+  border-radius: 50%;
   border: 1px solid var(--white);
   z-index: -1;
 }
@@ -22,7 +21,7 @@
   right: 4rem;
   width: 12.18356rem;
   height: 12.18356rem;
-  border-radius: 12.18356rem;
+  border-radius: 50%;
   border: 1px solid var(--white);
   z-index: -1;
 }
@@ -99,5 +98,33 @@ figcaption {
   }
   100% {
     transform: rotate(-360deg);
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-circles {
+    position: absolute;
+    top: 50%;
+    left: 70%;
+    width: 40rem;
+    height: 40rem;
+    transform: translateY(-50%);
+  }
+
+  .circle-large {
+    width: 31.5625rem;
+    height: 31.5625rem;
+    border-radius: 50%;
+  }
+
+  .circle-small {
+    width: 17.5625rem;
+    height: 17.5625rem;
+    border-radius: 50%;
+  }
+
+  .avatar img {
+    width: 5rem;
+    height: auto;
   }
 }

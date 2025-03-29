@@ -9,3 +9,13 @@
   letter-spacing: 0.0125rem;
   text-align: left;
 }
+
+@media (min-width: 768px) {
+  .event-time {
+    font-size: 1.875rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    letter-spacing: 0.05rem;
+    padding: 1rem 0;
+  }
+}

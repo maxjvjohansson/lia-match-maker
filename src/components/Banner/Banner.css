@@ -30,3 +30,9 @@
     transform: translateX(-25%);
   }
 }
+
+@media (min-width: 768px) {
+  .logo {
+    height: 2.1875rem;
+  }
+}
