@@ -106,3 +106,9 @@ input {
   color: var(--primary-blue);
   text-decoration: underline;
 }
+
+@media (min-width: 768px) {
+  .login-form {
+    width: 45rem;
+  }
+}
