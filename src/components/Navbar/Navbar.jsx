@@ -31,7 +31,7 @@ export default function Navbar() {
 
   return (
     <nav className={`navbar ${isVisible ? "show" : "hide"}`}>
-      <Link href="/" className="logo">
+      <Link href="/" className="navbar-logo">
         <div className="logo-container">
           <div className="logo-mingla">
             <Image

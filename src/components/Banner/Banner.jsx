@@ -27,7 +27,7 @@ export default function Banner() {
               key={`group-${groupIndex}-logo-${index}`}
               src={logo}
               alt="Partner Logo"
-              className="logo"
+              className="partner-logo"
             />
           ))
         )}
