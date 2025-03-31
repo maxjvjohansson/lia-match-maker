@@ -1,22 +1,115 @@
 .hero {
   width: 100%;
   height: calc(100vh - 3.6875rem);
+  align-self: stretch;
+  color: var(--white);
+  background-color: var(--primary-red);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: flex-start;
-  background-color: var(--primary-red);
-  color: #ffffff;
-  position: relative;
-  overflow: hidden;
+  gap: var(--padding-xs, 0.5rem);
+  padding: 0 var(--padding-m, 1rem);
+}
+
+.hero-heading {
+  display: flex;
+  padding: var(--gap-s, 0.5rem) var(--gap-xxs, 0rem);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-xxs, 0rem);
+}
+
+.event-time {
+  display: flex;
+  padding: var(--gap-s, 0.5rem) var(--gap-xxs, 0rem);
+  align-items: center;
+  gap: var(--gap-s, 0.5rem);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  letter-spacing: 0.0125rem;
+}
+
+.hero-heading h1 {
+  font-size: 2.5rem;
+  line-height: 2.5rem;
 }
 
 .title-animation {
   display: inline-block;
+  letter-spacing: -0.09375rem;
   transition: all 0.2s ease-in-out;
   font-variation-settings: "wght" 100;
 }
 
 .title-animation:hover {
-  font-variation-settings: "wght" 800;
+  font-variation-settings: "wght" 600;
+}
+
+.event-info {
+  width: 18.3125rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  letter-spacing: 0.05rem;
+  margin: var(--gap-s) 0;
+}
+
+.hero-cta {
+  margin-top: var(--gap-l);
+  margin-bottom: var(--gap-xl);
+}
+
+.signup-text {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  letter-spacing: 0.05rem;
+  margin-bottom: var(--gap-s);
+}
+
+.btn-container {
+  display: flex;
+  gap: var(--padding-s);
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    padding: 0 2rem;
+  }
+
+  .hero-heading {
+    margin-top: 6rem;
+  }
+
+  .hero-heading h1 {
+    font-size: 6rem;
+    font-weight: 600;
+    line-height: 6rem;
+  }
+
+  .event-info {
+    width: 38.25rem;
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1.65rem;
+    letter-spacing: 0.025rem;
+  }
+
+  .signup-text {
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1.65rem;
+    letter-spacing: 0.025rem;
+  }
+
+  .btn-container {
+    gap: 1.5rem;
+  }
 }

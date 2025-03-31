@@ -1,0 +1,12 @@
+.confetti {
+  width: 16.25rem;
+  height: 10.8125rem;
+}
+
+@media (min-width: 768px) {
+  .confetti {
+    width: 25.3125rem;
+    height: 16.9375rem;
+    z-index: -1;
+  }
+}

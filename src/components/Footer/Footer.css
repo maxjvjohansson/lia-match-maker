@@ -1,0 +1,70 @@
+footer {
+  display: flex;
+  width: 20.25rem;
+  height: 10.875rem;
+  padding: 3rem var(--gap-m, 1rem);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-m, 1rem);
+}
+
+footer p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+.footer-logo {
+  display: flex;
+  width: 5.1875rem;
+  height: 1.25rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-terms a {
+  color: var(--black);
+}
+
+.footer-slogan {
+  margin: 0.5rem 0;
+}
+
+.gothenburg-logo {
+  width: 7.5rem;
+  height: 2.875rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 4rem 0rem;
+    padding: 0 2rem;
+  }
+
+  .footer-left {
+    display: flex;
+    width: 29.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-m, 1rem);
+    flex-shrink: 0;
+  }
+
+  .footer-logo {
+    width: 9.375rem;
+    height: 2.25rem;
+  }
+
+  .footer-right {
+    margin-left: auto;
+  }
+
+  .gothenburg-logo {
+    width: 11.625rem;
+    height: 4.5rem;
+  }
+}
