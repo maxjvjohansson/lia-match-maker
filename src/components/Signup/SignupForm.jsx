@@ -3,12 +3,14 @@ import InputField from "./Form/InputField";
 import FormMessage from "./Form/FormMessage";
 import Button from "@/components/Button/Button";
 import useSignup from "@/hooks/useSignup";
+import useTechnologies from "@/hooks/useTechnologies";
 import "./SignupForm.css";
 
 export default function SignupForm() {
   // Form state
   const [role, setRole] = useState("company");
   const [profession, setProfession] = useState("");
+  const [selectedTechs, setSelectedTechs] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [studentName, setStudentName] = useState("");
   const [website, setWebsite] = useState("");
@@ -17,17 +19,25 @@ export default function SignupForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formMessage, setFormMessage] = useState("");
   
-  // Get signup hook
   const { signup, loading, message } = useSignup();
+  
+  const { technologies, loading: techLoading, error: techError } = useTechnologies(profession);
 
-  // Handle role change
   const handleRoleChange = (newRole) => {
     setRole(newRole);
     setProfession("");
+    setSelectedTechs([]);
     setFormMessage("");
   };
+  
+  const toggleTech = (techId) => {
+    setSelectedTechs(prev => 
+      prev.includes(techId)
+        ? prev.filter(id => id !== techId)
+        : [...prev, techId]
+    );
+  };
 
-  // Reset form
   const resetForm = () => {
     setCompanyName("");
     setStudentName("");
@@ -36,17 +46,15 @@ export default function SignupForm() {
     setPassword("");
     setConfirmPassword("");
     setProfession("");
+    setSelectedTechs([]);
     setFormMessage("");
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted");
     
-    // Validate form
     if (!email || !password || !confirmPassword || 
-        (role === "company" && !companyName) || 
+        (role === "company" && (!companyName || !profession)) || 
         (role === "student" && (!studentName || !website || !profession))) {
       setFormMessage("❌ Vänligen fyll i alla obligatoriska fält");
       return;
@@ -62,7 +70,6 @@ export default function SignupForm() {
       return;
     }
 
-    // Prepare form data (without technologies for now)
     const formData = {
       role,
       email,
@@ -70,10 +77,8 @@ export default function SignupForm() {
       name: role === "company" ? companyName : studentName,
       website: role === "student" ? website : null,
       profession,
-      technologies: [] // Empty array for now
+      technologies: selectedTechs
     };
-
-    console.log("Submitting data:", formData);
     
     try {
       const success = await signup(formData);
@@ -157,22 +162,43 @@ export default function SignupForm() {
         name="confirm-password"
       />
 
-      {role === "student" && (
+      {/* Show profession selection for both roles by default */}
+      <label>{role === "company" ? "Vi tar emot*" : "Jag studerar*"}</label>
+      <div className="profession-toggle">
+        <Button
+          text="Webbutvecklare"
+          onClick={() => setProfession("web")}
+          variant={profession === "web" ? "primary" : "secondary"}
+          type="button"
+        />
+        <Button
+          text="Digital Designer"
+          onClick={() => setProfession("design")}
+          variant={profession === "design" ? "primary" : "secondary"}
+          type="button"
+        />
+      </div>
+
+      {/* Show technologies when a profession is selected */}
+      {profession && (
         <>
-          <label>Jag studerar*</label>
-          <div className="profession-toggle">
-            <Button
-              text="Webbutvecklare"
-              onClick={() => setProfession("web")}
-              variant={profession === "web" ? "primary" : "secondary"}
-              type="button"
-            />
-            <Button
-              text="Digital Designer"
-              onClick={() => setProfession("design")}
-              variant={profession === "design" ? "primary" : "secondary"}
-              type="button"
-            />
+          <label>{role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}</label>
+          <div className="tech-picker">
+            {techLoading ? (
+              <p>Laddar teknologier...</p>
+            ) : technologies.length > 0 ? (
+              technologies.map(({ id, name }) => (
+                <Button
+                  key={id}
+                  text={name}
+                  onClick={() => toggleTech(id)}
+                  variant={selectedTechs.includes(id) ? "primary" : "secondary"}
+                  type="button"
+                />
+              ))
+            ) : (
+              <p>Inga teknologier hittades för denna yrkesgrupp.</p>
+            )}
           </div>
         </>
       )}
