@@ -116,10 +116,10 @@ input {
 @media (min-width: 768px) {
   .login-form {
     width: 43.1875rem;
+    padding: 4rem 3rem 2rem 3rem;
   }
 
   .login-heading-wrapper {
-    margin-top: 4rem;
     margin-bottom: var(--gap-xl);
   }
 
@@ -152,7 +152,7 @@ input {
 
   label {
     flex-shrink: 0;
-    width: 8rem;
+    width: 6.625rem;
     text-align: right;
   }
 
