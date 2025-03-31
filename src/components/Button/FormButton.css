@@ -1,0 +1,40 @@
+.form-btn {
+  display: flex;
+  height: 3rem;
+  padding: var(--padding-xs, 0.5rem) var(--padding-m, 1rem);
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+/* === VARIANTS === */
+
+/* Role Button */
+.form-btn.role {
+  color: var(--black);
+  background-color: transparent;
+  border-radius: 2rem;
+  border: 1px solid var(--grey-30);
+}
+
+.form-btn.role:hover {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+/* Tech Button */
+.form-btn.tech {
+  background-color: transparent;
+  color: var(--black);
+  border-radius: 0.25rem;
+  border: 1px solid var(--grey-30);
+}
+
+.form-btn.tech:hover {
+  border: 1px solid var(--white);
+  background-color: var(--secondary-green-blue);
+}

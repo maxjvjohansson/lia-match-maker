@@ -1,6 +1,6 @@
 import "./Button.css";
-// import ArrowRight from "@/assets/icons/arrow_up_right.svg?component";
-// import ArrowLeft from "@/assets/icons/arrow_left.svg?component";
+import ArrowRight from "@/assets/icons/arrow_up_right.svg?component";
+import ArrowLeft from "@/assets/icons/arrow_left.svg?component";
 
 export default function Button({
   text,
@@ -15,13 +15,13 @@ export default function Button({
 
   return (
     <button className={buttonClassName} onClick={onClick} type={type}>
-      {/* {iconDirection === "left" && showArrow && (
+      {iconDirection === "left" && showArrow && (
         <ArrowLeft className="arrow left" />
-      )} */}
+      )}
       <span>{text}</span>
-      {/* {iconDirection === "right" && showArrow && (
+      {iconDirection === "right" && showArrow && (
         <ArrowRight className="arrow right" />
-      )} */}
+      )}
     </button>
   );
 }

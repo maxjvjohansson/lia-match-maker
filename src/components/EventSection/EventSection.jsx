@@ -1,23 +1,33 @@
 import Button from "../Button/Button";
 import EventSchedule from "./EventSchedule";
 import "./EventSection.css";
+import EventTime from "./EventTime";
 
-export default function EventSection() {
+export default function EventSection({ scrollToSignup }) {
   return (
     <section className="event-section">
       <article className="event-heading">
         <h2 className="title">Hur går det till?</h2>
-        <p>24 April | kl 13 - 15 | Visual Arena Lindholmen</p>
+        <EventTime />
       </article>
-      <EventSchedule />
+
+      <div className="event-schedule">
+        <EventSchedule />
+      </div>
+
       <article className="event-description">
         <p>
-          LIA Mingla – ett evenemang som hjälper STUDENTER att hitta den
-          perfekta praktikplatsen och ger FÖRETAG chansen att bygger relationer
-          med framtidens kollegor och attraherar morgondagens talanger. Vi
-          bjuder på gott kaffe!
+          LIA Mingel – ett evenemang som ger FÖRETAG chansen att bygga
+          relationer med framtidens kollegor, attrahera morgondagens talanger
+          och hjälper STUDENTER att hitta den perfekta praktikplatsen.
         </p>
-        <Button variant="primary" text="Anmäl nu" />
+        <p>Vi bjuder på gott kaffe!</p>
+        <Button
+          variant="primary"
+          showArrow
+          text="Häng med!"
+          onClick={scrollToSignup}
+        />
       </article>
     </section>
   );
