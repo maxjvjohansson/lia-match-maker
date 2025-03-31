@@ -2,11 +2,13 @@ import "./Confirmation.css";
 import EventTime from "@/components/EventSection/EventTime";
 import Button from "@/components/Button/Button";
 import { useRouter } from "next/navigation";
+import ConfirmationConfetti from "./ConfirmationConfetti";
 
 export default function Confirmation() {
   const router = useRouter();
   return (
     <section className="confirmation">
+      <ConfirmationConfetti />
       <article className="confirmation-content">
         <h1 className="confirmation-title">Tack för din anmälan!</h1>
         <p className="confirmation-text">
