@@ -1,37 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import InputField from "./Form/InputField";
 import FormMessage from "./Form/FormMessage";
 import Button from "@/components/Button/Button";
 import useSignup from "@/hooks/useSignup";
-import useTechnologies from "@/hooks/useTechnologies";
 import "./SignupForm.css";
 
 export default function SignupForm() {
+  // Form state
   const [role, setRole] = useState("company");
   const [profession, setProfession] = useState("");
-  const [selectedTechs, setSelectedTechs] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [studentName, setStudentName] = useState("");
   const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
   const [formMessage, setFormMessage] = useState("");
   
-  const { signup, loading, success } = useSignup();
-  const { technologies, loading: techLoading, useMock } = useTechnologies(profession);
+  // Get signup hook
+  const { signup, loading, message } = useSignup();
 
-  useEffect(() => {
+  // Handle role change
+  const handleRoleChange = (newRole) => {
+    setRole(newRole);
+    setProfession("");
     setFormMessage("");
-  }, [role, profession, email, password, confirmPassword, companyName, studentName]);
-
-  const toggleTech = (id) => {
-    setSelectedTechs((prev) =>
-      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
-    );
   };
 
+  // Reset form
   const resetForm = () => {
     setCompanyName("");
     setStudentName("");
@@ -40,26 +36,18 @@ export default function SignupForm() {
     setPassword("");
     setConfirmPassword("");
     setProfession("");
-    setSelectedTechs([]);
-  };
-
-  const handleRoleChange = (newRole) => {
-    setRole(newRole);
-    setProfession("");
-    setSelectedTechs([]);
     setFormMessage("");
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted");
     
-    setFormMessage("");
-
+    // Validate form
     if (!email || !password || !confirmPassword || 
         (role === "company" && !companyName) || 
-        (role === "student" && (!studentName || !website)) ||
-        !profession) {
+        (role === "student" && (!studentName || !website || !profession))) {
       setFormMessage("❌ Vänligen fyll i alla obligatoriska fält");
       return;
     }
@@ -74,6 +62,7 @@ export default function SignupForm() {
       return;
     }
 
+    // Prepare form data (without technologies for now)
     const formData = {
       role,
       email,
@@ -81,21 +70,18 @@ export default function SignupForm() {
       name: role === "company" ? companyName : studentName,
       website: role === "student" ? website : null,
       profession,
-      technologies: selectedTechs,
+      technologies: [] // Empty array for now
     };
 
-    console.log("Form is valid, attempting signup");
+    console.log("Submitting data:", formData);
     
     try {
-      const result = await signup(formData);
-      
-      if (result) {
-        console.log("Signup successful");
-        setFormMessage("✅ Registrering lyckades! Du kan nu logga in.");
+      const success = await signup(formData);
+      if (success) {
         resetForm();
+        setFormMessage(message || "✅ Registrering lyckades!");
       } else {
-        console.log("Signup failed");
-        setFormMessage("❌ Registrering misslyckades. Kontrollera dina uppgifter och försök igen.");
+        setFormMessage(message);
       }
     } catch (error) {
       console.error("Form submission error:", error);
@@ -171,44 +157,22 @@ export default function SignupForm() {
         name="confirm-password"
       />
 
-      <label>{role === "company" ? "Vi tar emot*" : "Jag studerar*"}</label>
-      <div className="profession-toggle">
-        <Button
-          text="Webbutvecklare"
-          onClick={() => setProfession("web")}
-          variant={profession === "web" ? "primary" : "secondary"}
-          type="button"
-        />
-        <Button
-          text="Digital Designer"
-          onClick={() => setProfession("design")}
-          variant={profession === "design" ? "primary" : "secondary"}
-          type="button"
-        />
-      </div>
-
-      {profession && (
+      {role === "student" && (
         <>
-          <label>
-            {role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}
-            {useMock && " (Mock data)"}
-          </label>
-          <div className="tech-picker">
-            {techLoading ? (
-              <p>Laddar teknologier...</p>
-            ) : technologies.length > 0 ? (
-              technologies.map(({ id, name }) => (
-                <Button
-                  key={id}
-                  text={name}
-                  onClick={() => toggleTech(id)}
-                  variant={selectedTechs.includes(id) ? "primary" : "secondary"}
-                  type="button"
-                />
-              ))
-            ) : (
-              <p>Inga teknologier hittades för denna yrkesgrupp.</p>
-            )}
+          <label>Jag studerar*</label>
+          <div className="profession-toggle">
+            <Button
+              text="Webbutvecklare"
+              onClick={() => setProfession("web")}
+              variant={profession === "web" ? "primary" : "secondary"}
+              type="button"
+            />
+            <Button
+              text="Digital Designer"
+              onClick={() => setProfession("design")}
+              variant={profession === "design" ? "primary" : "secondary"}
+              type="button"
+            />
           </div>
         </>
       )}

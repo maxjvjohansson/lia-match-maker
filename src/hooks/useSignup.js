@@ -1,95 +1,87 @@
 import { useState } from "react";
 import supabase from "@/supabase/client";
 
+// Hardcoded profession IDs based on your database
+const PROFESSION_IDS = {
+  web: "06ebe4cf-2209-4b16-b8ce-ab42d25120b5",
+  design: "b10b576c-1421-4a06-9605-268dda357da5"
+};
+
 export default function useSignup() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Create auth user and profile
-  const createUser = async (email, password) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) throw error;
-    return data.user.id;
-  };
-
-  // Insert into users table
-  const createUserRecord = async (userId, email, role) => {
-    const { error } = await supabase
-      .from("users")
-      .insert([{ id: userId, email, role }]);
-    if (error) throw error;
-  };
-
-  // Create company record
-  const createCompany = async (userId, name) => {
-    const { error } = await supabase
-      .from("companies")
-      .insert([{ user_id: userId, name }]);
-    if (error) throw error;
-  };
-
-  // Find profession by name
-  const findProfession = async (professionName) => {
-    const { data, error } = await supabase
-      .from("professions")
-      .select("id")
-      .eq("name", professionName)
-      .single();
-    
-    if (error) throw error;
-    return data.id;
-  };
-
-  // Create student record
-  const createStudent = async (userId, name, website, professionId) => {
-    const { error } = await supabase
-      .from("students")
-      .insert([{ 
-        user_id: userId, 
-        name, 
-        website, 
-        profession_id: professionId 
-      }]);
-    if (error) throw error;
-  };
-
-  // Main signup function
   const signup = async (formData) => {
     setLoading(true);
     setMessage("");
 
     try {
+      console.log("Starting signup process for:", formData.role);
+      
       // Step 1: Create auth user
-      const userId = await createUser(formData.email, formData.password);
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
+      
+      if (authError) throw authError;
+      
+      const userId = authData.user.id;
+      console.log("Created auth user with ID:", userId);
       
       // Step 2: Create user record
-      await createUserRecord(userId, formData.email, formData.role);
+      const { error: userError } = await supabase
+        .from("users")
+        .insert([{ 
+          id: userId, 
+          email: formData.email, 
+          role: formData.role 
+        }]);
+      
+      if (userError) throw userError;
+      console.log("Created user record in users table");
       
       // Step 3: Create role-specific record
       if (formData.role === "company") {
-        await createCompany(userId, formData.name);
-      } else {
-        // Map profession selection to full name
-        const professionName = formData.profession === "web" 
-          ? "Webbutvecklare" 
-          : "Digital Designer";
+        // Company registration
+        const { error: companyError } = await supabase
+          .from("companies")
+          .insert([{
+            user_id: userId,
+            name: formData.name
+          }]);
         
-        // Get profession ID
-        const professionId = await findProfession(professionName);
+        if (companyError) throw companyError;
+        console.log("Created company record successfully");
+        
+      } else {
+        // Student registration - Use hardcoded profession ID directly
+        const professionId = PROFESSION_IDS[formData.profession];
+        
+        if (!professionId) {
+          throw new Error(`Profession ID not found for: ${formData.profession}`);
+        }
+        
+        console.log("Using profession ID:", professionId);
         
         // Create student record
-        await createStudent(
-          userId, 
-          formData.name, 
-          formData.website, 
-          professionId
-        );
+        const { error: studentError } = await supabase
+          .from("students")
+          .insert([{ 
+            user_id: userId, 
+            name: formData.name, 
+            website: formData.website, 
+            profession_id: professionId
+          }]);
+        
+        if (studentError) throw studentError;
+        console.log("Created student record successfully");
       }
       
       setMessage("✅ Registrering lyckades!");
       return true;
     } catch (err) {
-      console.error("Signup error:", err);
+      console.error("❌ Signup error:", err);
       setMessage(err.message || "❌ Ett fel inträffade vid registreringen.");
       return false;
     } finally {
