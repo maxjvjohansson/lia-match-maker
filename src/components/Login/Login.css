@@ -8,6 +8,9 @@
   background-color: var(--grey-60);
 }
 
+.login-heading-wrapper {
+  margin-bottom: var(--gap-l);
+}
 .login-heading {
   color: var(--primary-red);
   font-size: 1.875rem;
@@ -24,7 +27,6 @@
   justify-content: center;
   align-items: center;
   gap: var(--gap-s);
-  margin-bottom: var(--gap-l);
 }
 
 .login-mingla,
@@ -107,8 +109,64 @@ input {
   text-decoration: underline;
 }
 
+.forgot-link {
+  margin-bottom: 1.5rem;
+}
+
 @media (min-width: 768px) {
   .login-form {
-    width: 45rem;
+    width: 43.1875rem;
+  }
+
+  .login-heading-wrapper {
+    margin-top: 4rem;
+    margin-bottom: var(--gap-xl);
+  }
+
+  .login-heading {
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 3rem;
+    letter-spacing: -0.0625rem;
+  }
+
+  .login-logos {
+    margin-top: 2rem;
+  }
+
+  .login-mingla {
+    width: 8.24519rem;
+    height: 1.47713rem;
+  }
+
+  .login-yrgo {
+    width: 9.46875rem;
+    height: 2.25rem;
+  }
+
+  .login-field {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-m);
+  }
+
+  label {
+    flex-shrink: 0;
+    width: 8rem;
+    text-align: right;
+  }
+
+  input {
+    width: 100%;
+    max-width: 33.25rem;
+  }
+
+  .login-links,
+  .login-btn {
+    margin-left: calc(8rem + var(--gap-m));
+  }
+
+  .forgot-link {
+    margin-bottom: 2rem;
   }
 }

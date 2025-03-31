@@ -44,36 +44,40 @@ export default function Login({ scrollToSignup }) {
           </div>
         </div>
 
-        <label htmlFor="email">E-postadress:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          autoComplete="email"
-          required
-        />
-
-        <label htmlFor="password">Lösenord:</label>
-        <div className="password-wrapper">
+        <div className="login-field">
+          <label htmlFor="email">E-postadress:</label>
           <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            name="password"
-            autoComplete="current-password"
+            type="email"
+            id="email"
+            name="email"
+            autoComplete="email"
             required
           />
-          <button
-            type="button"
-            className="toggle-password"
-            aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? (
-              <ShowIcon className="icon" />
-            ) : (
-              <HideIcon className="icon" />
-            )}
-          </button>
+        </div>
+
+        <div className="login-field">
+          <label htmlFor="password">Lösenord:</label>
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              autoComplete="current-password"
+              required
+            />
+            <button
+              type="button"
+              className="toggle-password"
+              aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <ShowIcon className="icon" />
+              ) : (
+                <HideIcon className="icon" />
+              )}
+            </button>
+          </div>
         </div>
 
         <div className="login-links" id="login-description">
@@ -87,8 +91,8 @@ export default function Login({ scrollToSignup }) {
           <Link href="/reset" className="forgot-link">
             Glömt lösenordet?
           </Link>
+          <Button text="Logga in" variant="primary" type="submit" />
         </div>
-        <Button text="Logga in" variant="primary" type="submit" />
       </form>
     </section>
   );
