@@ -1,0 +1,37 @@
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 420px;
+    margin: 0 auto;
+    gap: 1.25rem;
+    padding: 1.5rem;
+  }
+  
+  .role-toggle,
+  .profession-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .tech-picker {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  
+  .tech-picker .selected,
+  .profession-toggle .selected,
+  .role-toggle .selected {
+    background-color: var(--color-accent);
+    color: white;
+  }
+  
+  .submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  

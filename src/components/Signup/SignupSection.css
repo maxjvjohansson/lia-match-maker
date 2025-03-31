@@ -7,3 +7,9 @@
   display: flex;
   justify-content: center;
 }
+
+.tech-picker .selected {
+  border: 2px solid var(--primary-color);
+  background: transparent;
+  color: var(--primary-color);
+}
