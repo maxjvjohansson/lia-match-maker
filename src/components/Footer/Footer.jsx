@@ -14,7 +14,7 @@ export default function Footer() {
           för dig som vill fördjupa dig i ett yrke.
         </p>
         <p className="footer-terms">
-          Läs <a href="">användarvillkoren</a>.
+          Läs <a href="/terms">användarvillkoren</a>.
         </p>
       </div>
       <div className="footer-right">
