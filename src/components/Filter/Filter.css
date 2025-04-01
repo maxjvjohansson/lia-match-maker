@@ -1,0 +1,71 @@
+.filter-container {
+  margin: 1rem 0;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+.filter-content {
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid var(--grey-50);
+  border-radius: 5px;
+}
+
+.filter-section {
+  margin-bottom: 1rem;
+}
+
+.skill-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  border: 1px solid var(--grey-50);
+  cursor: pointer;
+}
+
+.skill-btn.selected {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .filter-container {
+    position: static;
+    width: 100%;
+  }
+
+  .filter-content {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+  }
+
+  .filter-section {
+    margin: 0 1rem;
+  }
+
+  .skill-btn {
+    margin: 0.5rem;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+  }
+
+  .skill-btn.selected {
+    background-color: white;
+    color: var(--primary-blue);
+  }
+
+  .filter-header {
+    display: none;
+  }
+}
