@@ -268,7 +268,7 @@ export default function SignupForm() {
             required
           />
           <p>
-            Jag godkänner <a href="/">användarvillkoren</a>.
+            Jag godkänner <a href="/terms">användarvillkoren</a>.
           </p>
         </label>
       </div>
