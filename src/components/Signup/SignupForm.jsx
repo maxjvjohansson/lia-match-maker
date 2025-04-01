@@ -19,6 +19,7 @@ export default function SignupForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formMessage, setFormMessage] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
 
   const { signup, loading, message } = useSignup();
 
@@ -59,8 +60,17 @@ export default function SignupForm() {
     setFormMessage("");
   };
 
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isChecked) {
+      setFormMessage("Du måste godkänna användarvillkoren.");
+      return;
+    }
 
     if (
       !email ||
@@ -69,17 +79,17 @@ export default function SignupForm() {
       (role === "company" && (!companyName || !profession)) ||
       (role === "student" && (!studentName || !website || !profession))
     ) {
-      setFormMessage("❌ Vänligen fyll i alla obligatoriska fält");
+      setFormMessage("Vänligen fyll i alla obligatoriska fält");
       return;
     }
 
     if (password !== confirmPassword) {
-      setFormMessage("❌ Lösenorden matchar inte");
+      setFormMessage("Lösenorden matchar inte");
       return;
     }
 
     if (password.length < 6) {
-      setFormMessage("❌ Lösenordet måste vara minst 6 tecken");
+      setFormMessage("Lösenordet måste vara minst 6 tecken");
       return;
     }
 
@@ -91,19 +101,20 @@ export default function SignupForm() {
       website: role === "student" ? website : null,
       profession,
       technologies: selectedTechs,
+      termsAccepted: isChecked,
     };
 
     try {
       const success = await signup(formData);
       if (success) {
         resetForm();
-        setFormMessage(message || "✅ Registrering lyckades!");
+        setFormMessage(message || "Registrering lyckades!");
       } else {
         setFormMessage(message);
       }
     } catch (error) {
       console.error("Form submission error:", error);
-      setFormMessage("❌ Ett tekniskt fel inträffade. Försök igen senare.");
+      setFormMessage("Ett tekniskt fel inträffade. Försök igen senare.");
     }
   };
 
@@ -183,50 +194,51 @@ export default function SignupForm() {
         autoComplete="new-password"
         name="confirm-password"
       />
+      <div className="profession-wrapper">
+        <label htmlFor="profession-web" className="profession-label">
+          {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
+        </label>
+        <div className="profession-toggle">
+          <input
+            type="radio"
+            id="profession-web"
+            name="profession"
+            value="web"
+            checked={profession === "web"}
+            onChange={() => toggleProfession("web")}
+            className="hidden-radio"
+          />
+          <FormButton
+            text="Webbutvecklare"
+            onClick={() => toggleProfession("web")}
+            variant={profession === "web" ? "role selected" : "role"}
+            type="button"
+          />
 
-      <label htmlFor="profession-web">
-        {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
-      </label>
-      <div className="profession-toggle">
-        <input
-          type="radio"
-          id="profession-web"
-          name="profession"
-          value="web"
-          checked={profession === "web"}
-          onChange={() => toggleProfession("web")}
-          style={{ display: "none" }}
-        />
-        <FormButton
-          text="Webbutvecklare"
-          onClick={() => toggleProfession("web")}
-          variant={profession === "web" ? "role selected" : "role"}
-          type="button"
-        />
-
-        <input
-          type="radio"
-          id="profession-design"
-          name="profession"
-          value="design"
-          checked={profession === "design"}
-          onChange={() => toggleProfession("design")}
-          style={{ display: "none" }}
-        />
-        <FormButton
-          text="Digital Designer"
-          onClick={() => toggleProfession("design")}
-          variant={profession === "design" ? "role selected" : "role"}
-          type="button"
-        />
+          <input
+            type="radio"
+            id="profession-design"
+            name="profession"
+            value="design"
+            checked={profession === "design"}
+            onChange={() => toggleProfession("design")}
+            className="hidden-radio"
+          />
+          <FormButton
+            text="Digital Designer"
+            onClick={() => toggleProfession("design")}
+            variant={profession === "design" ? "role selected" : "role"}
+            type="button"
+          />
+        </div>
       </div>
 
       {profession && (
         <>
-          <label>
-            {role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}
-          </label>
           <div className="tech-picker">
+            <label>
+              {role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}
+            </label>
             {techLoading ? (
               <p>Laddar teknologier...</p>
             ) : technologies.length > 0 ? (
@@ -247,6 +259,19 @@ export default function SignupForm() {
           </div>
         </>
       )}
+      <div className="checkbox-wrapper">
+        <label>
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+            required
+          />
+          <p>
+            Jag godkänner <a href="/">användarvillkoren</a>.
+          </p>
+        </label>
+      </div>
 
       <div className="submit-container">
         <Button
