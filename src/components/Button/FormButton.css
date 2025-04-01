@@ -27,6 +27,11 @@
   color: var(--white);
 }
 
+.form-btn.role.selected {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
 /* Tech Button */
 .form-btn.tech {
   background-color: transparent;
