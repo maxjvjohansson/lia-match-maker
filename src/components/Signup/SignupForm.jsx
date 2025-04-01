@@ -5,6 +5,7 @@ import Button from "@/components/Button/Button";
 import useSignup from "@/hooks/useSignup";
 import useTechnologies from "@/hooks/useTechnologies";
 import "./SignupForm.css";
+import FormButton from "../Button/FormButton";
 
 export default function SignupForm() {
   // Form state
@@ -18,10 +19,14 @@ export default function SignupForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formMessage, setFormMessage] = useState("");
-  
+
   const { signup, loading, message } = useSignup();
-  
-  const { technologies, loading: techLoading, error: techError } = useTechnologies(profession);
+
+  const {
+    technologies,
+    loading: techLoading,
+    error: techError,
+  } = useTechnologies(profession);
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);
@@ -29,11 +34,11 @@ export default function SignupForm() {
     setSelectedTechs([]);
     setFormMessage("");
   };
-  
+
   const toggleTech = (techId) => {
-    setSelectedTechs(prev => 
+    setSelectedTechs((prev) =>
       prev.includes(techId)
-        ? prev.filter(id => id !== techId)
+        ? prev.filter((id) => id !== techId)
         : [...prev, techId]
     );
   };
@@ -52,10 +57,14 @@ export default function SignupForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!email || !password || !confirmPassword || 
-        (role === "company" && (!companyName || !profession)) || 
-        (role === "student" && (!studentName || !website || !profession))) {
+
+    if (
+      !email ||
+      !password ||
+      !confirmPassword ||
+      (role === "company" && (!companyName || !profession)) ||
+      (role === "student" && (!studentName || !website || !profession))
+    ) {
       setFormMessage("❌ Vänligen fyll i alla obligatoriska fält");
       return;
     }
@@ -64,7 +73,7 @@ export default function SignupForm() {
       setFormMessage("❌ Lösenorden matchar inte");
       return;
     }
-    
+
     if (password.length < 6) {
       setFormMessage("❌ Lösenordet måste vara minst 6 tecken");
       return;
@@ -77,9 +86,9 @@ export default function SignupForm() {
       name: role === "company" ? companyName : studentName,
       website: role === "student" ? website : null,
       profession,
-      technologies: selectedTechs
+      technologies: selectedTechs,
     };
-    
+
     try {
       const success = await signup(formData);
       if (success) {
@@ -100,13 +109,13 @@ export default function SignupForm() {
         <Button
           text="Företag"
           onClick={() => handleRoleChange("company")}
-          variant={role === "company" ? "primary" : "secondary"}
+          variant="block-primary"
           type="button"
         />
         <Button
           text="Student"
           onClick={() => handleRoleChange("student")}
-          variant={role === "student" ? "primary" : "secondary"}
+          variant="block-primary"
           type="button"
         />
       </div>
@@ -120,7 +129,9 @@ export default function SignupForm() {
             ? setCompanyName(e.target.value)
             : setStudentName(e.target.value)
         }
-        placeholder={role === "company" ? "Ex. Office AB" : "För- och efternamn"}
+        placeholder={
+          role === "company" ? "Ex. Office AB" : "För- och efternamn"
+        }
       />
 
       <InputField
@@ -142,6 +153,10 @@ export default function SignupForm() {
         />
       )}
 
+      <p className="form-text">
+        När du registrerar dig skapas automatiskt ett konto på vår webbplats.
+      </p>
+
       <InputField
         label="Lösenord*"
         type="password"
@@ -162,37 +177,39 @@ export default function SignupForm() {
         name="confirm-password"
       />
 
-      {/* Show profession selection for both roles by default */}
       <label>{role === "company" ? "Vi tar emot*" : "Jag studerar*"}</label>
       <div className="profession-toggle">
-        <Button
+        <FormButton
           text="Webbutvecklare"
           onClick={() => setProfession("web")}
-          variant={profession === "web" ? "primary" : "secondary"}
+          variant="role"
           type="button"
         />
-        <Button
+        <FormButton
           text="Digital Designer"
           onClick={() => setProfession("design")}
-          variant={profession === "design" ? "primary" : "secondary"}
+          variant="role"
           type="button"
         />
       </div>
 
-      {/* Show technologies when a profession is selected */}
       {profession && (
         <>
-          <label>{role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}</label>
+          <label>
+            {role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}
+          </label>
           <div className="tech-picker">
             {techLoading ? (
               <p>Laddar teknologier...</p>
             ) : technologies.length > 0 ? (
               technologies.map(({ id, name }) => (
-                <Button
+                <FormButton
                   key={id}
                   text={name}
                   onClick={() => toggleTech(id)}
-                  variant={selectedTechs.includes(id) ? "primary" : "secondary"}
+                  variant={
+                    selectedTechs.includes(id) ? "tech selected" : "tech"
+                  }
                   type="button"
                 />
               ))
@@ -204,14 +221,14 @@ export default function SignupForm() {
       )}
 
       <div className="submit-container">
-        <Button 
-          type="submit" 
-          text={loading ? "Registrerar..." : "Anmäl nu"} 
-          variant="primary" 
+        <Button
+          type="submit"
+          text={loading ? "Registrerar..." : "Anmäl nu"}
+          variant="primary"
           disabled={loading}
         />
       </div>
-      
+
       {formMessage && <FormMessage message={formMessage} />}
     </form>
   );
