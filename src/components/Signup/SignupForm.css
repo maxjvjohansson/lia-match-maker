@@ -34,14 +34,14 @@
   margin-bottom: 1rem;
 }
 
-label {
+.signup-form label {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5rem;
   margin-bottom: var(--gap-xs);
 }
 
-input {
+.signup-form input {
   display: flex;
   width: 100%;
   height: 2.5rem;
@@ -54,7 +54,7 @@ input {
   background: var(--grey-60);
 }
 
-input::placeholder {
+.signup-form input::placeholder {
   color: var(--grey-20);
 }
 
@@ -127,7 +127,7 @@ input::placeholder {
     width: 100%;
   }
 
-  input {
+  .signup-form input {
     height: 3rem;
   }
 
