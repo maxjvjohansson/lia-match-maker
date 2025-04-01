@@ -2,7 +2,7 @@ footer {
   display: flex;
   width: 20.25rem;
   height: 10.875rem;
-  padding: 3rem var(--gap-m, 1rem);
+  padding: 0 var(--gap-m) 3rem var(--gap-m);
   flex-direction: column;
   align-items: flex-start;
   gap: var(--gap-m, 1rem);
@@ -41,7 +41,7 @@ footer p {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin: 4rem 0rem;
+    margin-bottom: 4rem;
     padding: 0 2rem;
   }
 

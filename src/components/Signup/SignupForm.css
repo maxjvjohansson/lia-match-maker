@@ -1,37 +1,167 @@
 .signup-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 420px;
-    margin: 0 auto;
-    gap: 1.25rem;
-    padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 var(--gap-m);
+}
+
+.role-toggle,
+.profession-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--gap-m) 0;
+  gap: 1.62rem;
+}
+
+.role-toggle button {
+  flex: 1;
+  margin: 0;
+}
+
+.hidden-radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.input-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  margin-bottom: var(--gap-xs);
+}
+
+input {
+  display: flex;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0.625rem 1.5rem;
+  align-items: center;
+  gap: 0.625rem;
+  align-self: stretch;
+  border-radius: 0.25rem;
+  border: 1px solid var(--grey-50);
+  background: var(--grey-60);
+}
+
+input::placeholder {
+  color: var(--grey-20);
+}
+
+.form-text {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tech-picker {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  align-self: stretch;
+  margin-bottom: 1rem;
+}
+
+.checkbox-wrapper label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.checkbox-wrapper input:hover {
+  cursor: pointer;
+}
+
+.checkbox-wrapper a {
+  color: var(--black);
+  text-decoration: underline;
+}
+
+.checkbox-wrapper a:hover {
+  cursor: pointer;
+}
+
+.submit-container {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .signup-form {
+    padding: 0 2rem;
   }
-  
-  .role-toggle,
-  .profession-toggle {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
-  
-  .tech-picker {
+
+  .input-wrapper {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    grid-template-columns: 12rem 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
     width: 100%;
   }
-  
-  .tech-picker .selected,
-  .profession-toggle .selected,
-  .role-toggle .selected {
-    background-color: var(--color-accent);
-    color: white;
+
+  input {
+    height: 3rem;
   }
-  
-  .submit-container {
+
+  .profession-wrapper {
     display: flex;
-    justify-content: center;
-    margin-top: 2rem;
+    align-items: center;
+    align-self: stretch;
   }
-  
+
+  .profession-label {
+    align-items: center;
+    width: 100%;
+    max-width: 12rem;
+  }
+
+  .profession-toggle {
+    justify-content: flex-start;
+    margin-left: 1rem;
+  }
+
+  .profession-toggle button {
+    width: 18.75rem;
+  }
+
+  .tech-picker {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    justify-content: center;
+    max-width: 30%;
+    margin-left: 13rem;
+  }
+
+  .checkbox-wrapper {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}

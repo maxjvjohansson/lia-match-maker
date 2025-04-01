@@ -9,6 +9,7 @@
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5rem;
+  cursor: pointer;
 }
 
 /* === VARIANTS === */
@@ -26,6 +27,11 @@
   color: var(--white);
 }
 
+.form-btn.role.selected {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
 /* Tech Button */
 .form-btn.tech {
   background-color: transparent;
@@ -35,6 +41,11 @@
 }
 
 .form-btn.tech:hover {
+  border: 1px solid var(--white);
+  background-color: var(--secondary-green-blue);
+}
+
+.form-btn.tech.selected {
   border: 1px solid var(--white);
   background-color: var(--secondary-green-blue);
 }

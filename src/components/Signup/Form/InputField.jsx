@@ -1,17 +1,20 @@
-export default function InputField({ 
-  label, 
-  type, 
-  value, 
-  onChange, 
-  placeholder, 
+export default function InputField({
+  label,
+  type,
+  value,
+  onChange,
+  placeholder,
   autoComplete,
   name,
-  required = true
+  required = true,
 }) {
   return (
-    <label>
-      {label}
+    <div className="input-wrapper">
+      <label htmlFor={name} className="input-label">
+        {label}
+      </label>
       <input
+        id={name}
         type={type}
         value={value}
         onChange={onChange}
@@ -20,6 +23,6 @@ export default function InputField({
         autoComplete={autoComplete}
         name={name}
       />
-    </label>
+    </div>
   );
 }

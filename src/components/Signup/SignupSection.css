@@ -1,15 +1,47 @@
 .signup-section {
   display: flex;
   flex-direction: column;
+  padding: 3rem 0;
 }
 
-.form-toggle {
+.signup-heading {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  padding: 0 var(--gap-m);
+  margin-bottom: 1rem;
 }
 
-.tech-picker .selected {
-  border: 2px solid var(--primary-color);
-  background: transparent;
-  color: var(--primary-color);
+.signup-heading h2 {
+  font-size: 1.875rem;
+  font-weight: 300;
+  line-height: 1.875rem;
+  letter-spacing: 0.025rem;
+  margin-bottom: var(--gap-m);
+}
+
+.signup-heading p {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.signup-heading a {
+  color: var(--black);
+}
+
+@media (min-width: 768px) {
+  .signup-section {
+    padding: 6rem 0;
+  }
+
+  .signup-heading {
+    padding: 0 2rem;
+  }
+
+  .signup-heading h2 {
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 3rem;
+    letter-spacing: -0.0625rem;
+  }
 }
