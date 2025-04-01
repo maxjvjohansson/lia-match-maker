@@ -26,8 +26,8 @@ export default function Filter() {
   return (
     <div className={`filter-container ${isOpen ? "open" : ""}`}>
       <div className="filter-header" onClick={toggleDropdown}>
-        <span>🔧 Filter</span>
-        <span>{isOpen ? "▲" : "▼"}</span>
+        <span>Filter</span>
+        <span>{isOpen ? "X" : "V"}</span>
       </div>
       {isOpen && (
         <div className="filter-content">
@@ -72,7 +72,7 @@ export default function Filter() {
             ))}
           </div>
           <div className="filter-section">
-            <h3>❤️ FAVORITER</h3>
+            <h3>FAVORITER</h3>
             <label>
               <input
                 type="checkbox"
