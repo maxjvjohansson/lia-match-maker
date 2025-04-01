@@ -26,7 +26,7 @@ export default function Hero({ scrollToSignup }) {
           <div className="btn-container">
             <Button
               variant="secondary"
-              text="Företag"
+              text="FÖRETAG"
               showArrow
               iconDirection="right"
               iconColor="auto"
@@ -34,7 +34,7 @@ export default function Hero({ scrollToSignup }) {
             />
             <Button
               variant="primary"
-              text="Student"
+              text="STUDENT"
               showArrow
               iconDirection="right"
               iconColor="auto"
