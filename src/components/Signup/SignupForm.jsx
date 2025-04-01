@@ -35,6 +35,10 @@ export default function SignupForm() {
     setFormMessage("");
   };
 
+  const toggleProfession = (professionName) => {
+    setProfession((prev) => (prev === professionName ? "" : professionName));
+  };
+
   const toggleTech = (techId) => {
     setSelectedTechs((prev) =>
       prev.includes(techId)
@@ -104,7 +108,7 @@ export default function SignupForm() {
   };
 
   return (
-    <form className="signup-form" onSubmit={handleSubmit}>
+    <form className="signup-form" id="signupForm" onSubmit={handleSubmit}>
       <div className="role-toggle">
         <Button
           text="Företag"
@@ -132,6 +136,8 @@ export default function SignupForm() {
         placeholder={
           role === "company" ? "Ex. Office AB" : "För- och efternamn"
         }
+        name="name"
+        autoComplete="autocomplete"
       />
 
       <InputField
@@ -141,6 +147,7 @@ export default function SignupForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Ex. info@office.com"
         name="email"
+        autoComplete="autocomplete"
       />
 
       {role === "student" && (
@@ -177,18 +184,39 @@ export default function SignupForm() {
         name="confirm-password"
       />
 
-      <label>{role === "company" ? "Vi tar emot*" : "Jag studerar*"}</label>
+      <label htmlFor="profession-web">
+        {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
+      </label>
       <div className="profession-toggle">
+        <input
+          type="radio"
+          id="profession-web"
+          name="profession"
+          value="web"
+          checked={profession === "web"}
+          onChange={() => toggleProfession("web")}
+          style={{ display: "none" }}
+        />
         <FormButton
           text="Webbutvecklare"
-          onClick={() => setProfession("web")}
-          variant="role"
+          onClick={() => toggleProfession("web")}
+          variant={profession === "web" ? "role selected" : "role"}
           type="button"
+        />
+
+        <input
+          type="radio"
+          id="profession-design"
+          name="profession"
+          value="design"
+          checked={profession === "design"}
+          onChange={() => toggleProfession("design")}
+          style={{ display: "none" }}
         />
         <FormButton
           text="Digital Designer"
-          onClick={() => setProfession("design")}
-          variant="role"
+          onClick={() => toggleProfession("design")}
+          variant={profession === "design" ? "role selected" : "role"}
           type="button"
         />
       </div>

@@ -9,9 +9,15 @@
 .profession-toggle {
   width: 100%;
   display: flex;
-  justify-content: center;
-  gap: 1.62rem;
+  justify-content: space-between;
   padding: var(--gap-m) 0;
+  gap: 1.62rem;
+}
+
+.role-toggle button,
+.profession-toggle button {
+  flex: 1;
+  margin: 0;
 }
 
 .input-wrapper {
@@ -40,6 +46,10 @@ input {
   border-radius: 0.25rem;
   border: 1px solid var(--grey-50);
   background: var(--grey-60);
+}
+
+input::placeholder {
+  color: var(--grey-20);
 }
 
 .form-text {

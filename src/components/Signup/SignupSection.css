@@ -1,4 +1,30 @@
 .signup-section {
   display: flex;
   flex-direction: column;
+  padding: 3rem 0;
+}
+
+.signup-heading {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--gap-m);
+  margin-bottom: 1rem;
+}
+
+.signup-heading h2 {
+  font-size: 1.875rem;
+  font-weight: 300;
+  line-height: 1.875rem;
+  letter-spacing: 0.025rem;
+  margin-bottom: var(--gap-m);
+}
+
+.signup-heading p {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.signup-heading a {
+  color: var(--black);
 }
