@@ -1,17 +1,30 @@
+"use client";
+
 import "./ProfileSection.css";
 import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
+import { useState } from "react";
 
 export default function ProfileSection() {
+  const [isStudent, setIsStudent] = useState(true);
+
   return (
     <section className="profile-section">
       <div className="profile-heading">
-        <h1>STUDENT</h1>
+        <h1>{isStudent ? "STUDENT" : "FÖRETAGS"}</h1>
         <h1 className="title-thin">PROFILER</h1>
-      </div>
-      <div className="profile-btn-container">
-        <Button variant="secondary" text="FÖRETAG" />
-        <Button variant="primary" text="STUDENTER" />
+        <div className="profile-btn-container">
+          <Button
+            variant={!isStudent ? "primary" : "secondary"}
+            text="FÖRETAG"
+            onClick={() => setIsStudent(false)}
+          />
+          <Button
+            variant={isStudent ? "primary" : "secondary"}
+            text="STUDENTER"
+            onClick={() => setIsStudent(true)}
+          />
+        </div>
       </div>
       <div className="filter-text">
         <h2>Filtrering</h2>

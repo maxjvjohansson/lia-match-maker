@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import "./Filter.css";
+import ArrowUp from "@/assets/icons/arrow_up.svg";
+import ArrowDown from "@/assets/icons/arrow_down.svg";
+import FilterIcon from "@/assets/icons/filter.svg";
+import { useState } from "react";
 
 export default function Filter() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,8 +29,11 @@ export default function Filter() {
   return (
     <div className={`filter-container ${isOpen ? "open" : ""}`}>
       <div className="filter-header" onClick={toggleDropdown}>
-        <span>Filter</span>
-        <span>{isOpen ? "X" : "V"}</span>
+        <div className="filter-logo">
+          <FilterIcon />
+          <span>Filter</span>
+        </div>
+        {isOpen ? <ArrowUp /> : <ArrowDown />}
       </div>
       {isOpen && (
         <div className="filter-content">
