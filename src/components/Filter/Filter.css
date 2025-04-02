@@ -20,10 +20,62 @@
 .filter-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--gap-l, 2rem);
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 2rem 0;
 }
 
-.filter-section {
-  margin-bottom: 1rem;
+.filter-content h3 {
+  font-size: 1.875rem;
+  font-weight: 300;
+  line-height: 1.875rem;
+  letter-spacing: 0.025rem;
+  margin-bottom: var(--gap-m);
+}
+
+.filter-roles {
+  margin-bottom: var(--gap-xl);
+}
+
+.filter-skills {
+  width: 100%;
+  margin-bottom: var(--gap-xl);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  justify-items: stretch;
+  margin-top: 0.5rem;
+}
+
+.filter-section label {
+  display: flex;
+  padding: var(--gap-s) 0;
+}
+
+.skill-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.25rem;
+  padding: 0.625rem 1.5rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: 1px solid var(--grey-30);
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.skill-btn.selected {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+.skill-btn:hover {
+  background-color: var(--primary-blue);
+  color: var(--white);
 }

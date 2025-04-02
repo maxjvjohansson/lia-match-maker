@@ -7,6 +7,7 @@ import FilterIcon from "@/assets/icons/filter.svg";
 import { useState } from "react";
 import CustomCheckbox from "../Checkbox/Checkbox";
 import Checkbox from "../Checkbox/Checkbox";
+import Button from "../Button/Button";
 
 export default function Filter() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +40,7 @@ export default function Filter() {
       </div>
       {isOpen && (
         <div className="filter-content">
-          <div className="filter-section">
+          <div className="filter-section filter-roles">
             <h3>SÖKER</h3>
             <label>
               <Checkbox
@@ -56,28 +57,32 @@ export default function Filter() {
               Webbutvecklare
             </label>
           </div>
-          <div className="filter-section">
+
+          <div className="filter-section filter-skills">
             <h3>ARBETAR MED</h3>
-            {[
-              "Figma",
-              "Frontend",
-              "Branding",
-              "Backend",
-              "Motion",
-              "UX/UI",
-            ].map((skill) => (
-              <button
-                key={skill}
-                className={`skill-btn ${
-                  selectedSkills.includes(skill) ? "selected" : ""
-                }`}
-                onClick={() => handleSkillChange(skill)}
-              >
-                {skill}
-              </button>
-            ))}
+            <div className="skills-grid">
+              {[
+                "Figma",
+                "Frontend",
+                "Branding",
+                "Backend",
+                "Motion",
+                "UX/UI",
+              ].map((skill) => (
+                <button
+                  key={skill}
+                  className={`skill-btn ${
+                    selectedSkills.includes(skill) ? "selected" : ""
+                  }`}
+                  onClick={() => handleSkillChange(skill)}
+                >
+                  {skill}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="filter-section">
+
+          <div className="filter-section filter-favorites">
             <h3>FAVORITER</h3>
             <label>
               <CustomCheckbox
