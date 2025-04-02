@@ -4,18 +4,33 @@ import "./Filter.css";
 import ArrowUp from "@/assets/icons/arrow_up.svg";
 import ArrowDown from "@/assets/icons/arrow_down.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CustomCheckbox from "../Checkbox/Checkbox";
 import Checkbox from "../Checkbox/Checkbox";
-import Button from "../Button/Button";
 
 export default function Filter() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
 
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
+  useEffect(() => {
+    const handleResize = () => {
+      const desktop = window.innerWidth >= 768;
+      setIsDesktop(desktop);
+      setIsOpen(desktop);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const toggleDropdown = () => {
+    if (!isDesktop) {
+      setIsOpen((prev) => !prev);
+    }
+  };
 
   const handleRoleChange = (role) => {
     setSelectedRoles((prev) =>
@@ -31,19 +46,22 @@ export default function Filter() {
 
   return (
     <div className={`filter-container ${isOpen ? "open" : ""}`}>
-      <div className="filter-header" onClick={toggleDropdown}>
-        <div className="filter-logo">
-          <FilterIcon />
-          <span>Filter</span>
+      {!isDesktop && (
+        <div className="filter-header" onClick={toggleDropdown}>
+          <div className="filter-logo">
+            <FilterIcon />
+            <span>Filter</span>
+          </div>
+          {isOpen ? <ArrowUp /> : <ArrowDown />}
         </div>
-        {isOpen ? <ArrowUp /> : <ArrowDown />}
-      </div>
+      )}
       {isOpen && (
-        <div className="filter-content">
+        <div className={`filter-content ${isDesktop ? "always-open" : ""}`}>
           <div className="filter-section filter-roles">
             <h3>SÖKER</h3>
             <label>
               <Checkbox
+                variant="filter"
                 checked={selectedRoles.includes("Digital designer")}
                 onChange={() => handleRoleChange("Digital designer")}
               />
@@ -51,6 +69,7 @@ export default function Filter() {
             </label>
             <label>
               <Checkbox
+                variant="filter"
                 checked={selectedRoles.includes("Webbutvecklare")}
                 onChange={() => handleRoleChange("Webbutvecklare")}
               />
@@ -62,11 +81,11 @@ export default function Filter() {
             <h3>ARBETAR MED</h3>
             <div className="skills-grid">
               {[
-                "Figma",
-                "Frontend",
-                "Branding",
-                "Backend",
-                "Motion",
+                "FIGMA",
+                "FRONTEND",
+                "BRANDING",
+                "BACKEND",
+                "MOTION",
                 "UX/UI",
               ].map((skill) => (
                 <button
@@ -86,6 +105,7 @@ export default function Filter() {
             <h3>FAVORITER</h3>
             <label>
               <CustomCheckbox
+                variant="filter"
                 checked={showFavorites}
                 onChange={() => setShowFavorites((prev) => !prev)}
               />

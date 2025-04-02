@@ -11,7 +11,7 @@ export default function ProfileSection() {
   return (
     <section className="profile-section">
       <div className="profile-heading">
-        <h1>{isStudent ? "STUDENT" : "FÖRETAGS"}</h1>
+        <h1 className="profile-title">{isStudent ? "STUDENT" : "FÖRETAGS"}</h1>
         <h1 className="title-thin">PROFILER</h1>
         <div className="profile-btn-container">
           <Button

@@ -5,7 +5,12 @@ import CheckedIcon from "@/assets/icons/checked.svg";
 import UncheckedIcon from "@/assets/icons/unchecked.svg";
 import "./Checkbox.css";
 
-export default function Checkbox({ label, checked, onChange }) {
+export default function Checkbox({
+  label,
+  checked,
+  onChange,
+  variant = "default",
+}) {
   const [isChecked, setIsChecked] = useState(checked);
 
   const handleToggle = () => {
@@ -15,13 +20,13 @@ export default function Checkbox({ label, checked, onChange }) {
   };
 
   return (
-    <div className="custom-checkbox" onClick={handleToggle}>
+    <div className={`custom-checkbox ${variant}`} onClick={handleToggle}>
       {isChecked ? (
-        <CheckedIcon className="checkbox-icon" />
+        <CheckedIcon className={`checkbox-icon ${variant}`} />
       ) : (
-        <UncheckedIcon className="checkbox-icon" />
+        <UncheckedIcon className={`checkbox-icon ${variant}`} />
       )}
-      <span className="checkbox-label">{label}</span>
+      <span className={`checkbox-label ${variant}`}>{label}</span>
     </div>
   );
 }

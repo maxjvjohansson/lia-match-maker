@@ -38,3 +38,25 @@
   font-weight: 400;
   line-height: 1.5rem;
 }
+
+@media (min-width: 768px) {
+  .profile-section {
+    padding: 4rem 2rem;
+  }
+  .profile-title {
+    font-size: 6rem;
+    font-weight: 800;
+    line-height: 6rem;
+  }
+
+  .title-thin {
+    font-size: 6rem;
+    font-weight: 100;
+    line-height: 6rem;
+    letter-spacing: -0.09375rem;
+  }
+
+  .filter-text {
+    display: none;
+  }
+}

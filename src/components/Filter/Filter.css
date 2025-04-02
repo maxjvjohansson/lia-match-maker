@@ -66,8 +66,8 @@
   border: 1px solid var(--grey-30);
   background-color: transparent;
   font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5rem;
+  font-weight: 500;
+  line-height: 1.25rem;
 }
 
 .skill-btn.selected {
@@ -78,4 +78,71 @@
 .skill-btn:hover {
   background-color: var(--primary-blue);
   color: var(--white);
+}
+
+@media (min-width: 768px) {
+  .filter-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    padding: var(--gap-l, 2rem) var(--gap-xl, 4rem);
+  }
+
+  .filter-container.open {
+    margin: 0;
+    padding: 0;
+  }
+
+  .filter-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex: 1;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap-m);
+    justify-items: center;
+  }
+
+  .filter-skills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0;
+  }
+
+  .filter-container {
+    background-color: var(--primary-blue);
+    border: none;
+    color: var(--white);
+  }
+
+  .filter-header {
+    display: none;
+  }
+
+  .skill-btn {
+    width: 7.75rem;
+    color: var(--white);
+    border: 1px solid var(--white);
+    border-radius: 0;
+    text-align: center;
+  }
+
+  .skill-btn.selected {
+    background-color: var(--white);
+    color: var(--primary-blue);
+  }
+
+  .filter-roles,
+  .filter-favorites {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
