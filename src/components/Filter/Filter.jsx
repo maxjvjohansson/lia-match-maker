@@ -5,6 +5,8 @@ import ArrowUp from "@/assets/icons/arrow_up.svg";
 import ArrowDown from "@/assets/icons/arrow_down.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
 import { useState } from "react";
+import CustomCheckbox from "../Checkbox/Checkbox";
+import Checkbox from "../Checkbox/Checkbox";
 
 export default function Filter() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,16 +42,14 @@ export default function Filter() {
           <div className="filter-section">
             <h3>SÖKER</h3>
             <label>
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={selectedRoles.includes("Digital designer")}
                 onChange={() => handleRoleChange("Digital designer")}
               />
               Digital designer
             </label>
             <label>
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={selectedRoles.includes("Webbutvecklare")}
                 onChange={() => handleRoleChange("Webbutvecklare")}
               />
@@ -80,8 +80,7 @@ export default function Filter() {
           <div className="filter-section">
             <h3>FAVORITER</h3>
             <label>
-              <input
-                type="checkbox"
+              <CustomCheckbox
                 checked={showFavorites}
                 onChange={() => setShowFavorites((prev) => !prev)}
               />

@@ -6,6 +6,7 @@ import useSignup from "@/hooks/useSignup";
 import useTechnologies from "@/hooks/useTechnologies";
 import "./SignupForm.css";
 import FormButton from "../Button/FormButton";
+import Checkbox from "../Checkbox/Checkbox";
 
 export default function SignupForm() {
   // Form state
@@ -60,8 +61,8 @@ export default function SignupForm() {
     setFormMessage("");
   };
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
+  const handleCheckboxChange = (value) => {
+    setIsChecked(value);
   };
 
   const handleSubmit = async (e) => {
@@ -261,8 +262,7 @@ export default function SignupForm() {
       )}
       <div className="checkbox-wrapper">
         <label>
-          <input
-            type="checkbox"
+          <Checkbox
             checked={isChecked}
             onChange={handleCheckboxChange}
             required

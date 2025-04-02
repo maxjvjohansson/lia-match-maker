@@ -1,0 +1,11 @@
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.5rem;
+}
+
+.checkbox-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
