@@ -1,0 +1,32 @@
+.settings-section {
+  padding: var(--gap-xl) 0 4rem 0;
+}
+
+.settings-heading {
+  display: flex;
+  padding: 0 var(--gap-m);
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--primary-red);
+  margin-bottom: var(--gap-l);
+}
+
+.settings-title {
+  margin-top: var(--gap-m);
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 2.5rem;
+}
+
+.settings-title-thin {
+  font-size: 2.5rem;
+  font-weight: 100;
+  letter-spacing: -0.09375rem;
+  margin-bottom: var(--gap-m);
+}
+
+.btn-container-settings {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s, 0.5rem);
+}
