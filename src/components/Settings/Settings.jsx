@@ -3,8 +3,11 @@
 import "./Settings.css";
 import Button from "../Button/Button";
 import UpdateForm from "./UpdateForm";
+import { useRouter } from "next/navigation";
 
 export default function Settings() {
+  const router = useRouter();
+
   return (
     <section className="settings-section">
       <div className="settings-heading">
@@ -15,6 +18,7 @@ export default function Settings() {
               variant="primary"
               showArrow
               iconDirection="left"
+              onClick={() => router.push("/dashboard")}
             />
           </div>
           <h1 className="settings-title">PROFIL</h1>
