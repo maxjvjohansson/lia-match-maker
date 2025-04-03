@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import Banner from "../Banner/Banner";
 import HeroCircles from "./HeroCircles";
 import { useRouter } from "next/navigation";
-import EventTime from "../EventSection/EventTime";
+import EventTime from "../Event/EventTime";
 
 export default function Hero({ scrollToSignup }) {
   const router = useRouter();

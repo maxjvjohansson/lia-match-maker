@@ -1,7 +1,7 @@
 "use client";
 
 import Hero from "@/components/Hero/Hero";
-import EventSection from "@/components/EventSection/EventSection";
+import EventSection from "@/components/Event/EventSection";
 import SignupSection from "@/components/Signup/SignupSection";
 import Footer from "@/components/Footer/Footer";
 import { useRouter } from "next/navigation";
