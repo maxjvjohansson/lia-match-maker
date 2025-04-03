@@ -1,5 +1,5 @@
 import "./Confirmation.css";
-import EventTime from "@/components/EventSection/EventTime";
+import EventTime from "@/components/Event/EventTime";
 import Button from "@/components/Button/Button";
 import { useRouter } from "next/navigation";
 import ConfirmationConfetti from "./ConfirmationConfetti";

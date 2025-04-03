@@ -1,14 +1,14 @@
 import { useState } from "react";
-import InputField from "./Form/InputField";
-import FormMessage from "./Form/FormMessage";
+import InputField from "../Signup/Form/InputField";
+import FormMessage from "../Signup/Form/FormMessage";
 import Button from "@/components/Button/Button";
 import useSignup from "@/hooks/useSignup";
 import useTechnologies from "@/hooks/useTechnologies";
-import "./SignupForm.css";
+import "./UpdateForm.css";
 import FormButton from "../Button/FormButton";
 import Checkbox from "../Checkbox/Checkbox";
 
-export default function SignupForm() {
+export default function UpdateForm() {
   // Form state
   const [role, setRole] = useState("company");
   const [profession, setProfession] = useState("");
@@ -172,10 +172,6 @@ export default function SignupForm() {
         />
       )}
 
-      <p className="form-text">
-        När du registrerar dig skapas automatiskt ett konto på vår webbplats.
-      </p>
-
       <InputField
         label="Lösenord*"
         type="password"
@@ -260,23 +256,11 @@ export default function SignupForm() {
           </div>
         </>
       )}
-      <div className="checkbox-wrapper">
-        <label>
-          <Checkbox
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-            required
-          />
-          <p>
-            Jag godkänner <a href="/terms">användarvillkoren</a>.
-          </p>
-        </label>
-      </div>
 
-      <div className="submit-container">
+      <div className="update-submit-container">
         <Button
           type="submit"
-          text={loading ? "Registrerar..." : "Anmäl nu"}
+          text="Spara ändringar"
           variant="primary"
           disabled={loading}
         />

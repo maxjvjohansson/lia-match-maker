@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import Banner from "../Banner/Banner";
 import HeroCircles from "./HeroCircles";
 import { useRouter } from "next/navigation";
-import EventTime from "../EventSection/EventTime";
+import EventTime from "../Event/EventTime";
 
 export default function Hero({ scrollToSignup }) {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function Hero({ scrollToSignup }) {
           <div className="btn-container">
             <Button
               variant="secondary"
-              text="Företag"
+              text="FÖRETAG"
               showArrow
               iconDirection="right"
               iconColor="auto"
@@ -34,7 +34,7 @@ export default function Hero({ scrollToSignup }) {
             />
             <Button
               variant="primary"
-              text="Student"
+              text="STUDENT"
               showArrow
               iconDirection="right"
               iconColor="auto"
