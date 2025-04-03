@@ -2,8 +2,10 @@ import EventSchedule from "./EventSchedule";
 import "./EventPage.css";
 import EventTime from "./EventTime";
 import Button from "../Button/Button";
+import { useRouter } from "next/navigation";
 
 export default function EventPage() {
+  const router = useRouter();
   return (
     <section className="event-page-section">
       <div className="event-page-heading">
