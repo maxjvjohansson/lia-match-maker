@@ -8,13 +8,17 @@ export default function Settings() {
   return (
     <section className="settings-section">
       <div className="settings-heading">
-        <Button
-          text="Tillbaka"
-          variant="primary"
-          showArrow
-          iconDirection="left"
-        />
-        <h1 className="settings-title">PROFIL</h1>
+        <div className="settings-title-container">
+          <div className="settings-back-btn">
+            <Button
+              text="Tillbaka"
+              variant="primary"
+              showArrow
+              iconDirection="left"
+            />
+          </div>
+          <h1 className="settings-title">PROFIL</h1>
+        </div>
         <h1 className="settings-title-thin">INSTÄLLNINGAR</h1>
         <div className="btn-container-settings">
           <Button text="LOGGA UT" variant="secondary" />

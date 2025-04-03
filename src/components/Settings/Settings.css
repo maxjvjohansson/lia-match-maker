@@ -11,6 +11,10 @@
   margin-bottom: var(--gap-l);
 }
 
+.settings-back-btn {
+  margin-bottom: var(--gap-m);
+}
+
 .settings-title {
   margin-top: var(--gap-m);
   font-size: 2.5rem;
@@ -29,4 +33,45 @@
   display: flex;
   align-items: center;
   gap: var(--gap-s, 0.5rem);
+}
+
+@media (min-width: 768px) {
+  .settings-heading {
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self: stretch;
+  }
+
+  .settings-title-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .settings-back-btn {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .settings-title {
+    font-size: 6rem;
+    font-weight: 800;
+    line-height: 6rem;
+  }
+
+  .settings-title-thin {
+    font-size: 6rem;
+    font-weight: 100;
+    line-height: 6rem;
+    letter-spacing: -0.09375rem;
+  }
+
+  .btn-container-settings {
+    gap: 1.1875rem;
+  }
 }
