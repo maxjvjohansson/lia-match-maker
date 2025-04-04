@@ -1,121 +1,262 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import "./SignupForm.css";
 import InputField from "./Form/InputField";
 import FormMessage from "./Form/FormMessage";
 import Button from "@/components/Button/Button";
-import useSignup from "@/hooks/useSignup";
-import useTechnologies from "@/hooks/useTechnologies";
-import "./SignupForm.css";
 import FormButton from "../Button/FormButton";
+import Link from "next/link";
 import Checkbox from "../Checkbox/Checkbox";
+import supabase from "@/utils/supabase/client";
 
 export default function SignupForm() {
-  // Form state
+  const router = useRouter();
+
   const [role, setRole] = useState("company");
-  const [profession, setProfession] = useState("");
-  const [selectedTechs, setSelectedTechs] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [studentName, setStudentName] = useState("");
-  const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [formMessage, setFormMessage] = useState("");
+  const [profession, setProfession] = useState("");
+  const [professionId, setProfessionId] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
 
-  const { signup, loading, message } = useSignup();
+  const [loading, setLoading] = useState(false);
+  const [formMessage, setFormMessage] = useState("");
 
-  const {
-    technologies,
-    loading: techLoading,
-    error: techError,
-  } = useTechnologies(profession);
+  const [professions, setProfessions] = useState([]);
+  const [technologies, setTechnologies] = useState([]);
+  const [selectedTechs, setSelectedTechs] = useState([]);
+
+  useEffect(() => {
+    const fetchProfessions = async () => {
+      try {
+        const { data, error } = await supabase.from("professions").select("*");
+
+        if (error) throw error;
+        setProfessions(data || []);
+      } catch (error) {
+        console.error("Error fetching professions:", error);
+        setFormMessage("Kunde inte ladda yrken. Försök igen senare.");
+      }
+    };
+
+    fetchProfessions();
+  }, []);
+
+  useEffect(() => {
+    const fetchTechnologies = async () => {
+      if (!professionId) return;
+
+      try {
+        const { data, error } = await supabase
+          .from("technologies")
+          .select("*")
+          .eq("profession_id", professionId);
+
+        if (error) throw error;
+
+        if (data.length === 0) {
+        } else {
+          setTechnologies(data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching technologies:", error.message);
+        setFormMessage("Kunde inte ladda teknologier. Försök igen senare.");
+      }
+    };
+
+    fetchTechnologies();
+  }, [professionId]);
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);
-    setProfession("");
-    setSelectedTechs([]);
-    setFormMessage("");
+    if (newRole === "company") {
+      setStudentName("");
+      setWebsite("");
+    } else {
+      setCompanyName("");
+    }
   };
 
-  const toggleProfession = (professionName) => {
-    setProfession((prev) => (prev === professionName ? "" : professionName));
+  const toggleProfession = async (professionName) => {
+    try {
+      const { data, error } = await supabase
+        .from("professions")
+        .select("id")
+        .eq("name", professionName);
+
+      if (error) throw new Error(error.message);
+      if (!data || data.length === 0)
+        throw new Error("Kunde inte hitta yrkesgruppen.");
+
+      setProfession(professionName);
+      setProfessionId(data[0].id);
+    } catch (err) {
+      console.error("Error fetching profession ID:", err.message);
+      setFormMessage("Kunde inte hitta vald yrkesgrupp.");
+    }
   };
 
   const toggleTech = (techId) => {
-    setSelectedTechs((prev) =>
-      prev.includes(techId)
-        ? prev.filter((id) => id !== techId)
-        : [...prev, techId]
-    );
+    setSelectedTechs((prev) => {
+      if (prev.includes(techId)) {
+        return prev.filter((id) => id !== techId);
+      } else {
+        return [...prev, techId];
+      }
+    });
   };
 
-  const resetForm = () => {
-    setCompanyName("");
-    setStudentName("");
-    setWebsite("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setProfession("");
-    setSelectedTechs([]);
-    setFormMessage("");
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
   };
 
-  const handleCheckboxChange = (value) => {
-    setIsChecked(value);
+  const validateForm = () => {
+    if (role === "company" && !companyName) {
+      setFormMessage("Företagsnamn är obligatoriskt.");
+      return false;
+    }
+
+    if (role === "student" && !studentName) {
+      setFormMessage("Namn är obligatoriskt.");
+      return false;
+    }
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setFormMessage("Vänligen ange en giltig e-postadress.");
+      return false;
+    }
+
+    if (role === "student" && !website) {
+      setFormMessage("Hemsida/portfolio är obligatorisk för studenter.");
+      return false;
+    }
+
+    if (!password || password.length < 6) {
+      setFormMessage("Lösenord måste vara minst 6 tecken.");
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      setFormMessage("Lösenorden matchar inte.");
+      return false;
+    }
+
+    if (!professionId) {
+      setFormMessage(
+        role === "company" ? "Välj vilka ni tar emot." : "Välj vad du studerar."
+      );
+      return false;
+    }
+
+    if (!isChecked) {
+      setFormMessage("Du måste godkänna användarvillkoren.");
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isChecked) {
-      setFormMessage("Du måste godkänna användarvillkoren.");
-      return;
-    }
+    if (!validateForm()) return;
 
-    if (
-      !email ||
-      !password ||
-      !confirmPassword ||
-      (role === "company" && (!companyName || !profession)) ||
-      (role === "student" && (!studentName || !website || !profession))
-    ) {
-      setFormMessage("Vänligen fyll i alla obligatoriska fält");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setFormMessage("Lösenorden matchar inte");
-      return;
-    }
-
-    if (password.length < 6) {
-      setFormMessage("Lösenordet måste vara minst 6 tecken");
-      return;
-    }
-
-    const formData = {
-      role,
-      email,
-      password,
-      name: role === "company" ? companyName : studentName,
-      website: role === "student" ? website : null,
-      profession,
-      technologies: selectedTechs,
-      termsAccepted: isChecked,
-    };
+    setLoading(true);
+    setFormMessage("");
 
     try {
-      const success = await signup(formData);
-      if (success) {
-        resetForm();
-        setFormMessage(message || "Registrering lyckades!");
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            role: role,
+            profession_id: professionId,
+          },
+        },
+      });
+
+      if (authError) throw authError;
+
+      const userId = authData.user.id;
+
+      if (role === "company") {
+        const { error: companyError } = await supabase
+          .from("companies")
+          .insert({
+            user_id: userId,
+            name: companyName,
+          });
+
+        if (companyError) throw companyError;
+
+        const { error: companyProfessionError } = await supabase
+          .from("company_professions")
+          .insert({
+            company_id: userId,
+            profession_id: professionId,
+          });
+
+        if (companyProfessionError) throw companyProfessionError;
       } else {
-        setFormMessage(message);
+        const { error: studentError } = await supabase.from("students").insert({
+          user_id: userId,
+          name: studentName,
+          profession_id: professionId,
+          website: website,
+        });
+
+        if (studentError) throw studentError;
       }
+
+      if (selectedTechs.length > 0) {
+        if (role === "company") {
+          const companyTechLinks = selectedTechs.map((techId) => ({
+            company_id: userId,
+            technology_id: techId,
+          }));
+
+          const { error: companyTechError } = await supabase
+            .from("company_technologies")
+            .insert(companyTechLinks);
+
+          if (companyTechError) throw companyTechError;
+        } else {
+          const studentTechLinks = selectedTechs.map((techId) => ({
+            student_id: userId,
+            technology_id: techId,
+          }));
+
+          const { error: studentTechError } = await supabase
+            .from("student_technologies")
+            .insert(studentTechLinks);
+
+          if (studentTechError) throw studentTechError;
+        }
+      }
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) throw signInError;
+
+      setFormMessage("Registrering lyckades! Omdirigerar...");
+      router.push("/dashboard");
     } catch (error) {
-      console.error("Form submission error:", error);
-      setFormMessage("Ett tekniskt fel inträffade. Försök igen senare.");
+      console.error("Registration error:", error);
+      setFormMessage(
+        error.message || "Ett fel uppstod vid registrering. Försök igen senare."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -125,13 +266,17 @@ export default function SignupForm() {
         <Button
           text="Företag"
           onClick={() => handleRoleChange("company")}
-          variant="block-primary"
+          variant={
+            role === "company" ? "block-primary active" : "block-primary"
+          }
           type="button"
         />
         <Button
           text="Student"
           onClick={() => handleRoleChange("student")}
-          variant="block-primary"
+          variant={
+            role === "student" ? "block-primary active" : "block-primary"
+          }
           type="button"
         />
       </div>
@@ -148,8 +293,6 @@ export default function SignupForm() {
         placeholder={
           role === "company" ? "Ex. Office AB" : "För- och efternamn"
         }
-        name="name"
-        autoComplete="autocomplete"
       />
 
       <InputField
@@ -158,8 +301,6 @@ export default function SignupForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Ex. info@office.com"
-        name="email"
-        autoComplete="autocomplete"
       />
 
       {role === "student" && (
@@ -182,8 +323,6 @@ export default function SignupForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Minst 6 tecken"
-        autoComplete="new-password"
-        name="new-password"
       />
 
       <InputField
@@ -192,9 +331,8 @@ export default function SignupForm() {
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         placeholder="Upprepa lösenord"
-        autoComplete="new-password"
-        name="confirm-password"
       />
+
       <div className="profession-wrapper">
         <label htmlFor="profession-web" className="profession-label">
           {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
@@ -204,15 +342,15 @@ export default function SignupForm() {
             type="radio"
             id="profession-web"
             name="profession"
-            value="web"
-            checked={profession === "web"}
-            onChange={() => toggleProfession("web")}
+            value="Webbutvecklare"
+            checked={profession === "Webbutvecklare"}
+            onChange={() => toggleProfession("Webbutvecklare")}
             className="hidden-radio"
           />
           <FormButton
             text="Webbutvecklare"
-            onClick={() => toggleProfession("web")}
-            variant={profession === "web" ? "role selected" : "role"}
+            onClick={() => toggleProfession("Webbutvecklare")}
+            variant={profession === "Webbutvecklare" ? "role selected" : "role"}
             type="button"
           />
 
@@ -220,15 +358,17 @@ export default function SignupForm() {
             type="radio"
             id="profession-design"
             name="profession"
-            value="design"
-            checked={profession === "design"}
-            onChange={() => toggleProfession("design")}
+            value="Digital Designer"
+            checked={profession === "Digital Designer"}
+            onChange={() => toggleProfession("Digital Designer")}
             className="hidden-radio"
           />
           <FormButton
             text="Digital Designer"
-            onClick={() => toggleProfession("design")}
-            variant={profession === "design" ? "role selected" : "role"}
+            onClick={() => toggleProfession("Digital Designer")}
+            variant={
+              profession === "Digital Designer" ? "role selected" : "role"
+            }
             type="button"
           />
         </div>
@@ -240,16 +380,14 @@ export default function SignupForm() {
             <label>
               {role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}
             </label>
-            {techLoading ? (
-              <p>Laddar teknologier...</p>
-            ) : technologies.length > 0 ? (
-              technologies.map(({ id, name }) => (
+            {technologies.length > 0 ? (
+              technologies.map((tech) => (
                 <FormButton
-                  key={id}
-                  text={name}
-                  onClick={() => toggleTech(id)}
+                  key={tech.id}
+                  text={tech.name}
+                  onClick={() => toggleTech(tech.id)}
                   variant={
-                    selectedTechs.includes(id) ? "tech selected" : "tech"
+                    selectedTechs.includes(tech.id) ? "tech selected" : "tech"
                   }
                   type="button"
                 />
@@ -260,15 +398,16 @@ export default function SignupForm() {
           </div>
         </>
       )}
+
       <div className="checkbox-wrapper">
+        <Checkbox
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+          required
+        />
         <label>
-          <Checkbox
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-            required
-          />
           <p>
-            Jag godkänner <a href="/terms">användarvillkoren</a>.
+            Jag godkänner <Link href="/terms"> användarvillkoren</Link>
           </p>
         </label>
       </div>
@@ -276,7 +415,7 @@ export default function SignupForm() {
       <div className="submit-container">
         <Button
           type="submit"
-          text={loading ? "Registrerar..." : "Anmäl nu"}
+          text="Anmäl nu"
           variant="primary"
           disabled={loading}
         />
