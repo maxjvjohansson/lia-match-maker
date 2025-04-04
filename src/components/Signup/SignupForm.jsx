@@ -35,7 +35,9 @@ export default function SignupForm() {
   useEffect(() => {
     const fetchProfessions = async () => {
       try {
-        const { data, error } = await supabase.from("professions").select("*");
+        const { data, error } = await supabase
+          .from("professions")
+          .select("id, name");
 
         if (error) throw error;
         setProfessions(data || []);
@@ -338,39 +340,25 @@ export default function SignupForm() {
           {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
         </label>
         <div className="profession-toggle">
-          <input
-            type="radio"
-            id="profession-web"
-            name="profession"
-            value="Webbutvecklare"
-            checked={profession === "Webbutvecklare"}
-            onChange={() => toggleProfession("Webbutvecklare")}
-            className="hidden-radio"
-          />
-          <FormButton
-            text="Webbutvecklare"
-            onClick={() => toggleProfession("Webbutvecklare")}
-            variant={profession === "Webbutvecklare" ? "role selected" : "role"}
-            type="button"
-          />
-
-          <input
-            type="radio"
-            id="profession-design"
-            name="profession"
-            value="Digital Designer"
-            checked={profession === "Digital Designer"}
-            onChange={() => toggleProfession("Digital Designer")}
-            className="hidden-radio"
-          />
-          <FormButton
-            text="Digital Designer"
-            onClick={() => toggleProfession("Digital Designer")}
-            variant={
-              profession === "Digital Designer" ? "role selected" : "role"
-            }
-            type="button"
-          />
+          {professions.map((prof) => (
+            <div key={prof.id}>
+              <input
+                type="radio"
+                id={`profession-${prof.id}`}
+                name="profession"
+                value={prof.name}
+                checked={profession === prof.name}
+                onChange={() => toggleProfession(prof.name)}
+                className="hidden-radio"
+              />
+              <FormButton
+                text={prof.name}
+                onClick={() => toggleProfession(prof.name)}
+                variant={profession === prof.name ? "role selected" : "role"}
+                type="button"
+              />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -378,7 +366,9 @@ export default function SignupForm() {
         <>
           <div className="tech-picker">
             <label>
-              {role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}
+              {role === "company"
+                ? "Vi söker följande kompetenser:"
+                : "Jag vill gärna jobba med:"}
             </label>
             {technologies.length > 0 ? (
               technologies.map((tech) => (
