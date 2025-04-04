@@ -10,6 +10,13 @@ export const metadata = {
 export default function Layout({ children }) {
   return (
     <html lang="sv">
+      <head>
+        <link
+          rel="icon"
+          href="/assets/images/favicon.svg"
+          type="image/svg+xml"
+        />
+      </head>
       <body>
         <Navbar />
         {children}
