@@ -25,6 +25,9 @@ export default function SignupForm() {
   const [professionId, setProfessionId] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
 
+  // Ny state för att visa/dölja tech picker
+  const [showTechPicker, setShowTechPicker] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [formMessage, setFormMessage] = useState("");
 
@@ -87,6 +90,14 @@ export default function SignupForm() {
 
   const toggleProfession = async (professionName) => {
     try {
+      if (profession === professionName) {
+        setProfession("");
+        setProfessionId(null);
+        setShowTechPicker(false);
+        setSelectedTechs([]);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("professions")
         .select("id")
@@ -98,6 +109,7 @@ export default function SignupForm() {
 
       setProfession(professionName);
       setProfessionId(data[0].id);
+      setShowTechPicker(true);
     } catch (err) {
       console.error("Error fetching profession ID:", err.message);
       setFormMessage("Kunde inte hitta vald yrkesgrupp.");
@@ -362,7 +374,7 @@ export default function SignupForm() {
         </div>
       </div>
 
-      {profession && (
+      {showTechPicker && profession && (
         <>
           <div className="tech-picker">
             <label>
