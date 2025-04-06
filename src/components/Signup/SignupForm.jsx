@@ -213,72 +213,47 @@ export default function SignupForm() {
     setFormMessage("");
 
     try {
-      const primaryProfessionId =
-        role === "student"
-          ? selectedProfessionIds[0]
-          : selectedProfessionIds[0];
-
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             role: role,
-            profession_id: primaryProfessionId,
           },
         },
       });
 
-      if (authError) throw authError;
+      if (authError || !authData.user) {
+        throw new Error(
+          authError?.message || "Misslyckades att skapa användare."
+        );
+      }
 
       const userId = authData.user.id;
 
-      if (role === "company") {
-        const { error: companyError } = await supabase
-          .from("companies")
+      if (role === "student") {
+        const { data: studentData, error: studentError } = await supabase
+          .from("students")
           .insert({
             user_id: userId,
-            name: companyName,
-          });
+            name: studentName,
+            profession_id: selectedProfessionIds[0],
+            website: website,
+          })
+          .select("id");
 
-        if (companyError) throw companyError;
+        if (studentError || !studentData || studentData.length === 0) {
+          await supabase.auth.admin.deleteUser(userId);
+          throw new Error(
+            studentError?.message || "Misslyckades att skapa student."
+          );
+        }
 
-        const companyProfessions = selectedProfessionIds.map((profId) => ({
-          company_id: userId,
-          profession_id: profId,
-        }));
+        const studentId = studentData[0].id;
 
-        const { error: companyProfessionError } = await supabase
-          .from("company_professions")
-          .insert(companyProfessions);
-
-        if (companyProfessionError) throw companyProfessionError;
-      } else {
-        const { error: studentError } = await supabase.from("students").insert({
-          user_id: userId,
-          name: studentName,
-          profession_id: primaryProfessionId,
-          website: website,
-        });
-
-        if (studentError) throw studentError;
-      }
-
-      if (selectedTechs.length > 0) {
-        if (role === "company") {
-          const companyTechLinks = selectedTechs.map((tech) => ({
-            company_id: userId,
-            technology_id: tech.id,
-          }));
-
-          const { error: companyTechError } = await supabase
-            .from("company_technologies")
-            .insert(companyTechLinks);
-
-          if (companyTechError) throw companyTechError;
-        } else {
+        if (selectedTechs.length > 0) {
           const studentTechLinks = selectedTechs.map((tech) => ({
-            student_id: userId,
+            student_id: studentId,
             technology_id: tech.id,
           }));
 
@@ -286,7 +261,49 @@ export default function SignupForm() {
             .from("student_technologies")
             .insert(studentTechLinks);
 
-          if (studentTechError) throw studentTechError;
+          if (studentTechError) {
+            await supabase.auth.admin.deleteUser(userId);
+            throw new Error(
+              studentTechError?.message ||
+                "Misslyckades att lägga till tekniker."
+            );
+          }
+        }
+      } else {
+        const { data: companyData, error: companyError } = await supabase
+          .from("companies")
+          .insert({
+            user_id: userId,
+            name: companyName,
+          })
+          .select("id");
+
+        if (companyError || !companyData || companyData.length === 0) {
+          await supabase.auth.admin.deleteUser(userId);
+          throw new Error(
+            companyError?.message || "Misslyckades att skapa företag."
+          );
+        }
+
+        const companyId = companyData[0].id;
+
+        if (selectedTechs.length > 0) {
+          const companyTechLinks = selectedTechs.map((tech) => ({
+            company_id: companyId,
+            technology_id: tech.id,
+          }));
+
+          const { error: companyTechError } = await supabase
+            .from("company_technologies")
+            .insert(companyTechLinks);
+
+          if (companyTechError) {
+            await supabase.auth.admin.deleteUser(userId);
+            throw new Error(
+              companyTechError?.message ||
+                "Misslyckades att lägga till företagstekniker."
+            );
+          }
         }
       }
 
@@ -298,12 +315,10 @@ export default function SignupForm() {
       if (signInError) throw signInError;
 
       setFormMessage("Registrering lyckades! Omdirigerar...");
-      router.push("/dashboard");
+      router.push("/confirmation");
     } catch (error) {
-      console.error("Registration error:", error);
-      setFormMessage(
-        error.message || "Ett fel uppstod vid registrering. Försök igen senare."
-      );
+      console.error("Registrering misslyckades:", error.message);
+      setFormMessage("Registrering misslyckades: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -350,6 +365,7 @@ export default function SignupForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Ex. info@office.com"
+        autoComplete="true"
       />
 
       {role === "student" && (
