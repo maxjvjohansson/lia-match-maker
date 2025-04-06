@@ -82,6 +82,12 @@
   cursor: pointer;
 }
 
+.block-primary.active {
+  color: var(--white);
+  background: var(--primary-blue);
+  cursor: pointer;
+}
+
 .block-disabled {
   height: 2.875rem;
   display: inline-flex;
