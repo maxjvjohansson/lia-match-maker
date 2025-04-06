@@ -1,121 +1,357 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import "./SignupForm.css";
 import InputField from "./Form/InputField";
 import FormMessage from "./Form/FormMessage";
 import Button from "@/components/Button/Button";
-import useSignup from "@/hooks/useSignup";
-import useTechnologies from "@/hooks/useTechnologies";
-import "./SignupForm.css";
 import FormButton from "../Button/FormButton";
+import Link from "next/link";
 import Checkbox from "../Checkbox/Checkbox";
+import supabase from "@/utils/supabase/client";
 
 export default function SignupForm() {
-  // Form state
+  const router = useRouter();
+  const MAX_TECH_SELECTIONS = 6;
+
   const [role, setRole] = useState("company");
-  const [profession, setProfession] = useState("");
-  const [selectedTechs, setSelectedTechs] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [studentName, setStudentName] = useState("");
-  const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [formMessage, setFormMessage] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
-  const { signup, loading, message } = useSignup();
+  const [selectedProfessions, setSelectedProfessions] = useState([]);
+  const [selectedProfessionIds, setSelectedProfessionIds] = useState([]);
+  const [activeProfessionId, setActiveProfessionId] = useState(null);
 
-  const {
-    technologies,
-    loading: techLoading,
-    error: techError,
-  } = useTechnologies(profession);
+  const [visibleTechPickers, setVisibleTechPickers] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [formMessage, setFormMessage] = useState("");
+
+  const [professions, setProfessions] = useState([]);
+  const [technologies, setTechnologies] = useState({});
+  const [selectedTechs, setSelectedTechs] = useState([]);
+
+  useEffect(() => {
+    const fetchProfessions = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("professions")
+          .select("id, name");
+
+        if (error) throw error;
+        setProfessions(data || []);
+      } catch (error) {
+        console.error("Error fetching professions:", error);
+        setFormMessage("Kunde inte ladda yrken. Försök igen senare.");
+      }
+    };
+
+    fetchProfessions();
+  }, []);
+
+  useEffect(() => {
+    const fetchTechnologies = async (professionId) => {
+      if (!professionId) return;
+
+      try {
+        if (technologies[professionId]) return;
+
+        const { data, error } = await supabase
+          .from("technologies")
+          .select("*")
+          .eq("profession_id", professionId);
+
+        if (error) throw error;
+
+        setTechnologies((prev) => ({
+          ...prev,
+          [professionId]: data || [],
+        }));
+      } catch (error) {
+        console.error("Error fetching technologies:", error.message);
+        setFormMessage("Kunde inte ladda teknologier. Försök igen senare.");
+      }
+    };
+
+    selectedProfessionIds.forEach((id) => fetchTechnologies(id));
+  }, [selectedProfessionIds]);
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);
-    setProfession("");
+    setSelectedProfessions([]);
+    setSelectedProfessionIds([]);
+    setVisibleTechPickers([]);
     setSelectedTechs([]);
-    setFormMessage("");
+
+    if (newRole === "company") {
+      setStudentName("");
+      setWebsite("");
+    } else {
+      setCompanyName("");
+    }
   };
 
-  const toggleProfession = (professionName) => {
-    setProfession((prev) => (prev === professionName ? "" : professionName));
+  const toggleProfession = async (professionName, professionId) => {
+    try {
+      if (role === "student") {
+        if (selectedProfessions.includes(professionName)) {
+          setSelectedProfessions([]);
+          setSelectedProfessionIds([]);
+          setVisibleTechPickers([]);
+          setSelectedTechs([]);
+        } else {
+          setSelectedProfessions([professionName]);
+          setSelectedProfessionIds([professionId]);
+          setVisibleTechPickers([professionId]);
+          setActiveProfessionId(professionId);
+        }
+      } else {
+        if (selectedProfessions.includes(professionName)) {
+          setSelectedProfessions((prev) =>
+            prev.filter((p) => p !== professionName)
+          );
+          setSelectedProfessionIds((prev) =>
+            prev.filter((id) => id !== professionId)
+          );
+          setVisibleTechPickers((prev) =>
+            prev.filter((id) => id !== professionId)
+          );
+
+          setSelectedTechs((prev) =>
+            prev.filter((tech) => tech.professionId !== professionId)
+          );
+        } else {
+          setSelectedProfessions((prev) => [...prev, professionName]);
+          setSelectedProfessionIds((prev) => [...prev, professionId]);
+          setVisibleTechPickers((prev) => [...prev, professionId]);
+          setActiveProfessionId(professionId);
+        }
+      }
+    } catch (err) {
+      console.error("Error handling profession toggle:", err.message);
+      setFormMessage("Ett fel uppstod vid val av yrkesgrupp.");
+    }
   };
 
-  const toggleTech = (techId) => {
-    setSelectedTechs((prev) =>
-      prev.includes(techId)
-        ? prev.filter((id) => id !== techId)
-        : [...prev, techId]
-    );
+  const toggleTech = (techId, professionId) => {
+    const isSelected = selectedTechs.some((tech) => tech.id === techId);
+
+    if (isSelected) {
+      setSelectedTechs((prev) => prev.filter((tech) => tech.id !== techId));
+    } else {
+      if (selectedTechs.length >= MAX_TECH_SELECTIONS) {
+        setFormMessage(`Du kan välja max ${MAX_TECH_SELECTIONS} tekniker.`);
+        return;
+      }
+
+      setSelectedTechs((prev) => [...prev, { id: techId, professionId }]);
+    }
   };
 
-  const resetForm = () => {
-    setCompanyName("");
-    setStudentName("");
-    setWebsite("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setProfession("");
-    setSelectedTechs([]);
-    setFormMessage("");
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
   };
 
-  const handleCheckboxChange = (value) => {
-    setIsChecked(value);
+  const validateForm = () => {
+    if (role === "company" && !companyName) {
+      setFormMessage("Företagsnamn är obligatoriskt.");
+      return false;
+    }
+
+    if (role === "student" && !studentName) {
+      setFormMessage("Namn är obligatoriskt.");
+      return false;
+    }
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setFormMessage("Vänligen ange en giltig e-postadress.");
+      return false;
+    }
+
+    if (role === "student" && !website) {
+      setFormMessage("Hemsida/portfolio är obligatorisk för studenter.");
+      return false;
+    }
+
+    if (!password || password.length < 6) {
+      setFormMessage("Lösenord måste vara minst 6 tecken.");
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      setFormMessage("Lösenorden matchar inte.");
+      return false;
+    }
+
+    if (selectedProfessionIds.length === 0) {
+      setFormMessage(
+        role === "company" ? "Välj vilka ni tar emot." : "Välj vad du studerar."
+      );
+      return false;
+    }
+
+    if (!isChecked) {
+      setFormMessage("Du måste godkänna användarvillkoren.");
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isChecked) {
-      setFormMessage("Du måste godkänna användarvillkoren.");
-      return;
-    }
+    if (!validateForm()) return;
 
-    if (
-      !email ||
-      !password ||
-      !confirmPassword ||
-      (role === "company" && (!companyName || !profession)) ||
-      (role === "student" && (!studentName || !website || !profession))
-    ) {
-      setFormMessage("Vänligen fyll i alla obligatoriska fält");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setFormMessage("Lösenorden matchar inte");
-      return;
-    }
-
-    if (password.length < 6) {
-      setFormMessage("Lösenordet måste vara minst 6 tecken");
-      return;
-    }
-
-    const formData = {
-      role,
-      email,
-      password,
-      name: role === "company" ? companyName : studentName,
-      website: role === "student" ? website : null,
-      profession,
-      technologies: selectedTechs,
-      termsAccepted: isChecked,
-    };
+    setLoading(true);
+    setFormMessage("");
 
     try {
-      const success = await signup(formData);
-      if (success) {
-        resetForm();
-        setFormMessage(message || "Registrering lyckades!");
-      } else {
-        setFormMessage(message);
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            role: role,
+          },
+        },
+      });
+
+      if (authError || !authData.user) {
+        throw new Error(
+          authError?.message || "Misslyckades att skapa användare."
+        );
       }
+
+      const userId = authData.user.id;
+
+      if (role === "student") {
+        try {
+          const { data: studentData, error: studentError } = await supabase
+            .from("students")
+            .insert({
+              user_id: userId,
+              name: studentName,
+              profession_id: selectedProfessionIds[0],
+              website: website,
+            })
+            .select("id");
+
+          if (studentError || !studentData || studentData.length === 0) {
+            await supabase.auth.admin.deleteUser(userId);
+            throw new Error(
+              studentError?.message || "Misslyckades att skapa student."
+            );
+          }
+
+          const studentId = studentData[0].id;
+
+          if (selectedTechs.length > 0) {
+            const studentTechLinks = selectedTechs.map((tech) => ({
+              student_id: studentId,
+              technology_id: tech.id,
+            }));
+
+            const { error: studentTechError } = await supabase
+              .from("student_technologies")
+              .insert(studentTechLinks);
+
+            if (studentTechError) {
+              await supabase.auth.admin.deleteUser(userId);
+              throw new Error(
+                studentTechError?.message ||
+                  "Misslyckades att lägga till tekniker."
+              );
+            }
+          }
+        } catch (error) {
+          await supabase.auth.admin.deleteUser(userId);
+          throw error;
+        }
+      } else {
+        try {
+          const { data: companyData, error: companyError } = await supabase
+            .from("companies")
+            .insert({
+              user_id: userId,
+              name: companyName,
+            })
+            .select("id");
+
+          if (companyError || !companyData || companyData.length === 0) {
+            await supabase.auth.admin.deleteUser(userId);
+            throw new Error(
+              companyError?.message || "Misslyckades att skapa företag."
+            );
+          }
+
+          const companyId = companyData[0].id;
+
+          if (selectedProfessionIds.length > 0) {
+            const companyProfessionLinks = selectedProfessionIds.map(
+              (profId) => ({
+                company_id: companyId,
+                profession_id: profId,
+              })
+            );
+
+            const { error: companyProfessionError } = await supabase
+              .from("company_professions")
+              .insert(companyProfessionLinks);
+
+            if (companyProfessionError) {
+              await supabase.auth.admin.deleteUser(userId);
+              throw new Error(
+                companyProfessionError?.message ||
+                  "Misslyckades att lägga till företagsprofessioner."
+              );
+            }
+          }
+
+          if (selectedTechs.length > 0) {
+            const companyTechLinks = selectedTechs.map((tech) => ({
+              company_id: companyId,
+              technology_id: tech.id,
+            }));
+
+            const { error: companyTechError } = await supabase
+              .from("company_technologies")
+              .insert(companyTechLinks);
+
+            if (companyTechError) {
+              await supabase.auth.admin.deleteUser(userId);
+              throw new Error(
+                companyTechError?.message ||
+                  "Misslyckades att lägga till företagstekniker."
+              );
+            }
+          }
+        } catch (error) {
+          await supabase.auth.admin.deleteUser(userId);
+          throw error;
+        }
+      }
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) throw signInError;
+
+      setFormMessage("Registrering lyckades! Omdirigerar...");
+      router.push("/confirmation");
     } catch (error) {
-      console.error("Form submission error:", error);
-      setFormMessage("Ett tekniskt fel inträffade. Försök igen senare.");
+      console.error("Registrering misslyckades:", error.message);
+      setFormMessage("Registrering misslyckades: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -125,13 +361,17 @@ export default function SignupForm() {
         <Button
           text="Företag"
           onClick={() => handleRoleChange("company")}
-          variant="block-primary"
+          variant={
+            role === "company" ? "block-primary active" : "block-primary"
+          }
           type="button"
         />
         <Button
           text="Student"
           onClick={() => handleRoleChange("student")}
-          variant="block-primary"
+          variant={
+            role === "student" ? "block-primary active" : "block-primary"
+          }
           type="button"
         />
       </div>
@@ -148,8 +388,6 @@ export default function SignupForm() {
         placeholder={
           role === "company" ? "Ex. Office AB" : "För- och efternamn"
         }
-        name="name"
-        autoComplete="autocomplete"
       />
 
       <InputField
@@ -158,17 +396,16 @@ export default function SignupForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Ex. info@office.com"
-        name="email"
-        autoComplete="autocomplete"
+        autoComplete="true"
       />
 
       {role === "student" && (
         <InputField
-          label="Hemsidan*"
+          label="Länk*"
           type="text"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
-          placeholder="Webplats till din portfolio eller Github"
+          placeholder="Länk till din portfolio, LinkedIn eller Github"
         />
       )}
 
@@ -182,8 +419,6 @@ export default function SignupForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Minst 6 tecken"
-        autoComplete="new-password"
-        name="new-password"
       />
 
       <InputField
@@ -192,83 +427,89 @@ export default function SignupForm() {
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         placeholder="Upprepa lösenord"
-        autoComplete="new-password"
-        name="confirm-password"
       />
+
       <div className="profession-wrapper">
         <label htmlFor="profession-web" className="profession-label">
           {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
         </label>
         <div className="profession-toggle">
-          <input
-            type="radio"
-            id="profession-web"
-            name="profession"
-            value="web"
-            checked={profession === "web"}
-            onChange={() => toggleProfession("web")}
-            className="hidden-radio"
-          />
-          <FormButton
-            text="Webbutvecklare"
-            onClick={() => toggleProfession("web")}
-            variant={profession === "web" ? "role selected" : "role"}
-            type="button"
-          />
-
-          <input
-            type="radio"
-            id="profession-design"
-            name="profession"
-            value="design"
-            checked={profession === "design"}
-            onChange={() => toggleProfession("design")}
-            className="hidden-radio"
-          />
-          <FormButton
-            text="Digital Designer"
-            onClick={() => toggleProfession("design")}
-            variant={profession === "design" ? "role selected" : "role"}
-            type="button"
-          />
+          {professions.map((prof) => (
+            <div key={prof.id}>
+              <input
+                type="radio"
+                id={`profession-${prof.id}`}
+                name="profession"
+                checked={selectedProfessions.includes(prof.name)}
+                onChange={() => toggleProfession(prof.name, prof.id)}
+                className="hidden-radio"
+              />
+              <FormButton
+                text={prof.name}
+                onClick={() => toggleProfession(prof.name, prof.id)}
+                variant={
+                  selectedProfessions.includes(prof.name)
+                    ? "role selected"
+                    : "role"
+                }
+                type="button"
+              />
+            </div>
+          ))}
         </div>
       </div>
 
-      {profession && (
-        <>
-          <div className="tech-picker">
-            <label>
-              {role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}
-            </label>
-            {techLoading ? (
-              <p>Laddar teknologier...</p>
-            ) : technologies.length > 0 ? (
-              technologies.map(({ id, name }) => (
-                <FormButton
-                  key={id}
-                  text={name}
-                  onClick={() => toggleTech(id)}
-                  variant={
-                    selectedTechs.includes(id) ? "tech selected" : "tech"
-                  }
-                  type="button"
-                />
-              ))
-            ) : (
-              <p>Inga teknologier hittades för denna yrkesgrupp.</p>
-            )}
-          </div>
-        </>
-      )}
-      <div className="checkbox-wrapper">
-        <label>
-          <Checkbox
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-            required
-          />
+      {selectedTechs.length > 0 && (
+        <div className="selected-techs-count">
           <p>
-            Jag godkänner <a href="/terms">användarvillkoren</a>.
+            Valda tekniker: {selectedTechs.length}/{MAX_TECH_SELECTIONS}
+          </p>
+        </div>
+      )}
+
+      {visibleTechPickers.map((professionId) => (
+        <div key={`tech-picker-${professionId}`} className="tech-picker">
+          <label>
+            {role === "company"
+              ? `Vi söker följande kompetenser (${
+                  professions.find((p) => p.id === professionId)?.name
+                }):`
+              : "Jag vill gärna jobba med:"}
+          </label>
+          {technologies[professionId] &&
+          technologies[professionId].length > 0 ? (
+            technologies[professionId].map((tech) => (
+              <FormButton
+                key={tech.id}
+                text={tech.name}
+                onClick={() => toggleTech(tech.id, professionId)}
+                variant={
+                  selectedTechs.some((t) => t.id === tech.id)
+                    ? "tech selected"
+                    : "tech"
+                }
+                type="button"
+                disabled={
+                  !selectedTechs.some((t) => t.id === tech.id) &&
+                  selectedTechs.length >= MAX_TECH_SELECTIONS
+                }
+              />
+            ))
+          ) : (
+            <p>Inga teknologier hittades för denna yrkesgrupp.</p>
+          )}
+        </div>
+      ))}
+
+      <div className="checkbox-wrapper">
+        <Checkbox
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+          required
+        />
+        <label>
+          <p>
+            Jag godkänner <Link href="/terms"> användarvillkoren</Link>
           </p>
         </label>
       </div>
@@ -276,7 +517,7 @@ export default function SignupForm() {
       <div className="submit-container">
         <Button
           type="submit"
-          text={loading ? "Registrerar..." : "Anmäl nu"}
+          text="Anmäl nu"
           variant="primary"
           disabled={loading}
         />

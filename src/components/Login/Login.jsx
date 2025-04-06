@@ -3,13 +3,43 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Button from "../Button/Button";
 import ShowIcon from "@/assets/icons/show_password.svg";
 import HideIcon from "@/assets/icons/hide_password.svg";
+import supabase from "@/utils/supabase/client";
 import "./Login.css";
 
 export default function Login({ scrollToSignup }) {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [formMessage, setFormMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setFormMessage("");
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw new Error(error.message);
+
+      setFormMessage("Inloggning lyckades! Omdirigerar...");
+      router.push("/dashboard");
+    } catch (err) {
+      console.error("Inloggning misslyckades:", err.message);
+      setFormMessage("Inloggning misslyckades: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section className="login-container" aria-labelledby="login-heading">
@@ -18,6 +48,7 @@ export default function Login({ scrollToSignup }) {
         method="post"
         autoComplete="on"
         aria-describedby="login-description"
+        onSubmit={handleSubmit}
       >
         <div className="login-heading-wrapper">
           <h1 id="login-heading" className="login-heading">
@@ -51,6 +82,8 @@ export default function Login({ scrollToSignup }) {
             id="email"
             name="email"
             autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -63,6 +96,8 @@ export default function Login({ scrollToSignup }) {
               id="password"
               name="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <button
@@ -80,6 +115,12 @@ export default function Login({ scrollToSignup }) {
           </div>
         </div>
 
+        {formMessage && (
+          <div className="form-message">
+            <p>{formMessage}</p>
+          </div>
+        )}
+
         <div className="login-links" id="login-description">
           <p>
             Inget konto? Skapa genom att{" "}
@@ -88,11 +129,17 @@ export default function Login({ scrollToSignup }) {
             </Link>
             till eventet.
           </p>
-          <Link href="/reset" className="forgot-link">
+          <Link href="/" className="forgot-link">
             Glömt lösenordet?
           </Link>
-          <Button text="Logga in" variant="primary" type="submit" />
         </div>
+
+        <Button
+          text={loading ? "Loggar in..." : "Logga in"}
+          variant="primary"
+          type="submit"
+          disabled={loading}
+        />
       </form>
     </section>
   );

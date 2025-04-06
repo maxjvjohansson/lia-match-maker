@@ -2,11 +2,8 @@ import { useState } from "react";
 import InputField from "../Signup/Form/InputField";
 import FormMessage from "../Signup/Form/FormMessage";
 import Button from "@/components/Button/Button";
-import useSignup from "@/hooks/useSignup";
-import useTechnologies from "@/hooks/useTechnologies";
 import "./UpdateForm.css";
 import FormButton from "../Button/FormButton";
-import Checkbox from "../Checkbox/Checkbox";
 
 export default function UpdateForm() {
   // Form state
@@ -21,14 +18,6 @@ export default function UpdateForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formMessage, setFormMessage] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-
-  const { signup, loading, message } = useSignup();
-
-  const {
-    technologies,
-    loading: techLoading,
-    error: techError,
-  } = useTechnologies(profession);
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);
@@ -258,12 +247,7 @@ export default function UpdateForm() {
       )}
 
       <div className="update-submit-container">
-        <Button
-          type="submit"
-          text="Spara ändringar"
-          variant="primary"
-          disabled={loading}
-        />
+        <Button type="submit" text="Spara ändringar" variant="primary" />
       </div>
 
       {formMessage && <FormMessage message={formMessage} />}
