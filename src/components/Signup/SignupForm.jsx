@@ -232,78 +232,109 @@ export default function SignupForm() {
       const userId = authData.user.id;
 
       if (role === "student") {
-        const { data: studentData, error: studentError } = await supabase
-          .from("students")
-          .insert({
-            user_id: userId,
-            name: studentName,
-            profession_id: selectedProfessionIds[0],
-            website: website,
-          })
-          .select("id");
+        try {
+          const { data: studentData, error: studentError } = await supabase
+            .from("students")
+            .insert({
+              user_id: userId,
+              name: studentName,
+              profession_id: selectedProfessionIds[0],
+              website: website,
+            })
+            .select("id");
 
-        if (studentError || !studentData || studentData.length === 0) {
-          await supabase.auth.admin.deleteUser(userId);
-          throw new Error(
-            studentError?.message || "Misslyckades att skapa student."
-          );
-        }
-
-        const studentId = studentData[0].id;
-
-        if (selectedTechs.length > 0) {
-          const studentTechLinks = selectedTechs.map((tech) => ({
-            student_id: studentId,
-            technology_id: tech.id,
-          }));
-
-          const { error: studentTechError } = await supabase
-            .from("student_technologies")
-            .insert(studentTechLinks);
-
-          if (studentTechError) {
+          if (studentError || !studentData || studentData.length === 0) {
             await supabase.auth.admin.deleteUser(userId);
             throw new Error(
-              studentTechError?.message ||
-                "Misslyckades att lägga till tekniker."
+              studentError?.message || "Misslyckades att skapa student."
             );
           }
+
+          const studentId = studentData[0].id;
+
+          if (selectedTechs.length > 0) {
+            const studentTechLinks = selectedTechs.map((tech) => ({
+              student_id: studentId,
+              technology_id: tech.id,
+            }));
+
+            const { error: studentTechError } = await supabase
+              .from("student_technologies")
+              .insert(studentTechLinks);
+
+            if (studentTechError) {
+              await supabase.auth.admin.deleteUser(userId);
+              throw new Error(
+                studentTechError?.message ||
+                  "Misslyckades att lägga till tekniker."
+              );
+            }
+          }
+        } catch (error) {
+          await supabase.auth.admin.deleteUser(userId);
+          throw error;
         }
       } else {
-        const { data: companyData, error: companyError } = await supabase
-          .from("companies")
-          .insert({
-            user_id: userId,
-            name: companyName,
-          })
-          .select("id");
+        try {
+          const { data: companyData, error: companyError } = await supabase
+            .from("companies")
+            .insert({
+              user_id: userId,
+              name: companyName,
+            })
+            .select("id");
 
-        if (companyError || !companyData || companyData.length === 0) {
-          await supabase.auth.admin.deleteUser(userId);
-          throw new Error(
-            companyError?.message || "Misslyckades att skapa företag."
-          );
-        }
-
-        const companyId = companyData[0].id;
-
-        if (selectedTechs.length > 0) {
-          const companyTechLinks = selectedTechs.map((tech) => ({
-            company_id: companyId,
-            technology_id: tech.id,
-          }));
-
-          const { error: companyTechError } = await supabase
-            .from("company_technologies")
-            .insert(companyTechLinks);
-
-          if (companyTechError) {
+          if (companyError || !companyData || companyData.length === 0) {
             await supabase.auth.admin.deleteUser(userId);
             throw new Error(
-              companyTechError?.message ||
-                "Misslyckades att lägga till företagstekniker."
+              companyError?.message || "Misslyckades att skapa företag."
             );
           }
+
+          const companyId = companyData[0].id;
+
+          if (selectedProfessionIds.length > 0) {
+            const companyProfessionLinks = selectedProfessionIds.map(
+              (profId) => ({
+                company_id: companyId,
+                profession_id: profId,
+              })
+            );
+
+            const { error: companyProfessionError } = await supabase
+              .from("company_professions")
+              .insert(companyProfessionLinks);
+
+            if (companyProfessionError) {
+              await supabase.auth.admin.deleteUser(userId);
+              throw new Error(
+                companyProfessionError?.message ||
+                  "Misslyckades att lägga till företagsprofessioner."
+              );
+            }
+          }
+
+          if (selectedTechs.length > 0) {
+            const companyTechLinks = selectedTechs.map((tech) => ({
+              company_id: companyId,
+              technology_id: tech.id,
+            }));
+
+            const { error: companyTechError } = await supabase
+              .from("company_technologies")
+              .insert(companyTechLinks);
+
+            if (companyTechError) {
+              await supabase.auth.admin.deleteUser(userId);
+              throw new Error(
+                companyTechError?.message ||
+                  "Misslyckades att lägga till företagstekniker."
+              );
+            }
+          }
+        } catch (error) {
+          await supabase.auth.admin.deleteUser(userId);
+          throw error;
         }
       }
 
