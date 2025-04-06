@@ -1,22 +1,30 @@
 "use client";
 
+import Hero from "@/components/Hero/Hero";
+import EventSection from "@/components/Event/EventSection";
+import SignupSection from "@/components/Signup/SignupSection";
+import Footer from "@/components/Footer/Footer";
 import { useRouter } from "next/navigation";
-import Button from "../components/Button/Button";
-import "../styles/pages/home.css";
+import { useRef } from "react";
 
-export default function Home() {
-    const router = useRouter();
+export default function HomePage() {
+  const router = useRouter();
+  const signupRef = useRef(null);
 
-    return (
-        <section className="home">
-            <img src="/assets/images/yrgo.svg" alt="Yrgo Logo" className="logo" />
-            <img src="/assets/images/logo.png" alt="Mingla Logo" className="logo" />
-            <h1>LIA Tinder Möte</h1>
-            <p>Vänligen välj företag eller student</p>
-            <div className="btn-container">
-                <Button text="Företag" onClick={() => router.push("/signup")} />
-                <Button text="Student" onClick={() => router.push("/signup")} />
-            </div>
-        </section>
-    );
+  return (
+    <main>
+      <Hero
+        scrollToSignup={() =>
+          signupRef.current?.scrollIntoView({ behavior: "smooth" })
+        }
+      />
+      <EventSection
+        scrollToSignup={() =>
+          signupRef.current?.scrollIntoView({ behavior: "smooth" })
+        }
+      />
+      <SignupSection ref={signupRef} id="signup" />
+      <Footer />
+    </main>
+  );
 }

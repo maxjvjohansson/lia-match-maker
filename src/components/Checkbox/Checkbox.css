@@ -1,0 +1,37 @@
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.5rem;
+}
+
+.checkbox-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.custom-checkbox.default .checkbox-icon {
+  stroke: var(--black);
+}
+
+.custom-checkbox.default .checkbox-label {
+  color: var(--black);
+}
+
+.custom-checkbox.filter .checkbox-icon {
+  stroke: var(--black);
+}
+
+.custom-checkbox.filter .checkbox-label {
+  color: var(--black);
+}
+
+@media (min-width: 768px) {
+  .custom-checkbox.filter .checkbox-icon {
+    stroke: var(--white);
+  }
+
+  .custom-checkbox.filter .checkbox-label {
+    color: var(--white);
+  }
+}

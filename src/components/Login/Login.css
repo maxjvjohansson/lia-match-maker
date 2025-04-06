@@ -1,0 +1,172 @@
+.login-container {
+  height: calc(100vh - 3.6875rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--padding-l, 1.5rem) var(--padding-m, 1rem);
+  gap: var(--gap-l, 2rem);
+  background-color: var(--grey-60);
+}
+
+.login-heading-wrapper {
+  margin-bottom: var(--gap-l);
+}
+.login-heading {
+  color: var(--primary-red);
+  font-size: 1.875rem;
+  font-weight: 300;
+  line-height: 1.875rem;
+  letter-spacing: 0.025rem;
+  text-align: center;
+  margin-bottom: var(--gap-m);
+}
+
+.login-logos {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-s);
+}
+
+.login-mingla,
+.login-yrgo {
+  position: relative;
+}
+
+.login-mingla {
+  width: 5.5rem;
+  height: 1rem;
+}
+
+.login-yrgo {
+  width: 5.125rem;
+  height: 1.25rem;
+}
+
+.login-form {
+  display: flex;
+  width: 100%;
+  padding: var(--padding-l, 1.5rem) var(--padding-m, 1rem);
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap-s);
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  background-color: var(--white);
+}
+
+.login-form input {
+  font-size: 1rem;
+  display: flex;
+  width: 100%;
+  height: 3.25rem;
+  padding: 0.625rem 1.5rem;
+  align-items: center;
+  gap: 0.625rem;
+  align-self: stretch;
+  border-radius: 0.25rem 0.25rem;
+  border: 1px solid var(--grey-50);
+  background: var(--grey-60);
+  margin-bottom: var(--gap-s);
+}
+
+.password-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password .icon {
+  width: 1.5rem;
+  height: auto;
+}
+
+.login-links {
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: var(--gap-l);
+}
+
+.login-links a {
+  color: var(--primary-blue);
+  text-decoration: underline;
+}
+
+.forgot-link {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .login-form {
+    width: 43.1875rem;
+    padding: 4rem 3rem 2rem 3rem;
+  }
+
+  .login-heading-wrapper {
+    margin-bottom: var(--gap-xl);
+  }
+
+  .login-heading {
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 3rem;
+    letter-spacing: -0.0625rem;
+  }
+
+  .login-logos {
+    margin-top: 2rem;
+  }
+
+  .login-mingla {
+    width: 8.24519rem;
+    height: 1.47713rem;
+  }
+
+  .login-yrgo {
+    width: 9.46875rem;
+    height: 2.25rem;
+  }
+
+  .login-field {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-m);
+  }
+
+  .login-form label {
+    flex-shrink: 0;
+    width: 6.625rem;
+    text-align: right;
+  }
+
+  .login-form input {
+    width: 100%;
+    max-width: 33.25rem;
+  }
+
+  .login-links,
+  .login-btn {
+    margin-left: calc(8rem + var(--gap-m));
+  }
+
+  .forgot-link {
+    margin-bottom: 2rem;
+  }
+}

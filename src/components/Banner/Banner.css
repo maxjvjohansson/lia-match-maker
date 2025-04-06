@@ -1,0 +1,38 @@
+.logo-banner {
+  width: 100%;
+  overflow: hidden;
+  background: var(--white);
+  position: absolute;
+  bottom: 0;
+  padding: 1rem;
+}
+
+.logo-track {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  animation: scroll 30s linear infinite;
+}
+
+.partner-logo {
+  display: inline-block;
+  height: 1.5rem;
+  margin-right: 2rem;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+@media (min-width: 768px) {
+  .logo {
+    height: 2.1875rem;
+  }
+}

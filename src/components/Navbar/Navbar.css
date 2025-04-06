@@ -1,0 +1,65 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 3.6875rem;
+  display: flex;
+  padding: 0.5rem 0.75rem;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--white);
+  transition: transform 0.2s ease-in-out;
+  z-index: 1000;
+  scroll-behavior: smooth;
+}
+
+.navbar.hide {
+  transform: translateY(-100%);
+}
+
+.navbar.show {
+  transform: translateY(0);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-mingla,
+.logo-yrgo {
+  position: relative;
+}
+
+.logo-mingla {
+  width: 5.5rem;
+  height: 1rem;
+}
+
+.logo-yrgo {
+  width: 5.125rem;
+  height: 1.25rem;
+}
+
+.nav-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-link {
+  color: var(--black);
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    padding: 0.5rem 2rem;
+  }
+}

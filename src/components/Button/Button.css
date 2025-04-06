@@ -1,12 +1,112 @@
 .btn {
-    background-color: #6A6A6A;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 0.75rem;
+  display: inline-flex;
+  height: 2.875rem;
+  padding: var(--padding-xs, 0.5rem) var(--padding-l, 1.5rem);
+  justify-content: center;
+  align-items: center;
+  gap: var(--padding-xs, 0.5rem);
+  flex-shrink: 0;
+  border-radius: var(--border-radius-l, 1.5rem);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.05rem;
+  width: auto;
+  max-width: fit-content;
 }
 
-.btn:hover {
-    background-color: gray;
+/* Arrow styling */
+.arrow {
+  width: 1rem;
+  height: auto;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+/* === VARIANTS === */
+
+.primary {
+  background-color: var(--primary-red);
+  color: var(--white);
+  border: 1px solid var(--white);
+}
+
+.primary:hover {
+  background-color: var(--white);
+  color: var(--primary-red);
+  border: 1px solid var(--primary-red);
+  cursor: pointer;
+}
+
+.secondary {
+  background-color: var(--white);
+  color: var(--primary-red);
+  border: 1px solid var(--primary-red);
+}
+
+.secondary:hover {
+  background-color: var(--primary-red);
+  color: var(--white);
+  border: 1px solid var(--white);
+  cursor: pointer;
+}
+
+.disabled {
+  background-color: var(--grey-40);
+  color: var(--white);
+  border: 1px solid var(--white);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* =============================
+   BLOCK (BLUE) STYLES
+============================= */
+
+.block-primary {
+  height: 2.875rem;
+  display: inline-flex;
+  padding: var(--padding-xs, 0.5rem) var(--padding-xl, 3rem);
+  justify-content: center;
+  align-items: center;
+  gap: var(--padding-xs, 0.5rem);
+  border-radius: 0.25rem 0.25rem;
+  border: 1px solid var(--primary-blue);
+  color: var(--primary-blue);
+  background: var(--white);
+}
+
+.block-primary:hover {
+  color: var(--white);
+  background: var(--primary-blue);
+  cursor: pointer;
+}
+
+.block-primary.active {
+  color: var(--white);
+  background: var(--primary-blue);
+  cursor: pointer;
+}
+
+.block-disabled {
+  height: 2.875rem;
+  display: inline-flex;
+  padding: var(--padding-xs, 0.5rem) var(--padding-xl, 3rem);
+  justify-content: center;
+  align-items: center;
+  gap: var(--padding-xs, 0.5rem);
+  border-radius: 0.25rem 0.25rem;
+  color: var(--white);
+  background-color: var(--grey-40);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .block-primary {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    letter-spacing: 0.0125rem;
+  }
 }
