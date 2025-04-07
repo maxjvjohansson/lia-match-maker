@@ -128,7 +128,15 @@
   text-decoration: none;
 }
 
-.dropdown-link:nth-child(4) {
+.dropdown-menu-text {
+  font-size: 1.875rem;
+  font-weight: 300;
+  line-height: 1.875rem;
+  letter-spacing: 0.025rem;
+  margin-bottom: var(--gap-m);
+}
+
+.dropdown-link:nth-child(5) {
   border-bottom: 1px solid var(--grey-30);
   margin-bottom: var(--gap-l);
 }

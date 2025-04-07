@@ -110,6 +110,7 @@ export default function Navbar() {
                     >
                       <CloseIcon className="close-svg" />
                     </button>
+                    <p className="dropdown-menu-text">Meny</p>
                     <Link href="/event" className="dropdown-link">
                       <CalendarIcon className="dropdown-icon" />
                       Eventet
@@ -134,9 +135,12 @@ export default function Navbar() {
             </>
           )
         ) : (
-          <Link href="/login" className="login-link">
-            Logga in
-          </Link>
+          !user &&
+          pathname !== "/login" && (
+            <Link href="/login" className="login-link">
+              Logga in
+            </Link>
+          )
         )}
       </div>
     </nav>
