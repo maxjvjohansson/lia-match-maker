@@ -2,8 +2,13 @@ import Button from "../Button/Button";
 import EventSchedule from "./EventSchedule";
 import "./EventSection.css";
 import EventTime from "./EventTime";
+import useAuth from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 export default function EventSection({ scrollToSignup }) {
+  const router = useRouter();
+  const { user } = useAuth();
+
   return (
     <section className="event-section">
       <article className="event-heading">
@@ -22,12 +27,14 @@ export default function EventSection({ scrollToSignup }) {
           och hjälper STUDENTER att hitta den perfekta praktikplatsen.
         </p>
         <p>Vi bjuder på gott kaffe!</p>
-        <Button
-          variant="primary"
-          showArrow
-          text="Häng med!"
-          onClick={scrollToSignup}
-        />
+        {!user && (
+          <Button
+            variant="primary"
+            showArrow
+            text="Häng med!"
+            onClick={scrollToSignup}
+          />
+        )}
       </article>
     </section>
   );
