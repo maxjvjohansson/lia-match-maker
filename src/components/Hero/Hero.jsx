@@ -4,9 +4,20 @@ import Banner from "../Banner/Banner";
 import HeroCircles from "./HeroCircles";
 import { useRouter } from "next/navigation";
 import EventTime from "../Event/EventTime";
+import useAuth from "@/hooks/useAuth";
 
 export default function Hero({ scrollToSignup }) {
   const router = useRouter();
+  const { user } = useAuth();
+
+  const handleClick = () => {
+    if (user) {
+      router.push("/dashboard");
+    } else {
+      scrollToSignup();
+    }
+  };
+
   return (
     <section className="hero">
       <HeroCircles />
@@ -22,7 +33,9 @@ export default function Hero({ scrollToSignup }) {
         </div>
 
         <div className="hero-cta">
-          <p className="signup-text">Anmäl dig som</p>
+          <p className="signup-text">
+            {user ? "Se profiler" : "Anmäl dig som"}
+          </p>
           <div className="btn-container">
             <Button
               variant="secondary"
@@ -30,7 +43,7 @@ export default function Hero({ scrollToSignup }) {
               showArrow
               iconDirection="right"
               iconColor="auto"
-              onClick={scrollToSignup}
+              onClick={handleClick}
             />
             <Button
               variant="primary"
@@ -38,7 +51,7 @@ export default function Hero({ scrollToSignup }) {
               showArrow
               iconDirection="right"
               iconColor="auto"
-              onClick={scrollToSignup}
+              onClick={handleClick}
             />
           </div>
         </div>
