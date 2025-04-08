@@ -45,6 +45,18 @@
   margin-bottom: var(--gap-xl);
 }
 
+.favorites-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-heart-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke: var(--black);
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

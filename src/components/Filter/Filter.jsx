@@ -4,6 +4,7 @@ import "./Filter.css";
 import ArrowUp from "@/assets/icons/arrow_up.svg";
 import ArrowDown from "@/assets/icons/arrow_down.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
+import HeartIcon from "@/assets/icons/heart.svg";
 import { useState, useEffect } from "react";
 import Checkbox from "../Checkbox/Checkbox";
 import supabase from "@/utils/supabase/client";
@@ -124,7 +125,10 @@ export default function Filter({
           </div>
 
           <div className="filter-section filter-favorites">
-            <h3>FAVORITER</h3>
+            <h3 className="favorites-heading">
+              <HeartIcon className="filter-heart-icon" />
+              FAVORITER
+            </h3>
             <Checkbox
               label="Visa favoriter"
               variant="filter"
