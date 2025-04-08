@@ -71,7 +71,7 @@ export default function ProfileSection() {
         ))}
       </div>
 
-      {profiles.length > profilesPerPage && (
+      {profiles.length > 0 && (
         <Pagination
           currentPage={currentPage}
           totalProfiles={profiles.length}
