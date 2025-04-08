@@ -8,12 +8,16 @@ import { useState, useEffect } from "react";
 import Checkbox from "../Checkbox/Checkbox";
 import supabase from "@/utils/supabase/client";
 
-export default function Filter() {
+export default function Filter({
+  selectedRole,
+  setSelectedRole,
+  selectedSkills,
+  setSelectedSkills,
+  showFavorites,
+  setShowFavorites,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [selectedSkills, setSelectedSkills] = useState([]);
-  const [showFavorites, setShowFavorites] = useState(false);
   const [professions, setProfessions] = useState([]);
   const [technologies, setTechnologies] = useState([]);
 
@@ -52,9 +56,7 @@ export default function Filter() {
   }, []);
 
   const toggleDropdown = () => {
-    if (!isDesktop) {
-      setIsOpen((prev) => !prev);
-    }
+    if (!isDesktop) setIsOpen((prev) => !prev);
   };
 
   const handleRoleChange = (role) => {

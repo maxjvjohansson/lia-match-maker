@@ -44,13 +44,6 @@ export default function ProfileSection() {
 
   let filteredProfiles = profiles;
 
-  if (selectedProfession) {
-    filteredProfiles = filteredProfiles.filter(
-      (profile) =>
-        profile.profession?.toLowerCase() === selectedProfession.toLowerCase()
-    );
-  }
-
   if (selectedTechnologies.length > 0) {
     filteredProfiles = filteredProfiles.filter((profile) =>
       selectedTechnologies.every((tech) => profile.technologies.includes(tech))
@@ -104,10 +97,10 @@ export default function ProfileSection() {
       </div>
 
       <Filter
-        selectedProfession={selectedProfession}
-        setSelectedProfession={setSelectedProfession}
-        selectedTechnologies={selectedTechnologies}
-        setSelectedTechnologies={setSelectedTechnologies}
+        selectedRole={selectedProfession}
+        setSelectedRole={setSelectedProfession}
+        selectedSkills={selectedTechnologies}
+        setSelectedSkills={setSelectedTechnologies}
         showFavorites={showFavorites}
         setShowFavorites={setShowFavorites}
       />
