@@ -4,15 +4,28 @@ import "./ProfileSection.css";
 import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
 import ProfileCard from "./ProfileCard";
+import Pagination from "../Pagination/Pagination";
 import useProfiles from "@/hooks/useProfiles";
 import { useState } from "react";
 
 export default function ProfileSection() {
   const [isStudent, setIsStudent] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const profilesPerPage = 9;
 
   const { profiles, loading, error } = useProfiles(
     isStudent ? "student" : "company"
   );
+
+  const startIndex = (currentPage - 1) * profilesPerPage;
+  const currentProfiles = profiles.slice(
+    startIndex,
+    startIndex + profilesPerPage
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <section className="profile-section">
@@ -23,12 +36,18 @@ export default function ProfileSection() {
           <Button
             variant={!isStudent ? "primary" : "secondary"}
             text="FÖRETAG"
-            onClick={() => setIsStudent(false)}
+            onClick={() => {
+              setIsStudent(false);
+              setCurrentPage(1);
+            }}
           />
           <Button
             variant={isStudent ? "primary" : "secondary"}
             text="STUDENTER"
-            onClick={() => setIsStudent(true)}
+            onClick={() => {
+              setIsStudent(true);
+              setCurrentPage(1);
+            }}
           />
         </div>
       </div>
@@ -43,7 +62,7 @@ export default function ProfileSection() {
       {error && <p>Kunde inte ladda profiler.</p>}
 
       <div className="profiles-container">
-        {profiles.map((profile) => (
+        {currentProfiles.map((profile) => (
           <ProfileCard
             key={profile.id}
             profile={profile}
@@ -51,6 +70,15 @@ export default function ProfileSection() {
           />
         ))}
       </div>
+
+      {profiles.length > profilesPerPage && (
+        <Pagination
+          currentPage={currentPage}
+          totalProfiles={profiles.length}
+          profilesPerPage={profilesPerPage}
+          onPageChange={handlePageChange}
+        />
+      )}
     </section>
   );
 }

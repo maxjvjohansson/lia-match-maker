@@ -1,4 +1,5 @@
 .profile-card {
+  width: 100%;
   display: flex;
   padding: var(--gap-m, 1rem);
   flex-direction: column;
