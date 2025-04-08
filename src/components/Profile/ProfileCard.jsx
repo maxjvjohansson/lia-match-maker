@@ -17,7 +17,7 @@ export default function ProfileCard({ profile, role }) {
   return (
     <div className="profile-card">
       <div className="profile-header">
-        <h3>{profile.name}</h3>
+        <h3>{profile.name.toUpperCase()}</h3>
         <div className="profile-icons">
           {getLinkIcon(profile.website) && (
             <a href={profile.website} target="_blank" rel="noopener noreferrer">
@@ -25,7 +25,7 @@ export default function ProfileCard({ profile, role }) {
             </a>
           )}
           {profile.user_id && (
-            <a href={`mailto:${profile.user_id}`}>
+            <a href={`mailto:${profile.email}`}>
               <MailIcon />
             </a>
           )}

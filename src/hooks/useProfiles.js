@@ -14,20 +14,41 @@ export default function useProfiles(role) {
         let data, error;
 
         if (role === "student") {
-          ({ data, error } = await supabase
-            .from("students")
-            .select(
-              "id, name, website, profession_id, user_id, profession:professions(name), technologies:student_technologies(technology_id)"
-            ));
+          ({ data, error } = await supabase.from("students").select(`
+              id, 
+              name, 
+              website, 
+              profession_id, 
+              user_id, 
+              technologies:student_technologies(technology_id, technology:technologies(name)), 
+              profession:professions(name)
+            `));
         } else if (role === "company") {
-          ({ data, error } = await supabase
-            .from("companies")
-            .select(
-              "id, name, user_id, professions:company_professions(profession_id), technologies:company_technologies(technology_id)"
-            ));
+          ({ data, error } = await supabase.from("companies").select(`
+              id, 
+              name, 
+              user_id, 
+              professions:company_professions(
+                profession_id, 
+                profession:professions(id, name)
+              ), 
+              technologies:company_technologies(
+                technology_id, 
+                technology:technologies(id, name)
+              )
+            `));
         }
 
         if (error) throw error;
+
+        const userIds = data.map((profile) => profile.user_id);
+
+        const { data: users, error: userError } = await supabase
+          .from("user_profiles")
+          .select("user_id, email")
+          .in("user_id", userIds);
+
+        if (userError) throw userError;
 
         const professionIds = Array.from(
           new Set(
@@ -39,6 +60,13 @@ export default function useProfiles(role) {
           )
         );
 
+        const { data: professions, error: profError } = await supabase
+          .from("professions")
+          .select("id, name")
+          .in("id", professionIds);
+
+        if (profError) throw profError;
+
         const technologyIds = Array.from(
           new Set(
             data.flatMap((profile) =>
@@ -46,13 +74,6 @@ export default function useProfiles(role) {
             )
           )
         );
-
-        const { data: professions, error: profError } = await supabase
-          .from("professions")
-          .select("id, name")
-          .in("id", professionIds);
-
-        if (profError) throw profError;
 
         const { data: technologies, error: techError } = await supabase
           .from("technologies")
@@ -62,21 +83,24 @@ export default function useProfiles(role) {
         if (techError) throw techError;
 
         const profilesWithDetails = data.map((profile) => {
-          const techNames = profile.technologies.map(
-            (tech) =>
-              technologies.find((t) => t.id === tech.technology_id)?.name
-          );
+          const email =
+            users.find((user) => user.user_id === profile.user_id)?.email ||
+            "Saknar e-post";
+
+          const techNames = profile.technologies
+            .map((tech) => tech.technology?.name)
+            .filter(Boolean);
 
           const profNames =
             role === "student"
-              ? professions.find((p) => p.id === profile.profession_id)?.name
-              : profile.professions.map(
-                  (prof) =>
-                    professions.find((p) => p.id === prof.profession_id)?.name
-                );
+              ? profile.profession?.name
+              : profile.professions
+                  .map((prof) => prof.profession?.name)
+                  .filter(Boolean);
 
           return {
             ...profile,
+            email,
             technologies: techNames,
             profession: Array.isArray(profNames)
               ? profNames.join(", ")
