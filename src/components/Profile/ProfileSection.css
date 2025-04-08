@@ -1,5 +1,6 @@
 .profile-section {
-  padding: var(--gap-xl) var(--gap-m);
+  padding-top: var(--gap-xl);
+  padding: 0 var(--gap-m);
 }
 
 .profile-heading {
@@ -39,9 +40,16 @@
   line-height: 1.5rem;
 }
 
+.profiles-container {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+}
+
 @media (min-width: 768px) {
   .profile-section {
-    padding: 4rem 2rem;
+    padding-top: 4rem;
+    padding: 0 2rem;
   }
 
   .profile-title {
@@ -59,5 +67,23 @@
 
   .filter-text {
     display: none;
+  }
+}
+
+@media (max-width: 870px) {
+  .profiles-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 871px) and (max-width: 1279px) {
+  .profiles-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .profiles-container {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
