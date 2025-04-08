@@ -18,7 +18,7 @@ export default function ProfileCard({ profile, role }) {
     <div className="profile-card">
       <div className="profile-header">
         <h3>{profile.name.toUpperCase()}</h3>
-        <div className="profile-icons">
+        <div className="profile-icons mobile-icons">
           {getLinkIcon(profile.website) && (
             <a href={profile.website} target="_blank" rel="noopener noreferrer">
               {getLinkIcon(profile.website)}
@@ -35,6 +35,21 @@ export default function ProfileCard({ profile, role }) {
         </div>
       </div>
       <p className="profile-profession">{profile.profession}</p>
+      <div className="profile-icons desktop-icons">
+        {getLinkIcon(profile.website) && (
+          <a href={profile.website} target="_blank" rel="noopener noreferrer">
+            {getLinkIcon(profile.website)}
+          </a>
+        )}
+        {profile.user_id && (
+          <a href={`mailto:${profile.email}`}>
+            <MailIcon />
+          </a>
+        )}
+        <button className="like-button">
+          <HeartIcon />
+        </button>
+      </div>
       <div className="profile-tech">
         {profile.technologies.map((tech, index) => (
           <span key={index} className="tech-badge">
