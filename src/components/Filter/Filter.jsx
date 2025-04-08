@@ -5,15 +5,40 @@ import ArrowUp from "@/assets/icons/arrow_up.svg";
 import ArrowDown from "@/assets/icons/arrow_down.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
 import { useState, useEffect } from "react";
-import CustomCheckbox from "../Checkbox/Checkbox";
 import Checkbox from "../Checkbox/Checkbox";
+import supabase from "@/utils/supabase/client";
 
 export default function Filter() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState(null);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [professions, setProfessions] = useState([]);
+  const [technologies, setTechnologies] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: fetchedProfessions } = await supabase
+        .from("professions")
+        .select("*");
+
+      const { data: fetchedTechnologies } = await supabase
+        .from("technologies")
+        .select("id, name, profession_id");
+
+      setProfessions(fetchedProfessions || []);
+      setTechnologies(fetchedTechnologies || []);
+    };
+
+    fetchData();
+  }, []);
+
+  const selectedProfession = professions.find((p) => p.name === selectedRole);
+
+  const filteredTechnologies = technologies.filter(
+    (tech) => tech.profession_id === selectedProfession?.id
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,9 +58,13 @@ export default function Filter() {
   };
 
   const handleRoleChange = (role) => {
-    setSelectedRoles((prev) =>
-      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
-    );
+    if (selectedRole === role) {
+      setSelectedRole(null);
+      setSelectedSkills([]);
+    } else {
+      setSelectedRole(role);
+      setSelectedSkills([]);
+    }
   };
 
   const handleSkillChange = (skill) => {
@@ -59,58 +88,47 @@ export default function Filter() {
         <div className={`filter-content ${isDesktop ? "always-open" : ""}`}>
           <div className="filter-section filter-roles">
             <h3>SÖKER</h3>
-            <label>
-              <Checkbox
-                variant="filter"
-                checked={selectedRoles.includes("Digital designer")}
-                onChange={() => handleRoleChange("Digital designer")}
-              />
-              Digital designer
-            </label>
-            <label>
-              <Checkbox
-                variant="filter"
-                checked={selectedRoles.includes("Webbutvecklare")}
-                onChange={() => handleRoleChange("Webbutvecklare")}
-              />
-              Webbutvecklare
-            </label>
+            <Checkbox
+              variant="filter"
+              label="Digital Designer"
+              checked={selectedRole === "Digital Designer"}
+              onChange={() => handleRoleChange("Digital Designer")}
+            />
+            <Checkbox
+              variant="filter"
+              label="Webbutvecklare"
+              checked={selectedRole === "Webbutvecklare"}
+              onChange={() => handleRoleChange("Webbutvecklare")}
+            />
           </div>
 
           <div className="filter-section filter-skills">
             <h3>ARBETAR MED</h3>
-            <div className="skills-grid">
-              {[
-                "FIGMA",
-                "FRONTEND",
-                "BRANDING",
-                "BACKEND",
-                "MOTION",
-                "UX/UI",
-              ].map((skill) => (
-                <button
-                  key={skill}
-                  className={`skill-btn ${
-                    selectedSkills.includes(skill) ? "selected" : ""
-                  }`}
-                  onClick={() => handleSkillChange(skill)}
-                >
-                  {skill}
-                </button>
-              ))}
-            </div>
+            {selectedRole && (
+              <div className="skills-grid">
+                {filteredTechnologies.map((tech) => (
+                  <button
+                    key={tech.id}
+                    className={`skill-btn ${
+                      selectedSkills.includes(tech.name) ? "selected" : ""
+                    }`}
+                    onClick={() => handleSkillChange(tech.name)}
+                  >
+                    {tech.name.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="filter-section filter-favorites">
             <h3>FAVORITER</h3>
-            <label>
-              <CustomCheckbox
-                variant="filter"
-                checked={showFavorites}
-                onChange={() => setShowFavorites((prev) => !prev)}
-              />
-              Visa favoriter
-            </label>
+            <Checkbox
+              label="Visa favoriter"
+              variant="filter"
+              checked={showFavorites}
+              onChange={() => setShowFavorites((prev) => !prev)}
+            />
           </div>
         </div>
       )}

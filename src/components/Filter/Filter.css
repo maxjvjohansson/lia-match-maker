@@ -34,6 +34,9 @@
 }
 
 .filter-roles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
   margin-bottom: var(--gap-xl);
 }
 
@@ -48,11 +51,6 @@
   gap: 0.5rem;
   justify-items: stretch;
   margin-top: 0.5rem;
-}
-
-.filter-section label {
-  display: flex;
-  padding: var(--gap-s) 0;
 }
 
 .skill-btn {
@@ -136,6 +134,7 @@
     border: 1px solid var(--white);
     border-radius: 0;
     text-align: center;
+    padding: 0.25rem;
   }
 
   .skill-btn.selected {
