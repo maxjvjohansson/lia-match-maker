@@ -1,5 +1,6 @@
 .profile-section {
-  padding: var(--gap-xl) var(--gap-m);
+  padding-top: var(--gap-xl);
+  padding: 0 var(--gap-m);
 }
 
 .profile-heading {
@@ -41,7 +42,8 @@
 
 @media (min-width: 768px) {
   .profile-section {
-    padding: 4rem 2rem;
+    padding-top: 4rem;
+    padding: 0 2rem;
   }
 
   .profile-title {

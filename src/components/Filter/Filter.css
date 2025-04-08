@@ -94,6 +94,10 @@
     padding: 0;
   }
 
+  .filter-container .always-open {
+    margin-bottom: var(--gap-xl);
+  }
+
   .filter-section {
     display: flex;
     flex-direction: column;

@@ -9,8 +9,7 @@ function getLinkIcon(website) {
   if (!website) return null;
   if (website.includes("linkedin.com")) return <LinkedInIcon />;
   if (website.includes("github.com")) return <GithubIcon />;
-  if (website.includes("www.")) return <PortfolioIcon />;
-  return null;
+  else return <PortfolioIcon />;
 }
 
 export default function ProfileCard({ profile, role }) {
