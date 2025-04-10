@@ -31,6 +31,18 @@ export async function updateSession(request) {
 
   const protectedRoutes = ["/dashboard", "/settings", "/event"];
 
+  if (request.nextUrl.pathname === "/confirmation") {
+    const justRegistered = request.cookies.get("just_registered");
+
+    if (!justRegistered) {
+      const url = request.nextUrl.clone();
+      url.pathname = user ? "/dashboard" : "/";
+      return NextResponse.redirect(url);
+    }
+
+    supabaseResponse.cookies.delete("just_registered");
+  }
+
   if (
     protectedRoutes.some((path) => request.nextUrl.pathname.startsWith(path)) &&
     !user
