@@ -6,10 +6,12 @@ import SignupSection from "@/components/Signup/SignupSection";
 import Footer from "@/components/Footer/Footer";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
+import useAuth from "@/hooks/useAuth";
 
 export default function HomePage() {
   const router = useRouter();
   const signupRef = useRef(null);
+  const { user } = useAuth();
 
   return (
     <main>
@@ -23,7 +25,7 @@ export default function HomePage() {
           signupRef.current?.scrollIntoView({ behavior: "smooth" })
         }
       />
-      <SignupSection ref={signupRef} id="signup" />
+      {!user && <SignupSection ref={signupRef} id="signup" />}
       <Footer />
     </main>
   );

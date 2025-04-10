@@ -1,32 +1,27 @@
 "use client";
 
-import { useState } from "react";
 import CheckedIcon from "@/assets/icons/checked.svg";
 import UncheckedIcon from "@/assets/icons/unchecked.svg";
 import "./Checkbox.css";
 
 export default function Checkbox({
   label,
-  checked,
+  checked = false,
   onChange,
   variant = "default",
 }) {
-  const [isChecked, setIsChecked] = useState(checked);
-
   const handleToggle = () => {
-    const newChecked = !isChecked;
-    setIsChecked(newChecked);
-    onChange(newChecked);
+    onChange(!checked);
   };
 
   return (
     <div className={`custom-checkbox ${variant}`} onClick={handleToggle}>
-      {isChecked ? (
+      {checked ? (
         <CheckedIcon className={`checkbox-icon ${variant}`} />
       ) : (
         <UncheckedIcon className={`checkbox-icon ${variant}`} />
       )}
-      <span className={`checkbox-label ${variant}`}>{label}</span>
+      {label && <span className={`checkbox-label ${variant}`}>{label}</span>}
     </div>
   );
 }

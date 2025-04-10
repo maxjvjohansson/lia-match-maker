@@ -1,0 +1,114 @@
+.profile-card {
+  width: 100%;
+  display: flex;
+  padding: var(--gap-m, 1rem);
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 0.25rem;
+  border: 0.5px solid var(--black);
+  margin-bottom: var(--gap-m);
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.profile-header h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.profile-profession {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  margin-bottom: var(--gap-m);
+  text-align: left;
+  align-self: flex-start;
+}
+
+.profile-icons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mobile-icons {
+  margin-left: auto;
+}
+
+.desktop-icons {
+  display: none;
+}
+
+.like-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.profile-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-s);
+}
+
+.tech-badge {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.05rem;
+  border: 0.5px solid var(--black);
+}
+
+@media (min-width: 768px) {
+  .profile-card {
+    width: 25rem;
+    align-items: flex-start;
+  }
+
+  .profile-header {
+    justify-content: flex-start;
+  }
+
+  .profile-header h3 {
+    font-size: 1.875rem;
+    font-weight: 400;
+    line-height: 2rem;
+    letter-spacing: 0.05rem;
+  }
+
+  .profile-profession {
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1.65rem;
+    letter-spacing: 0.025rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .mobile-icons {
+    display: none;
+  }
+
+  .desktop-icons {
+    display: flex;
+    margin-top: 0.5rem;
+    margin-bottom: 5rem;
+  }
+
+  .profile-tech {
+    gap: var(--gap-m);
+    margin-bottom: var(--gap-m);
+  }
+}
