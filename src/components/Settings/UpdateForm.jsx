@@ -1,253 +1,365 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import supabase from "@/utils/supabase/client";
+import useAuth from "@/hooks/useAuth";
 import InputField from "../Signup/Form/InputField";
 import FormMessage from "../Signup/Form/FormMessage";
 import Button from "@/components/Button/Button";
-import "./UpdateForm.css";
 import FormButton from "../Button/FormButton";
+import "./UpdateForm.css";
 
 export default function UpdateForm() {
-  // Form state
-  const [role, setRole] = useState("company");
-  const [profession, setProfession] = useState("");
-  const [selectedTechs, setSelectedTechs] = useState([]);
-  const [companyName, setCompanyName] = useState("");
+  const { user } = useAuth();
+  const router = useRouter();
+  const MAX_TECH_SELECTIONS = 6;
+
+  const [role, setRole] = useState(null);
+  const [profileId, setProfileId] = useState(null);
+
   const [studentName, setStudentName] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [professions, setProfessions] = useState([]);
+  const [technologies, setTechnologies] = useState({});
+  const [selectedProfessionIds, setSelectedProfessionIds] = useState([]);
+  const [visibleTechPickers, setVisibleTechPickers] = useState([]);
+  const [selectedTechs, setSelectedTechs] = useState([]);
+
   const [formMessage, setFormMessage] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleRoleChange = (newRole) => {
-    setRole(newRole);
-    setProfession("");
-    setSelectedTechs([]);
-    setFormMessage("");
+  useEffect(() => {
+    if (!user) return;
+
+    setEmail(user.email);
+    const role = user.user_metadata.role;
+    setRole(role);
+
+    const fetchInitialData = async () => {
+      try {
+        const { data: fetchedProfessions } = await supabase
+          .from("professions")
+          .select("*");
+        setProfessions(fetchedProfessions || []);
+
+        const { data: profile, error: profileError } = await supabase
+          .from(role === "student" ? "students" : "companies")
+          .select("*")
+          .eq("user_id", user.id)
+          .single();
+
+        if (profileError || !profile) {
+          console.error("Failed to fetch profile:", profileError?.message);
+          setFormMessage("Kunde inte hämta din profil.");
+          return;
+        }
+
+        setProfileId(profile.id);
+
+        if (role === "student") {
+          setStudentName(profile.name);
+          setWebsite(profile.website || "");
+          setSelectedProfessionIds([profile.profession_id]);
+          setVisibleTechPickers([profile.profession_id]);
+        } else {
+          setCompanyName(profile.name);
+          const { data: profs } = await supabase
+            .from("company_professions")
+            .select("profession_id")
+            .eq("company_id", profile.id);
+          const profIds = profs.map((p) => p.profession_id);
+          setSelectedProfessionIds(profIds);
+          setVisibleTechPickers(profIds);
+        }
+
+        const techs = await fetchTechLinks(role, profile.id);
+        setSelectedTechs(techs);
+      } catch (err) {
+        console.error("Initialization error:", err.message);
+        setFormMessage("Ett fel uppstod vid laddning.");
+      }
+    };
+
+    fetchInitialData();
+  }, [user]);
+
+  useEffect(() => {
+    const fetchTechnologies = async (professionId) => {
+      if (!professionId || technologies[professionId]) return;
+
+      try {
+        const { data, error } = await supabase
+          .from("technologies")
+          .select("*")
+          .eq("profession_id", professionId);
+
+        if (error) throw error;
+
+        setTechnologies((prev) => ({
+          ...prev,
+          [professionId]: data || [],
+        }));
+      } catch (error) {
+        console.error("Failed to fetch technologies:", error.message);
+        setFormMessage("Kunde inte ladda tekniker.");
+      }
+    };
+
+    selectedProfessionIds.forEach((id) => fetchTechnologies(id));
+  }, [selectedProfessionIds, technologies]);
+
+  const fetchTechLinks = async (role, id) => {
+    const table =
+      role === "student" ? "student_technologies" : "company_technologies";
+
+    const profileKey = role === "student" ? "student_id" : "company_id";
+
+    const { data, error } = await supabase
+      .from(table)
+      .select(
+        `
+        technology_id,
+        technology:technologies (
+          name,
+          profession_id
+        )
+      `
+      )
+      .eq(profileKey, id);
+
+    if (error) {
+      console.error("Failed to fetch tech links:", error.message);
+      return [];
+    }
+
+    return data.map((item) => ({
+      id: item.technology_id,
+      name: item.technology.name,
+      professionId: item.technology.profession_id,
+    }));
   };
 
-  const toggleProfession = (professionName) => {
-    setProfession((prev) => (prev === professionName ? "" : professionName));
+  const toggleProfession = (professionId) => {
+    if (role === "student") {
+      setSelectedProfessionIds([professionId]);
+      setVisibleTechPickers([professionId]);
+    } else {
+      const isSelected = selectedProfessionIds.includes(professionId);
+      const updated = isSelected
+        ? selectedProfessionIds.filter((id) => id !== professionId)
+        : [...selectedProfessionIds, professionId];
+
+      setSelectedProfessionIds(updated);
+      setVisibleTechPickers(updated);
+      setSelectedTechs((prev) =>
+        prev.filter((t) => updated.includes(t.professionId))
+      );
+    }
   };
 
-  const toggleTech = (techId) => {
-    setSelectedTechs((prev) =>
-      prev.includes(techId)
-        ? prev.filter((id) => id !== techId)
-        : [...prev, techId]
-    );
-  };
+  const toggleTech = (techId, professionId, techName) => {
+    const isSelected = selectedTechs.some((t) => t.id === techId);
 
-  const resetForm = () => {
-    setCompanyName("");
-    setStudentName("");
-    setWebsite("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setProfession("");
-    setSelectedTechs([]);
-    setFormMessage("");
-  };
-
-  const handleCheckboxChange = (value) => {
-    setIsChecked(value);
+    if (isSelected) {
+      setSelectedTechs((prev) => prev.filter((t) => t.id !== techId));
+    } else {
+      if (selectedTechs.length >= MAX_TECH_SELECTIONS) {
+        setFormMessage(`Max ${MAX_TECH_SELECTIONS} tekniker.`);
+        return;
+      }
+      setSelectedTechs((prev) => [
+        ...prev,
+        { id: techId, professionId, name: techName },
+      ]);
+    }
   };
 
   const handleSubmit = async (e) => {
+    if (!profileId) {
+      console.error("Missing profileId – cannot update techs.");
+      setFormMessage(
+        "Kunde inte uppdatera tekniker. Ladda om sidan och försök igen."
+      );
+      setLoading(false);
+      return;
+    }
     e.preventDefault();
-
-    if (!isChecked) {
-      setFormMessage("Du måste godkänna användarvillkoren.");
-      return;
-    }
-
-    if (
-      !email ||
-      !password ||
-      !confirmPassword ||
-      (role === "company" && (!companyName || !profession)) ||
-      (role === "student" && (!studentName || !website || !profession))
-    ) {
-      setFormMessage("Vänligen fyll i alla obligatoriska fält");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setFormMessage("Lösenorden matchar inte");
-      return;
-    }
-
-    if (password.length < 6) {
-      setFormMessage("Lösenordet måste vara minst 6 tecken");
-      return;
-    }
-
-    const formData = {
-      role,
-      email,
-      password,
-      name: role === "company" ? companyName : studentName,
-      website: role === "student" ? website : null,
-      profession,
-      technologies: selectedTechs,
-      termsAccepted: isChecked,
-    };
+    setFormMessage("");
+    setLoading(true);
 
     try {
-      const success = await signup(formData);
-      if (success) {
-        resetForm();
-        setFormMessage(message || "Registrering lyckades!");
-      } else {
-        setFormMessage(message);
+      const profileTable = role === "student" ? "students" : "companies";
+      const profileUpdate =
+        role === "student"
+          ? {
+              name: studentName,
+              website,
+              profession_id: selectedProfessionIds[0],
+            }
+          : { name: companyName };
+
+      const { error: updateError } = await supabase
+        .from(profileTable)
+        .update(profileUpdate)
+        .eq("user_id", user.id);
+
+      if (updateError) {
+        console.error("Failed to update profile:", updateError.message);
+        throw updateError;
       }
-    } catch (error) {
-      console.error("Form submission error:", error);
-      setFormMessage("Ett tekniskt fel inträffade. Försök igen senare.");
+
+      if (role === "company") {
+        const { error: deleteProfError } = await supabase
+          .from("company_professions")
+          .delete()
+          .eq("company_id", profileId);
+
+        if (deleteProfError) throw deleteProfError;
+
+        const newProfessions = selectedProfessionIds.map((id) => ({
+          company_id: profileId,
+          profession_id: id,
+        }));
+
+        const { error: insertProfError } = await supabase
+          .from("company_professions")
+          .insert(newProfessions);
+
+        if (insertProfError) throw insertProfError;
+      }
+
+      const techTable =
+        role === "student" ? "student_technologies" : "company_technologies";
+      const profileKey = role === "student" ? "student_id" : "company_id";
+
+      await supabase.from(techTable).delete().eq(profileKey, profileId);
+
+      if (selectedTechs.length > 0) {
+        const techLinks = selectedTechs.map((t) => ({
+          [profileKey]: profileId,
+          technology_id: t.id,
+        }));
+        const { error: techError } = await supabase
+          .from(techTable)
+          .insert(techLinks);
+        if (techError) {
+          console.error("Failed to insert tech links:", techError.message);
+          throw techError;
+        }
+      }
+
+      setFormMessage("Profilen har uppdaterats!");
+    } catch (err) {
+      setFormMessage("Kunde inte spara ändringar.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form className="signup-form" id="signupForm" onSubmit={handleSubmit}>
-      <div className="role-toggle">
-        <Button
-          text="Företag"
-          onClick={() => handleRoleChange("company")}
-          variant="block-primary"
-          type="button"
+    <form className="signup-form" onSubmit={handleSubmit}>
+      {role === "student" ? (
+        <InputField
+          label="Namn*"
+          type="text"
+          value={studentName}
+          onChange={(e) => setStudentName(e.target.value)}
         />
-        <Button
-          text="Student"
-          onClick={() => handleRoleChange("student")}
-          variant="block-primary"
-          type="button"
+      ) : (
+        <InputField
+          label="Företagsnamn*"
+          type="text"
+          value={companyName}
+          onChange={(e) => setCompanyName(e.target.value)}
         />
-      </div>
+      )}
 
       <InputField
-        label={role === "company" ? "Företagsnamn*" : "Namn*"}
-        type="text"
-        value={role === "company" ? companyName : studentName}
-        onChange={(e) =>
-          role === "company"
-            ? setCompanyName(e.target.value)
-            : setStudentName(e.target.value)
-        }
-        placeholder={
-          role === "company" ? "Ex. Office AB" : "För- och efternamn"
-        }
-        name="name"
-        autoComplete="autocomplete"
-      />
-
-      <InputField
-        label="E-postadress*"
+        label="E-postadress"
         type="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Ex. info@office.com"
-        name="email"
-        autoComplete="autocomplete"
+        disabled
+        onChange={() => {}}
       />
 
       {role === "student" && (
         <InputField
-          label="Hemsidan*"
+          label="Hemsida/portfolio"
           type="text"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
-          placeholder="Webplats till din portfolio eller Github"
         />
       )}
 
-      <InputField
-        label="Lösenord*"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Minst 6 tecken"
-        autoComplete="new-password"
-        name="new-password"
-      />
-
-      <InputField
-        label="Bekräfta lösenord*"
-        type="password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        placeholder="Upprepa lösenord"
-        autoComplete="new-password"
-        name="confirm-password"
-      />
       <div className="profession-wrapper">
-        <label htmlFor="profession-web" className="profession-label">
+        <label className="profession-label">
           {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
         </label>
         <div className="profession-toggle">
-          <input
-            type="radio"
-            id="profession-web"
-            name="profession"
-            value="web"
-            checked={profession === "web"}
-            onChange={() => toggleProfession("web")}
-            className="hidden-radio"
-          />
-          <FormButton
-            text="Webbutvecklare"
-            onClick={() => toggleProfession("web")}
-            variant={profession === "web" ? "role selected" : "role"}
-            type="button"
-          />
-
-          <input
-            type="radio"
-            id="profession-design"
-            name="profession"
-            value="design"
-            checked={profession === "design"}
-            onChange={() => toggleProfession("design")}
-            className="hidden-radio"
-          />
-          <FormButton
-            text="Digital Designer"
-            onClick={() => toggleProfession("design")}
-            variant={profession === "design" ? "role selected" : "role"}
-            type="button"
-          />
+          {professions.map((prof) => (
+            <FormButton
+              key={prof.id}
+              text={prof.name}
+              onClick={() => toggleProfession(prof.id)}
+              variant={
+                selectedProfessionIds.includes(prof.id)
+                  ? "role selected"
+                  : "role"
+              }
+              type="button"
+            />
+          ))}
         </div>
       </div>
 
-      {profession && (
-        <>
-          <div className="tech-picker">
-            <label>
-              {role === "company" ? "Vi söker:" : "Jag vill gärna jobba med:"}
-            </label>
-            {techLoading ? (
-              <p>Laddar teknologier...</p>
-            ) : technologies.length > 0 ? (
-              technologies.map(({ id, name }) => (
-                <FormButton
-                  key={id}
-                  text={name}
-                  onClick={() => toggleTech(id)}
-                  variant={
-                    selectedTechs.includes(id) ? "tech selected" : "tech"
-                  }
-                  type="button"
-                />
-              ))
-            ) : (
-              <p>Inga teknologier hittades för denna yrkesgrupp.</p>
-            )}
-          </div>
-        </>
+      {selectedTechs.length > 0 && (
+        <div className="selected-techs-count">
+          <p>
+            Valda tekniker: {selectedTechs.length}/{MAX_TECH_SELECTIONS}
+          </p>
+        </div>
       )}
 
+      {visibleTechPickers.map((professionId) => (
+        <div key={`tech-picker-${professionId}`} className="tech-picker">
+          <label>
+            {role === "company"
+              ? `Vi söker följande kompetenser (${
+                  professions.find((p) => p.id === professionId)?.name
+                }):`
+              : "Jag vill gärna jobba med:"}
+          </label>
+          {(technologies[professionId] || []).map((tech) => (
+            <FormButton
+              key={tech.id}
+              text={tech.name}
+              onClick={() => toggleTech(tech.id, professionId, tech.name)}
+              variant={
+                selectedTechs.some((t) => t.id === tech.id)
+                  ? "tech selected"
+                  : "tech"
+              }
+              type="button"
+              disabled={
+                !selectedTechs.some((t) => t.id === tech.id) &&
+                selectedTechs.length >= MAX_TECH_SELECTIONS
+              }
+            />
+          ))}
+        </div>
+      ))}
+
       <div className="update-submit-container">
-        <Button type="submit" text="Spara ändringar" variant="primary" />
+        <Button
+          type="submit"
+          text="Spara ändringar"
+          variant="primary"
+          disabled={loading}
+        />
       </div>
 
       {formMessage && <FormMessage message={formMessage} />}

@@ -345,6 +345,8 @@ export default function SignupForm() {
 
       if (signInError) throw signInError;
 
+      document.cookie = "just_registered=true; path=/; max-age=60";
+
       setFormMessage("Registrering lyckades! Omdirigerar...");
       router.push("/confirmation");
     } catch (error) {

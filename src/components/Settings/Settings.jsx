@@ -4,9 +4,47 @@ import "./Settings.css";
 import Button from "../Button/Button";
 import UpdateForm from "./UpdateForm";
 import { useRouter } from "next/navigation";
+import supabase from "@/utils/supabase/client";
 
 export default function Settings() {
   const router = useRouter();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/");
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        console.error("User not logged in");
+        return;
+      }
+
+      const response = await fetch("/api/delete-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Delete failed:", data.error);
+        return;
+      }
+      await supabase.auth.signOut();
+      router.push("/");
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
+  };
 
   return (
     <section className="settings-section">
@@ -25,8 +63,12 @@ export default function Settings() {
         </div>
         <h1 className="settings-title-thin">INSTÄLLNINGAR</h1>
         <div className="btn-container-settings">
-          <Button text="LOGGA UT" variant="secondary" />
-          <Button text="RADERA KONTO" variant="secondary" />
+          <Button text="LOGGA UT" variant="secondary" onClick={handleLogout} />
+          <Button
+            text="RADERA KONTO"
+            variant="secondary"
+            onClick={handleDeleteAccount}
+          />
         </div>
       </div>
       <UpdateForm />

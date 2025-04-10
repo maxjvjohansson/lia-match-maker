@@ -1,6 +1,6 @@
 .hero {
   width: 100%;
-  height: calc(100vh - 3.6875rem);
+  height: calc(100dvh - 3.6875rem);
   align-self: stretch;
   color: var(--white);
   background-color: var(--primary-red);
