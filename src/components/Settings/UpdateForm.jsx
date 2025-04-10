@@ -32,7 +32,6 @@ export default function UpdateForm() {
   const [formMessage, setFormMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 1. Initiera data
   useEffect(() => {
     if (!user) return;
 
@@ -42,13 +41,11 @@ export default function UpdateForm() {
 
     const fetchInitialData = async () => {
       try {
-        // Ladda alla professions
         const { data: fetchedProfessions } = await supabase
           .from("professions")
           .select("*");
         setProfessions(fetchedProfessions || []);
 
-        // Hämta profil
         const { data: profile, error: profileError } = await supabase
           .from(role === "student" ? "students" : "companies")
           .select("*")
@@ -90,7 +87,6 @@ export default function UpdateForm() {
     fetchInitialData();
   }, [user]);
 
-  // 2. Hämta tekniker baserat på professions
   useEffect(() => {
     const fetchTechnologies = async (professionId) => {
       if (!professionId || technologies[professionId]) return;
@@ -151,7 +147,6 @@ export default function UpdateForm() {
     if (role === "student") {
       setSelectedProfessionIds([professionId]);
       setVisibleTechPickers([professionId]);
-      setSelectedTechs([]);
     } else {
       const isSelected = selectedProfessionIds.includes(professionId);
       const updated = isSelected
@@ -215,6 +210,26 @@ export default function UpdateForm() {
       if (updateError) {
         console.error("Failed to update profile:", updateError.message);
         throw updateError;
+      }
+
+      if (role === "company") {
+        const { error: deleteProfError } = await supabase
+          .from("company_professions")
+          .delete()
+          .eq("company_id", profileId);
+
+        if (deleteProfError) throw deleteProfError;
+
+        const newProfessions = selectedProfessionIds.map((id) => ({
+          company_id: profileId,
+          profession_id: id,
+        }));
+
+        const { error: insertProfError } = await supabase
+          .from("company_professions")
+          .insert(newProfessions);
+
+        if (insertProfError) throw insertProfError;
       }
 
       const techTable =
