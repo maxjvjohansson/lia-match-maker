@@ -16,7 +16,7 @@ export default function ProfileSection() {
   const [currentPage, setCurrentPage] = useState(1);
   const profilesPerPage = 9;
   const searchParams = useSearchParams();
-  const viewParam = searchParams.get("view");
+  const [viewParam, setViewParam] = useState(null);
 
   const [selectedProfession, setSelectedProfession] = useState(null);
   const [selectedTechnologies, setSelectedTechnologies] = useState([]);
@@ -29,13 +29,19 @@ export default function ProfileSection() {
   const { user } = useAuth();
 
   useEffect(() => {
+    const param = searchParams.get("view");
+    setViewParam(param);
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!viewParam && !user) return;
+
     if (viewParam === "student") {
       setIsStudent(true);
     } else if (viewParam === "company") {
       setIsStudent(false);
-    } else {
-      if (user?.user_metadata?.role === "student") setIsStudent(false);
-      if (user?.user_metadata?.role === "company") setIsStudent(true);
+    } else if (user) {
+      setIsStudent(user.user_metadata?.role === "company");
     }
   }, [viewParam, user]);
 
