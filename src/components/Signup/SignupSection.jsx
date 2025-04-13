@@ -2,7 +2,7 @@ import "./SignupSection.css";
 import SignupForm from "./SignupForm";
 import { forwardRef } from "react";
 
-const SignupSection = forwardRef((props, ref) => {
+const SignupSection = forwardRef(({ defaultRole }, ref) => {
   return (
     <section className="signup-section" id="signup" ref={ref}>
       <div className="signup-heading">
@@ -12,7 +12,7 @@ const SignupSection = forwardRef((props, ref) => {
           Har du redan anmält dig? <a href="/login">Logga in</a> här.
         </p>
       </div>
-      <SignupForm />
+      <SignupForm defaultRole={defaultRole} />
     </section>
   );
 });
