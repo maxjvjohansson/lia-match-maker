@@ -380,6 +380,8 @@ export default function SignupForm() {
 
       <InputField
         label={role === "company" ? "Företagsnamn*" : "Namn*"}
+        name={role === "company" ? "companyName" : "studentName"}
+        id={role === "company" ? "companyName" : "studentName"}
         type="text"
         value={role === "company" ? companyName : studentName}
         onChange={(e) =>
@@ -394,16 +396,20 @@ export default function SignupForm() {
 
       <InputField
         label="E-postadress*"
+        name="email"
+        id="email"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Ex. info@office.com"
-        autoComplete="true"
+        autoComplete="email"
       />
 
       {role === "student" && (
         <InputField
           label="Länk*"
+          name="website"
+          id="website"
           type="text"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
@@ -417,6 +423,8 @@ export default function SignupForm() {
 
       <InputField
         label="Lösenord*"
+        name="password"
+        id="password"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -425,6 +433,8 @@ export default function SignupForm() {
 
       <InputField
         label="Bekräfta lösenord*"
+        name="confirmPassword"
+        id="confirmPassword"
         type="password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -432,7 +442,7 @@ export default function SignupForm() {
       />
 
       <div className="profession-wrapper">
-        <label htmlFor="profession-web" className="profession-label">
+        <label className="profession-label">
           {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
         </label>
         <div className="profession-toggle">
