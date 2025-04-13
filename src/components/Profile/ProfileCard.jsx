@@ -69,7 +69,11 @@ export default function ProfileCard({
             onClick={toggleLike}
             disabled={loading}
           >
-            {isLiked ? <HeartFilledIcon /> : <HeartIcon />}
+            {isLiked ? (
+              <HeartFilledIcon />
+            ) : (
+              <HeartIcon className="heart-icon" />
+            )}
           </button>
         </div>
       </div>

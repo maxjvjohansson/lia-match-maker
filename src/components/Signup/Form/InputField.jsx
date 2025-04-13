@@ -6,22 +6,27 @@ export default function InputField({
   placeholder,
   autoComplete,
   name,
+  id,
   required = true,
 }) {
+  const inputId = id || name;
+
   return (
     <div className="input-wrapper">
-      <label htmlFor={name} className="input-label">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={inputId} className="input-label">
+          {label}
+        </label>
+      )}
       <input
-        id={name}
+        id={inputId}
+        name={name}
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
         required={required}
         autoComplete={autoComplete}
-        name={name}
       />
     </div>
   );

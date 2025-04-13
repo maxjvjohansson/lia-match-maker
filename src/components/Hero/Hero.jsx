@@ -10,11 +10,19 @@ export default function Hero({ scrollToSignup }) {
   const router = useRouter();
   const { user } = useAuth();
 
-  const handleClick = () => {
+  const handleCompanyClick = () => {
     if (user) {
-      router.push("/dashboard");
+      router.push("/dashboard?view=company");
     } else {
-      scrollToSignup();
+      scrollToSignup("company");
+    }
+  };
+
+  const handleStudentClick = () => {
+    if (user) {
+      router.push("/dashboard?view=student");
+    } else {
+      scrollToSignup("student");
     }
   };
 
@@ -43,7 +51,7 @@ export default function Hero({ scrollToSignup }) {
               showArrow
               iconDirection="right"
               iconColor="auto"
-              onClick={handleClick}
+              onClick={handleCompanyClick}
             />
             <Button
               variant="primary"
@@ -51,7 +59,7 @@ export default function Hero({ scrollToSignup }) {
               showArrow
               iconDirection="right"
               iconColor="auto"
-              onClick={handleClick}
+              onClick={handleStudentClick}
             />
           </div>
         </div>

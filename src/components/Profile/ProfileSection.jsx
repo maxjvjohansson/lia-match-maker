@@ -9,11 +9,14 @@ import useProfiles from "@/hooks/useProfiles";
 import { useState, useEffect, useCallback } from "react";
 import useAuth from "@/hooks/useAuth";
 import supabase from "@/utils/supabase/client";
+import { useSearchParams } from "next/navigation";
 
 export default function ProfileSection() {
   const [isStudent, setIsStudent] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const profilesPerPage = 9;
+  const searchParams = useSearchParams();
+  const [viewParam, setViewParam] = useState(null);
 
   const [selectedProfession, setSelectedProfession] = useState(null);
   const [selectedTechnologies, setSelectedTechnologies] = useState([]);
@@ -24,6 +27,23 @@ export default function ProfileSection() {
     isStudent ? "student" : "company"
   );
   const { user } = useAuth();
+
+  useEffect(() => {
+    const param = searchParams.get("view");
+    setViewParam(param);
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!viewParam && !user) return;
+
+    if (viewParam === "student") {
+      setIsStudent(true);
+    } else if (viewParam === "company") {
+      setIsStudent(false);
+    } else if (user) {
+      setIsStudent(user.user_metadata?.role === "company");
+    }
+  }, [viewParam, user]);
 
   const fetchFavorites = useCallback(async () => {
     if (!user) return;

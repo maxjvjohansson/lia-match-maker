@@ -26,6 +26,14 @@
   color: var(--black);
 }
 
+.visually-hidden-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+}
+
 @media (min-width: 768px) {
   .custom-checkbox.filter .checkbox-icon {
     stroke: var(--white);

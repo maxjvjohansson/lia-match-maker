@@ -53,6 +53,10 @@
   z-index: 1;
 }
 
+.heart-icon {
+  stroke: var(--black);
+}
+
 .profile-tech {
   display: flex;
   flex-wrap: wrap;
