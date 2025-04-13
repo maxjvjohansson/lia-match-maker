@@ -265,6 +265,8 @@ export default function UpdateForm() {
       {role === "student" ? (
         <InputField
           label="Namn*"
+          name="studentName"
+          id="studentName"
           type="text"
           value={studentName}
           onChange={(e) => setStudentName(e.target.value)}
@@ -272,6 +274,8 @@ export default function UpdateForm() {
       ) : (
         <InputField
           label="Företagsnamn*"
+          name="companyName"
+          id="companyName"
           type="text"
           value={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
@@ -280,6 +284,8 @@ export default function UpdateForm() {
 
       <InputField
         label="E-postadress"
+        name="email"
+        id="email"
         type="email"
         value={email}
         disabled
@@ -289,6 +295,8 @@ export default function UpdateForm() {
       {role === "student" && (
         <InputField
           label="Hemsida/portfolio"
+          name="website"
+          id="website"
           type="text"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
@@ -296,10 +304,15 @@ export default function UpdateForm() {
       )}
 
       <div className="profession-wrapper">
-        <label className="profession-label">
+        <span className="profession-label" id="update-profession-group-label">
           {role === "company" ? "Vi tar emot*" : "Jag studerar*"}
-        </label>
-        <div className="profession-toggle">
+        </span>
+
+        <div
+          className="profession-toggle"
+          role="group"
+          aria-labelledby="update-profession-group-label"
+        >
           {professions.map((prof) => (
             <FormButton
               key={prof.id}
@@ -311,6 +324,7 @@ export default function UpdateForm() {
                   : "role"
               }
               type="button"
+              aria-pressed={selectedProfessionIds.includes(prof.id)}
             />
           ))}
         </div>
