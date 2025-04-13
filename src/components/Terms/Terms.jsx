@@ -8,7 +8,7 @@ export default function Terms() {
       <article>
         <h2>1. Introduktion</h2>
         <p>
-          Vi på Mingla by Yrgo värnar om din personliga integritet och
+          Vi på Mingla med Yrgo värnar om din personliga integritet och
           eftersträvar en hög nivå av dataskydd. I denna policy förklarar vi hur
           vi samlar in och använder personuppgifter samt vilka rättigheter du
           har.

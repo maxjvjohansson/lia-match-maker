@@ -55,7 +55,7 @@ export default function Login({ scrollToSignup }) {
             Varmt välkomna till
           </h1>
 
-          <div className="login-logos" role="img" aria-label="Mingla by Yrgo">
+          <div className="login-logos" role="img" aria-label="Mingla med Yrgo">
             <div className="login-mingla">
               <Image
                 src="assets/images/logo.svg"
