@@ -9,7 +9,7 @@ import FormButton from "../Button/FormButton";
 import Link from "next/link";
 import Checkbox from "../Checkbox/Checkbox";
 
-export default function SignupForm() {
+export default function SignupForm({ defaultRole = "company" }) {
   const {
     role,
     handleRoleChange,
@@ -39,7 +39,7 @@ export default function SignupForm() {
     loading,
     professions,
     MAX_TECH_SELECTIONS,
-  } = useSignupForm();
+  } = useSignupForm(defaultRole);
 
   return (
     <form className="signup-form" id="signupForm" onSubmit={handleSubmit}>

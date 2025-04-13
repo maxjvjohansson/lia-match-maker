@@ -5,27 +5,27 @@ import EventSection from "@/components/Event/EventSection";
 import SignupSection from "@/components/Signup/SignupSection";
 import Footer from "@/components/Footer/Footer";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import useAuth from "@/hooks/useAuth";
 
 export default function HomePage() {
   const router = useRouter();
   const signupRef = useRef(null);
+  const [signupRole, setSignupRole] = useState("company");
   const { user } = useAuth();
+
+  const scrollToSignup = (role) => {
+    setSignupRole(role);
+    signupRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <main>
-      <Hero
-        scrollToSignup={() =>
-          signupRef.current?.scrollIntoView({ behavior: "smooth" })
-        }
-      />
-      <EventSection
-        scrollToSignup={() =>
-          signupRef.current?.scrollIntoView({ behavior: "smooth" })
-        }
-      />
-      {!user && <SignupSection ref={signupRef} id="signup" />}
+      <Hero scrollToSignup={scrollToSignup} />
+      <EventSection scrollToSignup={scrollToSignup} />
+      {!user && (
+        <SignupSection ref={signupRef} id="signup" defaultRole={signupRole} />
+      )}
       <Footer />
     </main>
   );

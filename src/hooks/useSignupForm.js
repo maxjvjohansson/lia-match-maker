@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import supabase from "@/utils/supabase/client";
 
-export default function useSignupForm() {
+export default function useSignupForm(defaultRole = "company") {
   const router = useRouter();
   const MAX_TECH_SELECTIONS = 6;
 
-  const [role, setRole] = useState("company");
+  const [role, setRole] = useState(defaultRole);
   const [companyName, setCompanyName] = useState("");
   const [studentName, setStudentName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,6 +29,10 @@ export default function useSignupForm() {
   const [professions, setProfessions] = useState([]);
   const [technologies, setTechnologies] = useState({});
   const [selectedTechs, setSelectedTechs] = useState([]);
+
+  useEffect(() => {
+    setRole(defaultRole);
+  }, [defaultRole]);
 
   useEffect(() => {
     const fetchProfessions = async () => {
@@ -385,6 +389,5 @@ export default function useSignupForm() {
     handleCheckboxChange,
     validateForm,
     handleSubmit,
-    MAX_TECH_SELECTIONS,
   };
 }

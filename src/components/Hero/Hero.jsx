@@ -14,7 +14,7 @@ export default function Hero({ scrollToSignup }) {
     if (user) {
       router.push("/dashboard?view=company");
     } else {
-      scrollToSignup();
+      scrollToSignup("company");
     }
   };
 
@@ -22,7 +22,7 @@ export default function Hero({ scrollToSignup }) {
     if (user) {
       router.push("/dashboard?view=student");
     } else {
-      scrollToSignup();
+      scrollToSignup("student");
     }
   };
 
