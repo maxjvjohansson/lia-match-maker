@@ -518,12 +518,13 @@ export default function SignupForm() {
           checked={isChecked}
           onChange={handleCheckboxChange}
           required
+          id="terms"
+          label={
+            <>
+              Jag godkänner <Link href="/terms">användarvillkoren</Link>
+            </>
+          }
         />
-        <label>
-          <p>
-            Jag godkänner <Link href="/terms"> användarvillkoren</Link>
-          </p>
-        </label>
       </div>
 
       <div className="submit-container">
