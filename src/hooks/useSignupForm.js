@@ -389,5 +389,6 @@ export default function useSignupForm(defaultRole = "company") {
     handleCheckboxChange,
     validateForm,
     handleSubmit,
+    MAX_TECH_SELECTIONS,
   };
 }
