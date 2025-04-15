@@ -74,6 +74,10 @@
   border: 1px solid var(--primary-blue);
   color: var(--primary-blue);
   background: var(--white);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  letter-spacing: 0.0125rem;
 }
 
 .block-primary:hover {

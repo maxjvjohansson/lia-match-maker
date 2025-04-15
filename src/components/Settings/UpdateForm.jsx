@@ -28,6 +28,12 @@ export default function UpdateForm() {
     toggleTech,
     handleSubmit,
     MAX_TECH_SELECTIONS,
+    currentPassword,
+    setCurrentPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
   } = useUpdateForm();
 
   return (
@@ -53,7 +59,7 @@ export default function UpdateForm() {
       )}
 
       <InputField
-        label="E-postadress"
+        label="E-postadress*"
         name="email"
         id="email"
         type="email"
@@ -64,7 +70,7 @@ export default function UpdateForm() {
 
       {role === "student" && (
         <InputField
-          label="Hemsida/portfolio"
+          label="Hemsida/portfolio*"
           name="website"
           id="website"
           type="text"
@@ -72,6 +78,39 @@ export default function UpdateForm() {
           onChange={(e) => setWebsite(e.target.value)}
         />
       )}
+
+      <InputField
+        label="Nuvarande lösenord"
+        name="currentPassword"
+        id="currentPassword"
+        type="password"
+        value={currentPassword}
+        placeholder="Fyll i ditt nuvarande lösenord"
+        onChange={(e) => setCurrentPassword(e.target.value)}
+        required={false}
+      />
+
+      <InputField
+        label="Nytt lösenord"
+        name="newPassword"
+        id="newPassword"
+        type="password"
+        value={newPassword}
+        placeholder="Minst 6 tecken"
+        onChange={(e) => setNewPassword(e.target.value)}
+        required={false}
+      />
+
+      <InputField
+        label="Bekräfta nytt lösenord"
+        name="confirmPassword"
+        id="confirmPassword"
+        type="password"
+        value={confirmPassword}
+        placeholder="Minst 6 tecken"
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required={false}
+      />
 
       <div className="profession-wrapper">
         <span className="profession-label" id="update-profession-group-label">

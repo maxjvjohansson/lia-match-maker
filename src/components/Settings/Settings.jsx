@@ -15,6 +15,12 @@ export default function Settings() {
   };
 
   const handleDeleteAccount = async () => {
+    const confirmed = window.confirm(
+      "Är du säker på att du vill radera ditt konto? Denna åtgärd går inte att ångra."
+    );
+
+    if (!confirmed) return;
+
     try {
       const {
         data: { session },
@@ -39,6 +45,7 @@ export default function Settings() {
         console.error("Delete failed:", data.error);
         return;
       }
+
       await supabase.auth.signOut();
       router.push("/");
     } catch (error) {

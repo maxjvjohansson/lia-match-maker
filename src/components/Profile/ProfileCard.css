@@ -51,9 +51,11 @@
   border: none;
   cursor: pointer;
   z-index: 1;
+  color: var(--black);
 }
 
 .heart-icon {
+  color: var(--black);
   stroke: var(--black);
 }
 

@@ -9,6 +9,8 @@
 }
 
 .hero-content {
+  position: relative;
+  bottom: 2rem;
   padding: 0 var(--padding-m, 1rem);
 }
 
@@ -90,6 +92,10 @@
     font-weight: 400;
     line-height: 1.65rem;
     letter-spacing: 0.025rem;
+  }
+
+  .hero-cta {
+    margin-top: var(--gap-xl);
   }
 
   .signup-text {
