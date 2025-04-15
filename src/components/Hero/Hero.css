@@ -73,7 +73,7 @@
 
 @media (min-width: 768px) {
   .hero-content {
-    padding: 0 2rem;
+    padding: 2rem 2rem 0 2rem;
   }
 
   .hero-heading {
