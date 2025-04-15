@@ -12,7 +12,8 @@ import supabase from "@/utils/supabase/client";
 import { useSearchParams } from "next/navigation";
 
 export default function ProfileSection() {
-  const [isStudent, setIsStudent] = useState(true);
+  const [profileType, setProfileType] = useState(null);
+  const [isStudent, setIsStudent] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const profilesPerPage = 9;
   const searchParams = useSearchParams();
@@ -23,10 +24,9 @@ export default function ProfileSection() {
   const [showFavorites, setShowFavorites] = useState(false);
   const [favorites, setFavorites] = useState([]);
 
-  const { profiles, loading, error } = useProfiles(
-    isStudent ? "student" : "company"
-  );
   const { user } = useAuth();
+
+  const { profiles, loading, error } = useProfiles(profileType);
 
   useEffect(() => {
     const param = searchParams.get("view");
@@ -34,35 +34,49 @@ export default function ProfileSection() {
   }, [searchParams]);
 
   useEffect(() => {
-    if (!viewParam && !user) return;
+    if (!viewParam && !user) {
+      return;
+    }
+
+    let shouldShowStudentProfiles;
 
     if (viewParam === "student") {
-      setIsStudent(true);
+      shouldShowStudentProfiles = true;
     } else if (viewParam === "company") {
-      setIsStudent(false);
+      shouldShowStudentProfiles = false;
     } else if (user) {
-      setIsStudent(user.user_metadata?.role === "company");
+      shouldShowStudentProfiles = user.user_metadata?.role === "company";
+    } else {
+      shouldShowStudentProfiles = true;
     }
+
+    setIsStudent(shouldShowStudentProfiles);
+
+    const newProfileType = shouldShowStudentProfiles ? "student" : "company";
+    setProfileType(newProfileType);
+
+    setCurrentPage(1);
   }, [viewParam, user]);
 
   const fetchFavorites = useCallback(async () => {
-    if (!user) return;
+    if (!user || profileType === null) return;
+
     const { data, error } = await supabase
       .from("likes")
       .select("liked_profile_id")
       .eq("user_id", user.id)
-      .eq("profile_type", isStudent ? "student" : "company");
+      .eq("profile_type", profileType);
 
     if (!error) {
       setFavorites(data.map((like) => like.liked_profile_id));
     }
-  }, [user, isStudent]);
+  }, [user, profileType]);
 
   useEffect(() => {
     fetchFavorites();
   }, [fetchFavorites]);
 
-  let filteredProfiles = profiles;
+  let filteredProfiles = profiles || [];
 
   if (selectedTechnologies.length > 0) {
     filteredProfiles = filteredProfiles.filter((profile) =>
@@ -86,6 +100,14 @@ export default function ProfileSection() {
     setCurrentPage(page);
   };
 
+  const handleToggleProfileType = (showStudents) => {
+    setIsStudent(showStudents);
+    setProfileType(showStudents ? "student" : "company");
+    setCurrentPage(1);
+  };
+
+  const isLoading = loading || profileType === null || isStudent === null;
+
   return (
     <section className="profile-section">
       <div className="profile-heading">
@@ -95,18 +117,12 @@ export default function ProfileSection() {
           <Button
             variant={!isStudent ? "primary" : "secondary"}
             text="FÖRETAG"
-            onClick={() => {
-              setIsStudent(false);
-              setCurrentPage(1);
-            }}
+            onClick={() => handleToggleProfileType(false)}
           />
           <Button
             variant={isStudent ? "primary" : "secondary"}
             text="STUDENTER"
-            onClick={() => {
-              setIsStudent(true);
-              setCurrentPage(1);
-            }}
+            onClick={() => handleToggleProfileType(true)}
           />
         </div>
       </div>
@@ -123,23 +139,31 @@ export default function ProfileSection() {
         setSelectedSkills={setSelectedTechnologies}
         showFavorites={showFavorites}
         setShowFavorites={setShowFavorites}
+        isStudent={isStudent}
       />
 
-      {loading && <p>Laddar profiler...</p>}
-      {error && <p>Kunde inte ladda profiler.</p>}
-
-      <div className="profiles-container">
-        {currentProfiles.map((profile) => (
-          <ProfileCard
-            key={profile.id}
-            profile={profile}
-            role={isStudent ? "student" : "company"}
-            favorites={favorites}
-            onLikeToggle={fetchFavorites}
-            user={user}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <p>Laddar profiler...</p>
+      ) : error ? (
+        <p>Kunde inte ladda profiler: {error}</p>
+      ) : (
+        <div className="profiles-container">
+          {currentProfiles.length === 0 ? (
+            <p>Inga profiler matchar dina filter.</p>
+          ) : (
+            currentProfiles.map((profile) => (
+              <ProfileCard
+                key={profile.id}
+                profile={profile}
+                role={profileType}
+                favorites={favorites}
+                onLikeToggle={fetchFavorites}
+                user={user}
+              />
+            ))
+          )}
+        </div>
+      )}
 
       {filteredProfiles.length > profilesPerPage && (
         <Pagination
