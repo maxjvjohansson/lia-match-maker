@@ -68,7 +68,7 @@
   border-radius: 0.25rem 0.25rem;
   border: 1px solid var(--grey-50);
   background: var(--grey-60);
-  margin-bottom: var(--gap-s);
+  margin: var(--gap-s) 0;
 }
 
 .password-wrapper {
