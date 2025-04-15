@@ -10,7 +10,7 @@
 
 .hero-content {
   position: relative;
-  bottom: 2rem;
+  bottom: 4rem;
   padding: 0 var(--padding-m, 1rem);
 }
 
@@ -73,7 +73,7 @@
 
 @media (min-width: 768px) {
   .hero-content {
-    padding: 0 2rem;
+    padding: 2rem 2rem 0 2rem;
   }
 
   .hero-heading {
