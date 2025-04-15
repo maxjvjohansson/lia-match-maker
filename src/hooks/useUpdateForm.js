@@ -16,6 +16,9 @@ export default function useUpdateForm() {
   const [companyName, setCompanyName] = useState("");
   const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [professions, setProfessions] = useState([]);
   const [technologies, setTechnologies] = useState({});
@@ -183,6 +186,41 @@ export default function useUpdateForm() {
         return;
       }
 
+      if (newPassword || confirmPassword || currentPassword) {
+        if (!currentPassword || !newPassword || !confirmPassword) {
+          setFormMessage("Alla lösenordsfält måste fyllas i.");
+          setLoading(false);
+          return;
+        }
+
+        if (newPassword !== confirmPassword) {
+          setFormMessage("Lösenorden matchar inte.");
+          setLoading(false);
+          return;
+        }
+
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password: currentPassword,
+        });
+
+        if (signInError) {
+          setFormMessage("Fel nuvarande lösenord.");
+          setLoading(false);
+          return;
+        }
+
+        const { error: pwError } = await supabase.auth.updateUser({
+          password: newPassword,
+        });
+
+        if (pwError) {
+          setFormMessage("Kunde inte uppdatera lösenordet.");
+          setLoading(false);
+          return;
+        }
+      }
+
       const profileTable = role === "student" ? "students" : "companies";
       const profileUpdate =
         role === "student"
@@ -235,6 +273,10 @@ export default function useUpdateForm() {
       }
 
       setFormMessage("Profilen har uppdaterats!");
+
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     } catch (err) {
       console.error("Error updating profile:", err.message);
       setFormMessage("Kunde inte spara ändringar.");
@@ -263,5 +305,11 @@ export default function useUpdateForm() {
     toggleTech,
     handleSubmit,
     MAX_TECH_SELECTIONS,
+    currentPassword,
+    setCurrentPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
   };
 }
