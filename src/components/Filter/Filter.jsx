@@ -16,6 +16,7 @@ export default function Filter({
   setSelectedSkills,
   showFavorites,
   setShowFavorites,
+  isStudent,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
@@ -90,14 +91,16 @@ export default function Filter({
       {isOpen && (
         <div className={`filter-content ${isDesktop ? "always-open" : ""}`}>
           <div className="filter-section filter-roles">
-            <h3>SÖKER</h3>
+            <h3>{isStudent ? "STUDERAR" : "SÖKER"}</h3>
             <Checkbox
+              id="digital-designer"
               variant="filter"
               label="Digital Designer"
               checked={selectedRole === "Digital Designer"}
               onChange={() => handleRoleChange("Digital Designer")}
             />
             <Checkbox
+              id="web-developer"
               variant="filter"
               label="Webbutvecklare"
               checked={selectedRole === "Webbutvecklare"}
@@ -130,6 +133,7 @@ export default function Filter({
               FAVORITER
             </h3>
             <Checkbox
+              id="show-favorites"
               label="Visa favoriter"
               variant="filter"
               checked={showFavorites}

@@ -123,6 +123,7 @@ export default function ProfileSection() {
         setSelectedSkills={setSelectedTechnologies}
         showFavorites={showFavorites}
         setShowFavorites={setShowFavorites}
+        isStudent={isStudent}
       />
 
       {loading && <p>Laddar profiler...</p>}
