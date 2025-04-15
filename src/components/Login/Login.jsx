@@ -17,6 +17,27 @@ export default function Login({ scrollToSignup }) {
   const [loading, setLoading] = useState(false);
   const [formMessage, setFormMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+
+  const handleResetPassword = async () => {
+    setResetLoading(true);
+    setResetMessage("");
+
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) {
+      setResetMessage("Kunde inte skicka återställningslänk.");
+    } else {
+      setResetMessage("Länk skickad! Kolla din inkorg.");
+    }
+
+    setResetLoading(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,9 +150,13 @@ export default function Login({ scrollToSignup }) {
             </Link>
             till eventet.
           </p>
-          <Link href="/" className="forgot-link">
+          <button
+            type="button"
+            className="forgot-link"
+            onClick={() => setShowResetModal(true)}
+          >
             Glömt lösenordet?
-          </Link>
+          </button>
         </div>
 
         <Button
@@ -140,6 +165,48 @@ export default function Login({ scrollToSignup }) {
           type="submit"
           disabled={loading}
         />
+        {showResetModal && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h2>Återställ lösenord</h2>
+              <p>
+                Fyll i din e-postadress så skickar vi en återställningslänk.
+              </p>
+
+              <input
+                type="email"
+                placeholder="Din e-post"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                required
+              />
+
+              {resetMessage && <p className="reset-message">{resetMessage}</p>}
+
+              <div className="modal-actions">
+                <button
+                  className="reset-send-btn"
+                  type="button"
+                  onClick={handleResetPassword}
+                  disabled={resetLoading}
+                >
+                  {resetLoading ? "Skickar..." : "Skicka länk"}
+                </button>
+                <button
+                  type="button"
+                  className="close-modal"
+                  onClick={() => {
+                    setShowResetModal(false);
+                    setResetEmail("");
+                    setResetMessage("");
+                  }}
+                >
+                  Stäng
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </form>
     </section>
   );

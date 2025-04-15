@@ -100,6 +100,7 @@
   font-size: 0.875rem;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.5rem;
   margin-bottom: var(--gap-l);
 }
@@ -110,7 +111,91 @@
 }
 
 .forgot-link {
-  margin-bottom: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--primary-blue);
+  text-decoration: underline;
+  font: inherit;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+  margin-bottom: 0.5rem;
+}
+
+.modal input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.reset-send-btn {
+  display: inline-flex;
+  height: 2.875rem;
+  padding: var(--padding-xs, 0.5rem) var(--padding-l, 1.5rem);
+  justify-content: center;
+  align-items: center;
+  gap: var(--padding-xs, 0.5rem);
+  flex-shrink: 0;
+  border-radius: var(--border-radius-l, 1.5rem);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.05rem;
+  width: auto;
+  max-width: fit-content;
+  background-color: var(--primary-red);
+  color: var(--white);
+  border: 1px solid var(--white);
+}
+
+.reset-send-btn:hover {
+  background-color: var(--white);
+  color: var(--primary-red);
+  border: 1px solid var(--primary-red);
+  cursor: pointer;
+}
+
+.reset-message {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.close-modal {
+  background: transparent;
+  border: none;
+  color: #444;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {
@@ -163,7 +248,7 @@
 
   .login-links,
   .login-btn {
-    margin-left: calc(8rem + var(--gap-m));
+    margin-left: calc(7rem + var(--gap-m));
   }
 
   .forgot-link {
