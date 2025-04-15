@@ -186,7 +186,10 @@ export default function useUpdateForm() {
         return;
       }
 
-      if (newPassword || confirmPassword || currentPassword) {
+      const anyPasswordFieldFilled =
+        currentPassword || newPassword || confirmPassword;
+
+      if (anyPasswordFieldFilled) {
         if (!currentPassword || !newPassword || !confirmPassword) {
           setFormMessage("Alla lösenordsfält måste fyllas i.");
           setLoading(false);

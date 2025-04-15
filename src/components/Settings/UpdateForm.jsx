@@ -80,33 +80,36 @@ export default function UpdateForm() {
       )}
 
       <InputField
-        label="Nuvarande lösenord*"
+        label="Nuvarande lösenord"
         name="currentPassword"
         id="currentPassword"
         type="password"
         value={currentPassword}
         placeholder="Fyll i ditt nuvarande lösenord"
         onChange={(e) => setCurrentPassword(e.target.value)}
+        required={false}
       />
 
       <InputField
-        label="Nytt lösenord*"
+        label="Nytt lösenord"
         name="newPassword"
         id="newPassword"
         type="password"
         value={newPassword}
         placeholder="Minst 6 tecken"
         onChange={(e) => setNewPassword(e.target.value)}
+        required={false}
       />
 
       <InputField
-        label="Bekräfta nytt lösenord*"
+        label="Bekräfta nytt lösenord"
         name="confirmPassword"
         id="confirmPassword"
         type="password"
         value={confirmPassword}
         placeholder="Minst 6 tecken"
         onChange={(e) => setConfirmPassword(e.target.value)}
+        required={false}
       />
 
       <div className="profession-wrapper">
