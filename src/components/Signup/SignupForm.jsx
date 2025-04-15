@@ -169,39 +169,41 @@ export default function SignupForm({ defaultRole = "company" }) {
         </div>
       )}
 
-      {visibleTechPickers.map((professionId) => (
-        <div key={`tech-picker-${professionId}`} className="tech-picker">
-          <label>
-            {role === "company"
-              ? `Vi söker följande kompetenser (${
-                  professions.find((p) => p.id === professionId)?.name
-                }):`
-              : "Jag vill gärna jobba med:"}
-          </label>
-          {technologies[professionId] &&
-          technologies[professionId].length > 0 ? (
-            technologies[professionId].map((tech) => (
-              <FormButton
-                key={tech.id}
-                text={tech.name}
-                onClick={() => toggleTech(tech.id, professionId)}
-                variant={
-                  selectedTechs.some((t) => t.id === tech.id)
-                    ? "tech selected"
-                    : "tech"
-                }
-                type="button"
-                disabled={
-                  !selectedTechs.some((t) => t.id === tech.id) &&
-                  selectedTechs.length >= MAX_TECH_SELECTIONS
-                }
-              />
-            ))
-          ) : (
-            <p>Inga teknologier hittades för denna yrkesgrupp.</p>
-          )}
-        </div>
-      ))}
+      <div className="tech-picker-wrapper">
+        {visibleTechPickers.map((professionId) => (
+          <div key={`tech-picker-${professionId}`} className="tech-picker">
+            <label>
+              {role === "company"
+                ? `Vi söker följande kompetenser (${
+                    professions.find((p) => p.id === professionId)?.name
+                  }):`
+                : "Jag vill gärna jobba med:"}
+            </label>
+            {technologies[professionId] &&
+            technologies[professionId].length > 0 ? (
+              technologies[professionId].map((tech) => (
+                <FormButton
+                  key={tech.id}
+                  text={tech.name}
+                  onClick={() => toggleTech(tech.id, professionId)}
+                  variant={
+                    selectedTechs.some((t) => t.id === tech.id)
+                      ? "tech selected"
+                      : "tech"
+                  }
+                  type="button"
+                  disabled={
+                    !selectedTechs.some((t) => t.id === tech.id) &&
+                    selectedTechs.length >= MAX_TECH_SELECTIONS
+                  }
+                />
+              ))
+            ) : (
+              <p>Inga teknologier hittades för denna yrkesgrupp.</p>
+            )}
+          </div>
+        ))}
+      </div>
 
       <div className="checkbox-wrapper">
         <Checkbox
